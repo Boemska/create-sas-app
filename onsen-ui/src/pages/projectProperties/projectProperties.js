@@ -1,7 +1,7 @@
 import React from 'react';
-import {Page, BackButton, Toolbar } from 'react-onsenui'
-import ProjectList from '../projectList/projectList'
+import {Page} from 'react-onsenui'
 import './projectProperties.scss'
+import NavBar from '../../components/navBar/navBar'
 
 class ProjectProperties extends React.Component {
 
@@ -10,29 +10,15 @@ class ProjectProperties extends React.Component {
 		this.name = 'projectProperties'
 	}
 
-	renderToolbar = () => {
-		const {project} = this.props;
-		return (
-			<Toolbar>
-				<div className='left'>
-					<BackButton
-						className={'displayed'}
-						onClick={this.popPage.bind(this,ProjectList)}></BackButton>
-				</div>
-				<div className={'center'}>{project.name}</div>
-			</Toolbar>
-		);
-	}
-
-	popPage = (page) => {
-		this.props.navigator.resetPage({component: page, props: {key: 'projectList'}}, {animation: 'fade'});
+	popPage = (page,navigator) => {
+		navigator.popPage();
 	}
 
 
 	render() {
-		const {project} = this.props;
+		const {project,navigator} = this.props;
 		return (
-			<Page key={'projectProperties'} renderToolbar={this.renderToolbar.bind(this)}>
+			<Page key={'projectProperties'} renderToolbar={()=> <NavBar title={project.name} navigator={navigator} backButton={true}/>}>
 				<div>
 					<p className={'project-property-name'}>Folder Location</p>
 					<p className={'project-property'}>{project.parentFolderUri}</p>

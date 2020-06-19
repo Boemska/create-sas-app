@@ -6,6 +6,8 @@ import ADAPTER_SETTINGS from '../../adapterService/config'
 import {fetchProjects} from './projectListActions';
 import './projectList.scss'
 import ProjectProperties from '../projectProperties/projectProperties'
+import NavBar from '../../components/navBar/navBar'
+import AddProject from '../../components/addProject/addProject'
 
 class ProjectList extends React.Component {
 
@@ -19,32 +21,15 @@ class ProjectList extends React.Component {
 		ADAPTER_SETTINGS.sasVersion === 'viya' && this.props.fetchProjects();
 	}
 
-	renderToolbar = () => {
-		return (
-			<Toolbar>
-				<div className={'center'}>Projects</div>
-			</Toolbar>
-		);
-	}
-
-	pushPage(page, project) {
-		let new_page;
-		if (page.WrappedComponent) { //if component is wrapped (connect(...)(ComponentName))
-			new_page = new page.WrappedComponent();
-		} else {
-			new_page = new page();
-		}
-		const page_name = new_page.name
-		this.props.navigator.resetPage({component: page, props: {key: page_name, project}},{animation: 'slide'})
+	pushPage(navigator,project) {
+		navigator.pushPage({component:ProjectProperties,props:{project}})
 	}
 
 	render() {
-
-		const {projects, requests} = this.props;
+		const {projects, requests,navigator} = this.props;
 		const requestsStatus = requests ? getRequestsList(requests) : null;
-
 		return (
-			<Page key={''} renderToolbar={this.renderToolbar.bind(this)}>
+			<Page renderToolbar={()=> <NavBar title={'Projects'} navigator={navigator}/>}>
 				<List>
 					{requestsStatus && !requestsStatus.loading ?
 						projects && projects.map((project, index) =>
@@ -52,7 +37,7 @@ class ProjectList extends React.Component {
 								tappable
 								className={'project'}
 								key={index}
-								onClick={this.pushPage.bind(this, ProjectProperties, project)}>
+								onClick={this.pushPage.bind(this,this.props.navigator, project)}>
 								<Icon
 									className={'icon-m'}
 									icon='folder'/>
@@ -63,8 +48,9 @@ class ProjectList extends React.Component {
 						null
 					}
 				</List>
+				<AddProject/>
 			</Page>
-		);
+		)
 	}
 }
 
