@@ -1,0 +1,37 @@
+.boCollapsible {
+  background: #f1f1f1;
+  border: 1px solid #ccc9c9;
+  border-radius: 2px;
+  .title {
+    color: black !important;
+    padding: 1rem;
+    border-bottom: 1px solid #eaeaea;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    i {
+      &.open {
+        transform: rotate(90deg);
+      }
+      margin-right: 1rem;
+      transition: all ease-in-out 0.2s;
+    }
+
+  }
+  .content {
+    height: 0;
+    visibility: hidden;
+    background: #ffffff;
+    &.open {
+      height: auto;
+      visibility: visible;
+      padding: 1rem;
+      word-wrap: break-word;
+    }
+
+    &.open > * > pre{
+      width: 100%;
+      word-wrap: break-word;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@import '../../assets/style/colors.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: $primary;
+  z-index: 10000000000;
+  padding: 0;
+  headerContainer {
+    width: 100%;
+  }
+  img {
+    width: 40px;
+    cursor: pointer;
+  }
+  .navbar-nav {
+    align-items: flex-end;
+  }
+  .navbar-brand {
+    flex-grow: 1;
+  }
+  .navbar-collapse {
+    flex-grow: unset;
+  }
+}
+
+.info-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 200px;
+}
+
+.info-bar-drop {
+  position: relative;
+}

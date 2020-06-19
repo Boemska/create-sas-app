@@ -1,0 +1,26 @@
+@import '../../assets/style/colors';
+
+.comment {
+  color: gray;
+  font-style: italic;
+  pre {
+    color: gray;
+    font-style: italic;
+  }
+}
+
+.members {
+  i {
+    cursor: pointer;
+    color: gray;
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+pre.grayedout {
+  color: gray;
+  font-size: 10px;
+  font-style: italic;
+}

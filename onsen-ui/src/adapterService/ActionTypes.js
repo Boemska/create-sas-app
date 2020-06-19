@@ -1,0 +1,4 @@
+export default {
+	SET_REQUEST: 'SET_REQUEST',
+	REMOVE_REQUEST: 'REMOVE_REQUEST'
+}
