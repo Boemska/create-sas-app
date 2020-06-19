@@ -44,13 +44,27 @@ To get started with one of the CSA apps in this repository you'll need to **eith
 
 In the folder you just copied, you'll find a README with instructions on how to get started. For the _very_ quick guide, you'll need to do something like the following:
 
-```js
+```bash
+# get packages
 yarn install
+# sas config
 yarn run configure
+# start CRA dev mode
 yarn start
 ```
 
-Here is an example of that process looks like with the carbon-ui app template.
+Here is an example of what that process looks like with the **carbon-ui** app template.
+
+<p align="center">
+<img src="docs/csa-term.svg" width="60%" />
+</p>
+
+Note that this animation is condensed, and the initial `yarn start` command can take up to a minute to generate the dev runtime. 
+
+Following that, a CRA dev mode CSA app should appear in your browser, and any changes you make to the code in the template should be reflected in the browser. After this step, you can continue coding your app by following the official [Create React App documentation](https://create-react-app.dev/docs/getting-started/#scripts), starting from [the scripts step](https://create-react-app.dev/docs/getting-started/#scripts). 
+
+(this is where the 'standard' bit comes in)
+
 
 ## Core Features
 
@@ -133,7 +147,7 @@ I guess saying CSA apps are 'no different to an app downloaded from an App Store
 
 ### Offline Mode
 
-One of the really nice things about mobile devices and mobile applications is their... mobility. Frequently, your users can take them places without WiFi or a data connection. 
+One of the really nice things about mobile devices and mobile applications is their mobility. Frequently, your users can take them places without WiFi or a data connection. 
 
 All of the CSA templates within this repository are offline-capable, again courtesy of Google's excellent [workbox](https://developers.google.com/web/tools/workbox) library. 
 
