@@ -1,0 +1,90 @@
+.icons-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  float: right;
+
+  .progres-circular-position {
+    position: absolute;
+    width: 39px;
+    height: 48px;
+
+    .progress-circular__background, .progress-circular__primary, .progress-circular__secondary {
+      stroke-width: 10%;
+    }
+  }
+
+  .ios-indicator {
+    bottom: -1px;
+    margin-top: 2px;
+    margin-right: 10px;
+  }
+
+  .android-indicator {
+    margin-top: -6px;
+    bottom: 5px;
+    margin-right: 6px;
+  }
+
+
+  .image-holder {
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 6px;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    .ios-img {
+      bottom: 8px;
+      right: 14px;
+    }
+
+    .img-size {
+      position: absolute;
+      display: flex;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .android-position {
+      position: static !important;
+
+      .android-img {
+        right: 11px;
+        bottom: 14px;
+      }
+    }
+  }
+
+  @keyframes change-color {
+    50% {
+      border-color: #44DB5E;
+    }
+  }
+
+  .success-border {
+    border: 5px solid transparent;
+    animation: change-color 5s;
+  }
+
+  .fail-border {
+    border: 5px solid #E12200;
+  }
+
+  .transparent-border {
+    border: 5px solid transparent;
+  }
+}
+
+.ios-top {
+  margin-top: 1px;
+  margin-right: 3px;
+
+}
+
+.android-top {
+  margin-top: 7px;
+}
+

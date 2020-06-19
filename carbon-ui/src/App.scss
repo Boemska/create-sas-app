@@ -1,0 +1,77 @@
+// To override bootstap set variables from node_modules/bootstrap/scss/_variables.scss
+// before importing bootstrap
+// @import './assets/style/colors.scss';         // example of overriden bootstrap $primary color
+// @import '~bootstrap/scss/bootstrap';
+@import './assets/style/fontawesome.css';
+@import './assets/style/style.scss';
+//@import '~carbon-components/scss/globals/scss/styles'; //imports everything, complies too long
+@import './assets/fonts/montserrat.scss';
+
+$feature-flags: (
+        ui-shell: true,
+        grid-columns-16: true,
+);
+@import './assets/style/carbonComponents.scss';
+// carbonOverrides.scss need to be bellow the import of carbonComponents so the compailer will use the overrides
+@import './assets/style/carbonOverrides.scss';
+
+.test__layout {
+  margin-top: $layout-06;
+}
+
+.noMargin {
+  margin-left: 0 !important;
+  transition: margin 0.2s;
+}
+
+.withMargin {
+  transition: margin 0.2s;
+
+}
+
+.App {
+  font-family: Montserrat, "Helvetica Neue", Arial, sans-serif;
+  height: 100%;
+  .main {
+    height: 100%;
+    display: flex;
+    max-height: calc(100vh - 30px);
+    max-width: 100%;
+    padding-top: 48px;
+    position: relative;
+    z-index: 100;
+    .mainContainer {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 2rem 2rem 30px 2rem;
+      position: relative;
+    }
+  }
+  .modal-open.modal {
+    height: calc(100vh - 200px);
+  }
+
+  
+  a.bx--tabs__nav-link, a.bx--tabs__nav-link:focus {
+    width: 12rem;
+  }
+
+  .bx--date-picker__icon {
+    left: 7rem;
+  }
+}
+
+/* Set toastr z-index higher than header */
+#toast-container {
+  position: fixed;
+  z-index: 9999999999999;
+  /*overrides*/
+}
+
+@media (min-width: 42rem) {
+  .bx--modal-container .bx--modal-header, .bx--modal-container .bx--modal-content, .bx--modal-container .bx--modal-content__regular-content {
+    padding-right: 1rem;
+  }
+}
+

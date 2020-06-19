@@ -1,0 +1,56 @@
+import ActionTypes from './ActionTypes';
+
+const initialState = {
+	projectMetadata: JSON.parse(localStorage.getItem("projectMedatada")),
+	projectContent: JSON.parse(localStorage.getItem("projectContent")),
+	save: JSON.parse(localStorage.getItem('save'))
+}
+
+export function projectReducer(state = initialState, action) {
+
+	switch (action.type) {
+
+		case ActionTypes.SELECT_PROJECT: {
+			localStorage.setItem("projectMedatada", JSON.stringify(action.payload));
+			return Object.assign({}, state, {projectMedatada: action.payload})
+		}
+
+		case ActionTypes.FETCH_SINGLE_PROJECT: {
+			localStorage.setItem("projectContent", JSON.stringify(action.payload))
+			localStorage.setItem("save", JSON.stringify(false))
+			return Object.assign({}, state, {
+				projectContent: action.payload,
+				save: false
+			})
+		}
+
+		case ActionTypes.UPDATE_PROJECT: {
+      localStorage.setItem("save", JSON.stringify(true))
+      localStorage.setItem('projectContent', JSON.stringify(action.payload))
+			return Object.assign({}, state, {
+				projectContent: action.payload,
+				save: true
+			})
+		}
+
+		case ActionTypes.CHANGES_SAVED: {
+			localStorage.setItem('save', JSON.stringify(false));
+			const newProject = {
+				...state.projectContent,
+				lastModified: action.payload
+			}
+			return Object.assign({}, state, {
+				save: false,
+				projectContent: newProject
+			})
+		}
+
+		case ActionTypes.OVERRIDE: {
+			localStorage.setItem('save', JSON.stringify(false));
+			return Object.assign({}, state, {save: false})
+		}
+
+		default:
+			return state
+	}
+}

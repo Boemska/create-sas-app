@@ -1,0 +1,44 @@
+@import './assets/style/bootstrap.min.css';
+@import './assets/style/fontawesome.css';
+@import './assets/style/style.scss';
+
+.welcome-wrapper {
+  min-width: 250px;
+
+  .welcome-container {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: white;
+    border: solid white 2px;
+
+    .img-container {
+      height: 70px;
+      background-color: rgb(50, 156, 230);
+
+      .img-size {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        position: relative;
+        top: 20px;
+        background-color: white;
+      }
+
+    }
+
+    .message-container {
+      margin-top: 40px;
+      height: 97px;
+
+      .welcome-message {
+        font-weight: 600;
+        font-size: 16px;
+        opacity: 0.6;
+        color: black;
+      }
+
+    }
+
+  }
+}

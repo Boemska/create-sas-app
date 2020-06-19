@@ -1,0 +1,6 @@
+{
+	"metadataRoot": "/Public/seedApp/",
+	"hostUrl": "https://teh.boemskats.com/",
+	"ajaxTimeout": 600000,
+	"sasVersion": "viya"
+}

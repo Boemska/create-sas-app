@@ -1,0 +1,11 @@
+.loginForm {
+  width: 100%;
+  margin: 0 auto;
+  padding: 15px;
+  .input-group-prepend {
+    padding: 0 10px;
+    i {
+      align-self: center;
+    }
+  }
+}

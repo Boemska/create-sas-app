@@ -1,0 +1,13 @@
+@import '../../assets/style/colors.scss';
+
+.bfooter {
+  position: fixed;
+  bottom: 0;
+  height: 30px;
+  background: $primary;
+  width: 100%;
+  color: #fcfcfc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
