@@ -61,9 +61,7 @@ Here is an example of what that process looks like with the **carbon-ui** app te
 
 Note that this animation is condensed, and the initial `yarn start` command can take up to a minute to generate the dev runtime. 
 
-Following that, a CRA dev mode CSA app should appear in your browser, and any changes you make to the code in the template should be reflected in the browser. After this step, you can continue coding your app by following the official [Create React App documentation](https://create-react-app.dev/docs/getting-started/#scripts), starting from [the scripts step](https://create-react-app.dev/docs/getting-started/#scripts). 
-
-(this is where the 'standard' bit comes in)
+Following that, a CRA dev mode CSA app should appear in your browser, and any changes you make to the code in the template should be reflected in the browser. After this step, you can continue coding your app by following the official [Create React App documentation](https://create-react-app.dev/docs/getting-started/#scripts), starting from [the scripts step](https://create-react-app.dev/docs/getting-started/#scripts). This is what the 'standard' bit is all about.
 
 
 ## Core Features
