@@ -36,7 +36,8 @@ class Home extends React.Component {
 		filesContent: {},
 		editFile: null,
 		editFileError: '',
-		updatingFile: false
+		updatingFile: false,
+		getFolderDetailsError: ''
 	}
 
 	fileContent = {"firstName": "George", "lastName": "Clooney"}
@@ -65,11 +66,20 @@ class Home extends React.Component {
 	}
 
 	getFolderDetails = () => {
+		this.setState({getFolderDetailsError: ''})
 		this.props.getFolderDetails(config.metadataRoot, null)
 			.then(res => {
 				res.body.etag = res.headers['etag'] || res.headers.get('Etag');
 				this.setState({folderDetails: res.body})
-			})
+			}).catch(e => {
+			try {
+				const message = JSON.parse(e.message)
+				this.setState({getFolderDetailsError: message.message})
+			} catch (er) {
+				console.log(er)
+			}
+		})
+
 	}
 
 	getRootFolderContent = () => {
