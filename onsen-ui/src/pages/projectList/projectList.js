@@ -8,6 +8,8 @@ import './projectList.scss'
 import ProjectProperties from '../projectProperties/projectProperties'
 import NavBar from '../../components/navBar/navBar'
 import AddProject from '../../components/addProject/addProject'
+import {openAndEditProjectDialog} from '../../components/projectDialog/projectDialogActions'
+import {selectProject, fetchSingleProject} from '../projectProperties/projectPropertiesActions'
 
 class ProjectList extends React.Component {
 
@@ -21,15 +23,28 @@ class ProjectList extends React.Component {
 		ADAPTER_SETTINGS.sasVersion === 'viya' && this.props.fetchProjects();
 	}
 
-	pushPage(navigator,project) {
-		navigator.pushPage({component:ProjectProperties,props:{project}})
+	pushPage(navigator, project) {
+		const uri=project.uri;
+		const {projects,projectMetadata} = this.props;
+		if (this.props.dirty) {
+
+		} else {
+			if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
+				//const project = projects.find(p => (p.uri === '/files/files/' + uri))
+				if (project) {
+					this.props.selectProject(project);
+					this.props.fetchSingleProject(project.uri, this.props.dirty);
+				}
+			}
+			navigator.pushPage({component: ProjectProperties, props: {project}})
+		}
 	}
 
 	render() {
-		const {projects, requests,navigator} = this.props;
+		const {projects, requests, navigator} = this.props;
 		const requestsStatus = requests ? getRequestsList(requests) : null;
 		return (
-			<Page renderToolbar={()=> <NavBar title={'Projects'} navigator={navigator}/>}>
+			<Page renderToolbar={() => <NavBar title={'Projects'} navigator={navigator}/>}>
 				<List>
 					{requestsStatus && !requestsStatus.loading ?
 						projects && projects.map((project, index) =>
@@ -37,11 +52,27 @@ class ProjectList extends React.Component {
 								tappable
 								className={'project'}
 								key={index}
-								onClick={this.pushPage.bind(this,this.props.navigator, project)}>
-								<Icon
-									className={'icon-m'}
-									icon='folder'/>
-								{project.name}
+								onClick={this.pushPage.bind(this, this.props.navigator, project)}>
+								<div className='left'>
+									<div>
+										<Icon
+											className={''}
+											icon='folder'/>
+									</div>
+								</div>
+								<div className='center'>
+									<div className='list__item__title'>
+										{project.name}
+									</div>
+								</div>
+								<div className={'right'}>
+									<div
+										div onClick={(e) => {
+										e.stopPropagation();
+									}}>
+										<Icon icon='trash'/>
+									</div>
+								</div>
 							</ListItem>
 						)
 						:
@@ -56,7 +87,10 @@ class ProjectList extends React.Component {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		fetchProjects: () => fetchProjects(dispatch)
+		fetchProjects: () => fetchProjects(dispatch),
+		openAndEditProjectDialog: (title) => openAndEditProjectDialog(dispatch, title),
+		selectProject:(project)=>selectProject(dispatch,project),
+		fetchSingleProject:(uri,dirty)=>fetchSingleProject(dispatch,uri,dirty)
 	}
 }
 
@@ -64,6 +98,8 @@ function mapStateToProps(store) {
 	return {
 		projects: store.projectList.projects,
 		requests: store.adapter.requests,
+		dirty: store.project.save,
+		projectMetadata: store.project.projectMetadata
 	}
 }
 
