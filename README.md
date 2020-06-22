@@ -8,7 +8,7 @@ This is a collection of open-source [Progressive Web Application (PWA)](https://
 
 * **Zero Configuration, Native Security**  
 
-Developing apps with these templates will not any require any elevated privileges, Administrator access to SAS, or handling of any secrets, registration of clients, or deployment of refresh tokens. Instead, communication is handled through native mechanisms built into SAS and used by the other browser-based SAS client apps. Authentication, authorisation and session security between the browser runtime and backend services are all handled without the need for new server components, certificates, runtimes, or changes to the platform security configuration. In other words, if you can log on to SAS, you should have everything you need to get started.
+Developing apps with these templates will not require any elevated privileges, Administrator access to SAS, or handling of any secrets, registration of clients, or deployment of refresh tokens. Instead, communication is handled through native mechanisms built into SAS and used by the other browser-based SAS client apps. Authentication, authorisation and session security between the browser runtime and backend services are all handled without the need for new server components, certificates, runtimes, or changes to the platform security configuration. In other words, if you can log on to SAS, you should have everything you need to get started.
 
 * **Standard Create React App Development Experience**  
 
