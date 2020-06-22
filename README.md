@@ -76,8 +76,8 @@ The templates in this repository are configured with the following base features
 | Feature | [carbon-ui](./carbon-ui) | [onsen-ui](./onsen-ui)  | [bootstrap](bootstrap) |
 | -------| ------------------------ | ----------------------- | ---------------------- |
 | H54S (SAS Authentication + transport) | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** |
-| Saving, loading, sharing of projects* | **⣿⣿⣿⣿⣿** | **⣿⣀⣀⣀⣀** | **⣿⣀⣀⣀⣀** |
-| Direct Deploy to Home Screen | **⣿⣿⣿⣿⣿** | **⣿⣀⣀⣀⣀** | **⣿⣀⣀⣀⣀** |
+| Saving, loading, sharing of projects* | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣀⣀** | **⣿⣀⣀⣀⣀** |
+| Direct Deploy to Home Screen | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** | **⣿⣀⣀⣀⣀** |
 | Automatic update of app runtime | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** |
 | Offline mode | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** | **⣿⣿⣿⣿⣿** |
 | Direct deployment of back end code* | **⣿⣿⣿⣀⣀** | **⣀⣀⣀⣀⣀** | **⣿⣀⣀⣀⣀** |
