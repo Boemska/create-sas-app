@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {platform} from 'onsenui';
 import {createNewProject} from './addProjectActions'
+import './addProject.scss'
 
 import {
 	Fab,
@@ -85,13 +86,16 @@ class AddProject extends React.Component {
 	}
 
 	render() {
+		const {errorMessage,error}=this.props.newProject;
+		console.log(this.props);
 		return (
 			<div>
 				{this.button()}
-				<AlertDialog isOpen={this.state.isOpen} isCancelable={true}>
+				<AlertDialog isOpen={this.state.isOpen} isCancelable={true} onCancel={() => this.showAddProjectDialog(false)}>
 					<div className='alert-dialog-title'>Add new project</div>
 					<div className='alert-dialog-content'>
 						<Input
+							className={'name-input'}
 							name="name"
 							value={this.state.name}
 							onChange={this.onChange}
@@ -99,26 +103,31 @@ class AddProject extends React.Component {
 							//ref={node => (input = node)}
 							placeholder='Project name' float
 						/>
+						{ error &&
+							<div>
+								<small className={'warning'}>{errorMessage}</small>
+							</div>
+						}
 						<Input
+							className={'desc-input'}
 							name="description"
 							value={this.state.description}
 							onChange={this.onChange}
 							modifier='underbar'
-							//ref={node => (input = node)}
 							placeholder='Project description' float
 						/>
 					</div>
 					<div className='alert-dialog-footer'>
-						<button
+						<Button
 							onClick={() => this.showAddProjectDialog(false)}
 							className='alert-dialog-button'>
 							Cancel
-						</button>
-						<button
+						</Button>
+						<Button
 							onClick={()=>this.addNewProject()}
 							className='alert-dialog-button'>
 							Add Project
-						</button>
+						</Button>
 					</div>
 				</AlertDialog>
 			</div>
@@ -135,7 +144,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(store) {
 	return {
-		userData: store.home.userData
+		userData: store.home.userData,
+		newProject:store.newProject
 	}
 }
 

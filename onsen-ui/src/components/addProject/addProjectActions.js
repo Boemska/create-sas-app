@@ -3,23 +3,24 @@ import ADAPTER_SETTINGS from '../../adapterService/config'
 //import ActionTypes from './ActionTypes';
 import {fetchProjects} from '../../pages/projectList/projectListActions';
 //import ProjectActionTypes from '../../pages/projectProperties/ActionTypes'
+import ActionTypes from './ActionTypes'
 import {getSelfUriFromLinks} from '../../common/utils'
 export const PROJECT_EXTENTION = ''; //TODO: SET FILE EXTENTION FOR YOUR TYPE OF FILE
 
 export async function createNewProject(dispatch, projectName, projectObjc, override) {
 
-    // if (projectName === ''){
-    //     dispatch({
-    //         type: ActionTypes.SUBMIT_ERROR,
-    //         payload: {
-    //             error: true,
-    //             message: "Please enter a name for the project",
-    //             override: false
-    //         }
-    //     })
-		//
-    //     return Promise.reject();
-    // }
+    if (projectName === ''){
+        dispatch({
+            type: ActionTypes.SUBMIT_ERROR,
+            payload: {
+                error: true,
+                message: "Please enter a name for the project",
+                override: false
+            }
+        })
+
+        return Promise.reject();
+    }
 
     // if (JSON.parse(localStorage.getItem('save')) && !override){
 		//
@@ -61,17 +62,17 @@ export async function createNewProject(dispatch, projectName, projectObjc, overr
     catch(e){
         console.log("CREATE PROJECT ERROR: ", e)
 
-        // if (e.status === 409) {
-        //     dispatch({
-        //         type: ActionTypes.SUBMIT_ERROR,
-        //         payload: {
-        //             error: true,
-        //             message: "A project with this name already exists",
-        //             override: false
-        //         }
-        //     })
+        if (e.status === 409) {
+            dispatch({
+                type: ActionTypes.SUBMIT_ERROR,
+                payload: {
+                    error: true,
+                    message: "A project with this name already exists",
+                    override: false
+                }
+            })}
 
-        // }
+
         // else {
         //     dispatch({
         //         type: ActionTypes.SUBMIT_ERROR,
