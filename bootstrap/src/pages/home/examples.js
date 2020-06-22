@@ -60,6 +60,7 @@ export const getFolderDetailsExample = props => {
 				</Button>
 			</Col>
 			<Col md={5}>
+				{props.state.getFolderDetailsError && <div className={'text-danger'}>{props.state.getFolderDetailsError}</div>}
 				{props.state.folderDetails && <div>
 					<div><span className={'text-info'}>Name:</span> {props.state.folderDetails.name}</div>
 					<div><span className={'text-info'}>Id:</span> {props.state.folderDetails.id}</div>
