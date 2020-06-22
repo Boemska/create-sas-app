@@ -8,6 +8,8 @@ import {customToastReducer} from './components/customToast/customToastReducer' /
 import metadataTreeReducer from './components/metadataTree/metadataTreeReducer'
 import projectListReducer from './pages/projectList/projectListReducer'
 import newProjectReducer from './components/addProject/addProjectReducer'
+import projectDialogReducer from './components/projectDialog/projectDialogReducer'
+import projectPropertiesReducer from './pages/projectProperties/projectPropertiesReducer'
 
 let middlewares = []
 
@@ -38,6 +40,8 @@ const reducer = combineReducers({
 	metadataTree:metadataTreeReducer,
 	projectList: projectListReducer,
 	newProject: newProjectReducer,
+	projectDialog:projectDialogReducer,
+	project: projectPropertiesReducer,
 })
 
 export function getStore(preloadedState) {

@@ -3,7 +3,7 @@ import ActionTypes from "./ActionTypes";
 const initialState = {
 	errorMessage: '',
 	error: false,
-	override: false,
+	override: false
 }
 
 export default function newProjectReducer(state = initialState, action) {

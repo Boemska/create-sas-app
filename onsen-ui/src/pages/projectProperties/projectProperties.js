@@ -10,15 +10,20 @@ class ProjectProperties extends React.Component {
 		this.name = 'projectProperties'
 	}
 
-	popPage = (page,navigator) => {
+	popPage = (page, navigator) => {
 		navigator.popPage();
 	}
 
 
 	render() {
-		const {project,navigator} = this.props;
+		const {project, navigator} = this.props;
 		return (
-			<Page key={'projectProperties'} renderToolbar={()=> <NavBar title={project.name} navigator={navigator} backButton={true}/>}>
+			<Page key={'projectProperties'} renderToolbar={() => <NavBar
+				title={project.name}
+				navigator={navigator}
+				backButton={true}
+				hasIcon={true}/>}
+			>
 				<div>
 					<p className={'project-property-name'}>Folder Location</p>
 					<p className={'project-property'}>{project.parentFolderUri}</p>
@@ -35,7 +40,6 @@ class ProjectProperties extends React.Component {
 		);
 	}
 }
-
 
 
 export default ProjectProperties;
