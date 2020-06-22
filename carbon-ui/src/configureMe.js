@@ -45,7 +45,7 @@ function renderIntro() {
     }
     
     const boxInfo = boxen(
-        chalk.hex('#FAAD39').bold("Boemska h54s") + ' ' + chalk.white.bold("React PWA Seed") + '\n\n'
+        chalk.hex('#FAAD39').bold("Boemska h54s") + ' ' + chalk.white.bold("Create SAS App") + '\n\n'
         + chalk.dim("sha:") + ' ' + info.abbreviatedSha + '\n'
         + chalk.dim("branch:") + ' ' + info.branch + '\n'
         + chalk.dim("root:") + ' ' + info.root 
@@ -93,10 +93,25 @@ function renderIntro() {
             prefix: '-',
             message: `Is this a SAS Viya or a SAS 9.4 server?`,
             choices: sasEnvs
+        },
+        {
+            type: 'input',
+            name: 'folderLocation',
+            message: 'SAS Folder path for back-end services?',
+            prefix: '-',
+            default: '/Public/AppFactory Apps/My First App/',
+            validate: async (input) => {
+                if (!(input.startsWith('/'))) {
+                    return 'Folder path must start with a leading /'
+                } else {
+                    return true
+                }
+            }
         }
     ], function (answers) {
         sasLocation = answers.sasLocation;
         sasType = answers.sasType;
+        folderLocation = answers.folderLocation;
     });
     
     // list of microservices that our app uses that we want to validate endpoints for
@@ -197,15 +212,27 @@ function renderIntro() {
             templateHttps = ''
         } 
         var templateHost = serverUrl.hostname
+        // write env file
+        fs.writeFileSync('./src/adapterService/config.js', 
+        `export default {
+            metadataRoot: "${promptRes.folderLocation}",
+            hostUrl: "",
+            ajaxTimeout: 600000,
+            sasVersion: "${promptRes.sasType}"
+        }
+        `)
+        
+        // write service config
         fs.writeFileSync('./.env', `${templateHttps}SASHOST=${templateHost}\nSASVER=${promptRes.sasType}`)
         
-        log(`\nConfiguration ${chalk.greenBright('successful!')} Variables written to ${chalk.hex('#FAAD39')('.env')} file in project root.\nFrom now, start the app in Development mode by runing: \n\n  ${chalk.hex('#FAAD39')('yarn start')} \n`);
+        log(`\nConfiguration ${chalk.greenBright('successful!')} Variables written to ${chalk.hex('#FAAD39')('.env')} file in project root,
+and ${chalk.hex('#FAAD39')('src/adapterService/config.js')}. From now, start the app in Development 
+mode by runing: \n\n  ${chalk.hex('#FAAD39')('yarn start')} \n`);
         process.exit(0);
     } else {
         log(`\nConfiguration ${chalk.redBright('not successful!')}. Try again.`);
         process.exit(0);
     }
-    
 }
 
 configureSas()
