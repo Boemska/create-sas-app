@@ -7,6 +7,7 @@ import {adapterReducer} from './adapterService/adapterReducer'
 import {customToastReducer} from './components/customToast/customToastReducer' // eslint-disable-line no-unused-vars
 import metadataTreeReducer from './components/metadataTree/metadataTreeReducer'
 import projectListReducer from './pages/projectList/projectListReducer'
+import newProjectReducer from './components/addProject/addProjectReducer'
 
 let middlewares = []
 
@@ -36,6 +37,7 @@ const reducer = combineReducers({
 	customToast:customToastReducer,
 	metadataTree:metadataTreeReducer,
 	projectList: projectListReducer,
+	newProject: newProjectReducer,
 })
 
 export function getStore(preloadedState) {
