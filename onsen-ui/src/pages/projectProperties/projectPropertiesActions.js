@@ -4,7 +4,7 @@ import adapterService from '../../adapterService/adapterService'
 
 const filesPrefix = '/files/files/'
 
-async function request(dispatch, file) {
+export async function request(dispatch, file) {
 	let uri = file;
 	// Check if uri has /files/files/ alraady
 	if (! file.includes(filesPrefix)) {

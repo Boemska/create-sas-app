@@ -2,6 +2,7 @@ import React from 'react';
 import {Page} from 'react-onsenui'
 import './projectProperties.scss'
 import NavBar from '../../components/navBar/navBar'
+import {connect} from 'react-redux'
 
 class ProjectProperties extends React.Component {
 
@@ -19,7 +20,7 @@ class ProjectProperties extends React.Component {
 		const {project, navigator} = this.props;
 		return (
 			<Page key={'projectProperties'} renderToolbar={() => <NavBar
-				title={project.name}
+				title={this.props.projectContent.name}
 				navigator={navigator}
 				backButton={true}
 				hasIcon={true}/>}
@@ -41,5 +42,10 @@ class ProjectProperties extends React.Component {
 	}
 }
 
+function mapStateToProps(store) {
+	return {
+		projectContent: store.project.projectContent
+	}
+}
 
-export default ProjectProperties;
+export default connect(mapStateToProps, null)(ProjectProperties);

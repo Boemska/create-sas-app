@@ -1,11 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {platform} from 'onsenui';
 import {createNewProject} from '../addProject/addProjectActions'
-import ActionTypes from './ActionTypes'
 import {
-	Fab,
-	Icon,
 	Button,
 	Input,
 	AlertDialog
@@ -50,6 +46,7 @@ class ProjectDialog extends React.Component {
 			}
 			console.log(newProject);
 			this.props.updateProject(newProject);
+			this.props.closeDialog();
 		}
 	}
 
@@ -93,7 +90,7 @@ class ProjectDialog extends React.Component {
 					<Button
 						onClick={() => this.addNewProject()}
 						className='alert-dialog-button'>
-						Add Project
+						{this.props.projectDialog.title}
 					</Button>
 				</div>
 			</AlertDialog>

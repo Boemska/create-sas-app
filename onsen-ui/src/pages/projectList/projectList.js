@@ -1,5 +1,5 @@
 import React from 'react';
-import {ListItem, List, Page, Toolbar, Navigator, Icon} from 'react-onsenui'
+import {ListItem, List, Page, Icon} from 'react-onsenui'
 import {connect} from 'react-redux'
 import {getRequestsList} from '../../common/utils'
 import ADAPTER_SETTINGS from '../../adapterService/config'
@@ -8,8 +8,10 @@ import './projectList.scss'
 import ProjectProperties from '../projectProperties/projectProperties'
 import NavBar from '../../components/navBar/navBar'
 import AddProject from '../../components/addProject/addProject'
+import ConformationDialog from '../../components/conformationDialog/conformationDialog'
 import {openAndEditProjectDialog} from '../../components/projectDialog/projectDialogActions'
-import {selectProject, fetchSingleProject} from '../projectProperties/projectPropertiesActions'
+import {selectProject, fetchSingleProject, request} from '../projectProperties/projectPropertiesActions'
+import {openConformationDialog} from '../../components/conformationDialog/conformationDialogActions'
 
 class ProjectList extends React.Component {
 
@@ -24,10 +26,14 @@ class ProjectList extends React.Component {
 	}
 
 	pushPage(navigator, project) {
-		const uri=project.uri;
-		const {projects,projectMetadata} = this.props;
+		const uri = project.uri;
+		const {projectMetadata} = this.props;
 		if (this.props.dirty) {
+			let action = () => this.props.request(uri);
 
+			let push = () => navigator.pushPage({component: ProjectProperties, props: {project}});
+			this.props.openConformationDialog("You have not saved changes made to this project, opening a new one will override these changes, do you wish to proceed?",
+				action, push);
 		} else {
 			if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
 				//const project = projects.find(p => (p.uri === '/files/files/' + uri))
@@ -65,14 +71,6 @@ class ProjectList extends React.Component {
 										{project.name}
 									</div>
 								</div>
-								<div className={'right'}>
-									<div
-										div onClick={(e) => {
-										e.stopPropagation();
-									}}>
-										<Icon icon='trash'/>
-									</div>
-								</div>
 							</ListItem>
 						)
 						:
@@ -80,6 +78,7 @@ class ProjectList extends React.Component {
 					}
 				</List>
 				<AddProject/>
+				<ConformationDialog/>
 			</Page>
 		)
 	}
@@ -89,8 +88,10 @@ function mapDispatchToProps(dispatch) {
 	return {
 		fetchProjects: () => fetchProjects(dispatch),
 		openAndEditProjectDialog: (title) => openAndEditProjectDialog(dispatch, title),
-		selectProject:(project)=>selectProject(dispatch,project),
-		fetchSingleProject:(uri,dirty)=>fetchSingleProject(dispatch,uri,dirty)
+		selectProject: (project) => selectProject(dispatch, project),
+		fetchSingleProject: (uri, dirty) => fetchSingleProject(dispatch, uri, dirty),
+		openConformationDialog: (message, action, push) => openConformationDialog(dispatch, message, action, push),
+		request: (file) => request(dispatch, file)
 	}
 }
 

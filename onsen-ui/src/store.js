@@ -10,6 +10,7 @@ import projectListReducer from './pages/projectList/projectListReducer'
 import newProjectReducer from './components/addProject/addProjectReducer'
 import projectDialogReducer from './components/projectDialog/projectDialogReducer'
 import projectPropertiesReducer from './pages/projectProperties/projectPropertiesReducer'
+import conformationDialogReducer from './components/conformationDialog/conformationDialogReducer'
 
 let middlewares = []
 
@@ -42,6 +43,7 @@ const reducer = combineReducers({
 	newProject: newProjectReducer,
 	projectDialog:projectDialogReducer,
 	project: projectPropertiesReducer,
+	conformationDialog:conformationDialogReducer
 })
 
 export function getStore(preloadedState) {
