@@ -6,9 +6,9 @@ import {
 
 import ProjectList from './projectList';
 
-const renderPage = (route, navigator) => (
-  <route.component key={route.key} navigator={navigator} />
-);
+const renderPage = (route, navigator) => {
+  return <route.component key={route.key} navigator={navigator}/>
+}
 
 const ProjectWrapper = () => (
   <Navigator

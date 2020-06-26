@@ -1,7 +1,7 @@
 import ActionTypes from './ActionTypes';
 
 const initialState = {
-	projectMetadata: JSON.parse(localStorage.getItem("projectMedatada")),
+	projectMetadata: JSON.parse(localStorage.getItem("projectMetadata")),
 	projectContent: JSON.parse(localStorage.getItem("projectContent")),
 	save: JSON.parse(localStorage.getItem('save'))
 }

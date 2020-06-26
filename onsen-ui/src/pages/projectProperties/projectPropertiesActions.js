@@ -56,3 +56,17 @@ export function updateProject(dispatch, newProject) {
 				payload: newProject
 	})
 }
+
+export async function updateFile(dispatch, uri, blob, lastModified) {
+	const res = await adapterService.updateFile(dispatch, uri, blob, lastModified);
+	return res
+}
+
+export function saveChanges(dispatch,result) {
+	debugger
+		dispatch({
+				type: ActionTypes.CHANGES_SAVED,
+				payload: result
+			})
+
+}
