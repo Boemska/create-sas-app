@@ -35,8 +35,10 @@ export class LeftSplitter extends React.PureComponent {
 			new_page = new page();
 		}
 		const page_name = new_page.name
-		if (currentPage.key !== page_name) {
-			this.props.navigator.resetPage({component: page, props: {key: page_name}}, {animation: 'fade'});
+		if(!(page_name==='projectList' && currentPage.key===null)) {
+			if (currentPage.key !== page_name) {
+				this.props.navigator.resetPage({component: page, props: {key: page_name}}, {animation: 'fade'});
+			}
 		}
 	}
 

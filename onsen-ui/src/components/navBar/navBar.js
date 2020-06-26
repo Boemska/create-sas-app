@@ -8,11 +8,38 @@ import {openAndEditProjectDialog} from '../projectDialog/projectDialogActions'
 import {openDeleteConformationDialog} from '../conformationDialog/conformationDialogActions'
 import {connect} from 'react-redux'
 import './navBar.scss'
+import {PROJECT_EXTENTION} from '../addProject/addProjectActions'
+import {updateFile,saveChanges} from '../../pages/projectProperties/projectPropertiesActions'
+
 
 class NavBar extends React.Component {
 
 	handleDelete = (uri, navigator) => {
 		this.props.openDeleteConformationDialog("Process is irreversible, are you sure you want to delete project?", uri, navigator);
+	}
+
+	submit = () => {
+		const forBlob = JSON.stringify(this.props.projectContent);
+		let blob = new Blob([forBlob], {type: "octet/stream"});
+		let fileName = this.props.projectContent.name
+
+		// append extension to the file if there is no one
+		if (!fileName.endsWith(PROJECT_EXTENTION)) {
+			fileName += PROJECT_EXTENTION
+		}
+		const dataObj = {
+			file: [blob, fileName]
+		}
+		const res = this.props.updateFile(this.props.projectMetadata.uri, dataObj, this.props.projectContent.lastModified);
+		res.then(result => {
+			let newResult=result.headers['last-modified'] || result.headers.get('Last-Modified')
+			this.props.saveChanges(newResult)
+		}).catch(e => {
+			if (e.status === 412) {
+				console.log("Someone has already made changes to this file after last save");
+			}
+			console.log("SAVE ERROR: ", e)
+		})
 	}
 
 	render() {
@@ -40,10 +67,20 @@ class NavBar extends React.Component {
 					{
 						hasIcon &&
 						<div
-							div onClick={() => {
-							this.handleDelete(this.props.projectMetadata.uri, navigator);
-						}}>
+							onClick={() => {
+								this.handleDelete(this.props.projectMetadata.uri, navigator);
+							}}>
 							<Icon icon='trash'/>
+						</div>
+					}
+					{
+						(localStorage.getItem("save") === "true") && !hasIcon &&
+						<div
+							className={'save-icon'}
+							onClick={() => {
+								if (this.props.save) this.submit()
+							}}>
+							<Icon icon='save'/>
 						</div>
 					}
 				</div>
@@ -55,7 +92,10 @@ class NavBar extends React.Component {
 function mapDispatchToProps(dispatch) {
 	return {
 		openAndEditProjectDialog: (title) => openAndEditProjectDialog(dispatch, title),
-		openDeleteConformationDialog: (message, uri, navigator) => openDeleteConformationDialog(dispatch, message, uri, navigator)
+		openDeleteConformationDialog: (message, uri, navigator) => openDeleteConformationDialog(dispatch, message, uri, navigator),
+		updateFile:(uri, blob, lastModified)=>updateFile(dispatch, uri, blob, lastModified),
+		saveChanges:(result)=>saveChanges(dispatch,result)
+
 	}
 }
 
@@ -64,6 +104,8 @@ function mapStateToProps(store) {
 		projects: store.projectList.projects,
 		requests: store.adapter.requests,
 		projectMetadata: store.project.projectMetadata,
+		projectContent: store.project.projectContent,
+		save: store.project.save,
 	}
 }
 
