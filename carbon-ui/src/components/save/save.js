@@ -26,7 +26,7 @@ const ErrorModal = (props) => {
 
 const Save = (props) => {
 	const dispatch = useDispatch();
-	const {projectContent, projectMedatada, save} = useSelector(state => state.project);
+	const {projectContent, projectMetadata, save} = useSelector(state => state.project);
 	const [error, setError] = useState({
 		status: false,
 		message: '',
@@ -43,7 +43,7 @@ const Save = (props) => {
 		const dataObj = {
 			file: [blob, fileName]
 		}
-		const res = updateFile(dispatch, projectMedatada.uri, dataObj, projectContent.lastModified);
+		const res = updateFile(dispatch, projectMetadata.uri, dataObj, projectContent.lastModified);
 		res.then(result => {
 			dispatch({
 				type: ActionTypes.CHANGES_SAVED,
