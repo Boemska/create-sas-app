@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router'
 import {ListItem, List, Page, Icon} from 'react-onsenui'
 import {connect} from 'react-redux'
 import {getRequestsList} from '../../common/utils'
@@ -31,7 +32,7 @@ class ProjectList extends React.Component {
 		if (_project) {
 			let uri = _project.uri.split('/').pop()
 
-			history.push({pathname:'#/project/'+uri})
+			this.props.history.push('/project/'+uri)
 		}
 
 		const uri = project.uri;
@@ -112,4 +113,4 @@ function mapStateToProps(store) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectList));

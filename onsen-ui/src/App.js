@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router'
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
 import './App.scss';
@@ -24,7 +25,6 @@ import unknownPerson from './assets/images/unknownPerson.png'
 import {setWelcomeMessage} from './pages/home/homeActions'
 import ProjectProperties from './pages/projectProperties/projectProperties'
 import {fetchProjects} from './pages/projectList/projectListActions'
-import history from './common/history'
 
 class App extends React.Component {
 	constructor(props) {
@@ -81,7 +81,7 @@ class App extends React.Component {
 	getInitialRoute = () => {
 		//uri - /project/projectId/
 		//if projectId exist - loadProject with QR
-		let uri = history.location.pathname.split('/');
+		let uri = this.props.history.location.pathname.split('/');
 		console.log(uri[uri.length-2]);
 		//debugger
 		if (uri[uri.length - 2] === 'project') {
@@ -181,4 +181,4 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

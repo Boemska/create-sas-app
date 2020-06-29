@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "./static/css/main.69fd8171.chunk.css",
-    "main.js": "./static/js/main.cc9c8d83.chunk.js",
-    "main.js.map": "./static/js/main.cc9c8d83.chunk.js.map",
+    "main.css": "./static/css/main.55a76053.chunk.css",
+    "main.js": "./static/js/main.d5e7c157.chunk.js",
+    "main.js.map": "./static/js/main.d5e7c157.chunk.js.map",
     "runtime-main.js": "./static/js/runtime-main.43b3872e.js",
     "runtime-main.js.map": "./static/js/runtime-main.43b3872e.js.map",
     "static/css/2.1caee176.chunk.css": "./static/css/2.1caee176.chunk.css",
-    "static/js/2.1abecc15.chunk.js": "./static/js/2.1abecc15.chunk.js",
-    "static/js/2.1abecc15.chunk.js.map": "./static/js/2.1abecc15.chunk.js.map",
+    "static/js/2.0630a1ed.chunk.js": "./static/js/2.0630a1ed.chunk.js",
+    "static/js/2.0630a1ed.chunk.js.map": "./static/js/2.0630a1ed.chunk.js.map",
     "custom-sw.js": "./custom-sw.js",
     "index.html": "./index.html",
-    "precache-manifest.b01e4d2500143cc48071d6f888185dd4.js": "./precache-manifest.b01e4d2500143cc48071d6f888185dd4.js",
-    "precache-manifest.ddae8577c1ce278fbec1c9442e264b65.js": "./precache-manifest.ddae8577c1ce278fbec1c9442e264b65.js",
+    "precache-manifest.ba35c1a99008cf39281a8bb6fb8e7a50.js": "./precache-manifest.ba35c1a99008cf39281a8bb6fb8e7a50.js",
+    "precache-manifest.d5cad0f67593e49c5a56cd6f40cfe055.js": "./precache-manifest.d5cad0f67593e49c5a56cd6f40cfe055.js",
     "service-worker.js": "./service-worker.js",
     "static/css/2.1caee176.chunk.css.map": "./static/css/2.1caee176.chunk.css.map",
-    "static/css/main.69fd8171.chunk.css.map": "./static/css/main.69fd8171.chunk.css.map",
-    "static/js/2.1abecc15.chunk.js.LICENSE.txt": "./static/js/2.1abecc15.chunk.js.LICENSE.txt",
+    "static/css/main.55a76053.chunk.css.map": "./static/css/main.55a76053.chunk.css.map",
+    "static/js/2.0630a1ed.chunk.js.LICENSE.txt": "./static/js/2.0630a1ed.chunk.js.LICENSE.txt",
     "static/media/onsenui.css": "./static/media/ionicons.cfdc1522.ttf",
     "static/media/App.scss": "./static/media/glyphicons-halflings-regular.fa277232.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.43b3872e.js",
     "static/css/2.1caee176.chunk.css",
-    "static/js/2.1abecc15.chunk.js",
-    "static/css/main.69fd8171.chunk.css",
-    "static/js/main.cc9c8d83.chunk.js"
+    "static/js/2.0630a1ed.chunk.js",
+    "static/css/main.55a76053.chunk.css",
+    "static/js/main.d5e7c157.chunk.js"
   ]
 }

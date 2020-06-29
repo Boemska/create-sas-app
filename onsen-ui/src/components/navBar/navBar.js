@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {withRouter} from 'react-router'
 import {
 	Toolbar,
 	BackButton, Icon
@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import './navBar.scss'
 import {PROJECT_EXTENTION} from '../addProject/addProjectActions'
 import {updateFile,saveChanges} from '../../pages/projectProperties/projectPropertiesActions'
+import ProjectList from '../../pages/projectList/projectList'
 
 
 class NavBar extends React.Component {
@@ -49,7 +50,12 @@ class NavBar extends React.Component {
 			<Toolbar>
 				<div className='left'>
 					{backButton ? <BackButton onClick={() =>{
-						navigator.popPage()
+						this.props.history.goBack();
+						if(navigator.pages.length>1) {
+							navigator.popPage()
+						}else {
+							navigator.resetPage({component: ProjectList, props: {key: 'projectList'}}, {animation: 'fade'});
+						}
 					}}>Back</BackButton> : null}
 				</div>
 				<div className='center'>
@@ -111,4 +117,4 @@ function mapStateToProps(store) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar));
