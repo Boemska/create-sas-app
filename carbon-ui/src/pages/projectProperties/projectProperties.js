@@ -51,12 +51,12 @@ const ProjectProperties = (props) => {
   const [clipNoification, setClipNotification] = useState(false);
 
 
-  const {projectMedatada, projectContent, save} = useSelector(state => state.project);
+  const {projectMetadata, projectContent, save} = useSelector(state => state.project);
   console.log("PROJECT CONTENT", projectContent)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
-		if (uri !== null && uri !== "noProject" && (!projectMedatada || (projectMedatada && projectMedatada.uri.split('/').pop() !== uri))) {
+		if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
 			const project = projects.find(p => (p.uri === '/files/files/' + uri))
 			if (project) {
 				dispatch({
@@ -83,8 +83,11 @@ const ProjectProperties = (props) => {
 				action: () => {
 					// TODO remove project
 					setError('')
-					adapterService.deleteItem(dispatch, projectMedatada.uri)
+					adapterService.deleteItem(dispatch, projectMetadata.uri)
 						.then(() => {
+              dispatch({
+                type: ActionTypes.DELETE_PROJECT
+              })
 							history.push('/projectList')
 						})
 						.catch(e => {
@@ -128,7 +131,7 @@ const ProjectProperties = (props) => {
 
 	return (
 		<div>
-			{projectMedatada && projectContent ? <div>
+			{projectMetadata && projectContent ? <div>
 				<div className={'lyb2 flex align-items-center'}>
 					<OverflowMenu {...overflowProps.menu()} className={'spr5'}>
 						<OverflowMenuItem
@@ -160,16 +163,16 @@ const ProjectProperties = (props) => {
 
 					<div className={'propertie'}>
 						<p>Folder Location</p>
-						<p style={{fontWeight: 'bold'}}>{projectMedatada.parentFolderUri}</p>
+						<p style={{fontWeight: 'bold'}}>{projectMetadata.parentFolderUri}</p>
 					</div>
 					<div className={'propertie'}>
 						<p>Created by</p>
-						<p style={{fontWeight: 'bold'}}>{projectMedatada.createdBy}</p>
+						<p style={{fontWeight: 'bold'}}>{projectMetadata.createdBy}</p>
 
 					</div>
 					<div className={'propertie'}>
 						<p>Project file URI</p>
-						<p style={{fontWeight: 'bold'}}>{projectMedatada.uri}</p>
+						<p style={{fontWeight: 'bold'}}>{projectMetadata.uri}</p>
 
 					</div>
 
