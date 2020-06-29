@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router'
 import {Page} from 'react-onsenui'
 import './projectProperties.scss'
 import NavBar from '../../components/navBar/navBar'
@@ -24,8 +25,8 @@ class ProjectProperties extends React.Component {
 	}
 
 
-	getDataForProject=()=>{
-		let uri= history.location.pathname.split('/');
+	getDataForProject = () => {
+		let uri = this.props.history.location.pathname.split('/')[2];
 		if (uri !== null && uri !== "noProject" && (!this.props.projectMetadata || (this.props.projectMetadata && this.props.projectMetadata.uri.split('/').pop() !== uri))) {
 			const project = this.props.projects.find(p => (p.uri === '/files/files/' + uri))
 			if (project) {
@@ -38,30 +39,38 @@ class ProjectProperties extends React.Component {
 
 	render() {
 		this.getDataForProject();
-		const shareURL=window.location.href;
-		const {projectMetadata, navigator} = this.props;
+		const shareURL = window.location.href;
+		const {projectMetadata, navigator, projectContent} = this.props;
 		return (
-			<Page key={'projectProperties'} renderToolbar={() => <NavBar
+			<Page key={'projectProperties'} renderToolbar={() => projectContent && <NavBar
 				title={this.props.projectContent.name}
 				navigator={navigator}
 				backButton={true}
 				hasIcon={true}/>}
 			>
-				<div>
-					<p className={'project-property-name'}>Folder Location</p>
-					<p className={'project-property'}>{projectMetadata.parentFolderUri}</p>
-				</div>
-				<div>
-					<p className={'project-property-name'}>Created by</p>
-					<p className={'project-property'}>{projectMetadata.createdBy}</p>
-				</div>
-				<div>
-					<p className={'project-property-name'}>Project file URI</p>
-					<p className={'project-property'}>{projectMetadata.uri}</p>
-				</div>
-				<div  className={'propertie'}>
-                <QRcode className={'qr'} value={shareURL} size={220} />
-				</div>
+				{projectMetadata && projectContent ?
+					<div>
+						<div>
+							<p className={'project-property-name'}>Folder Location</p>
+							<p className={'project-property'}>{projectMetadata.parentFolderUri}</p>
+						</div>
+						<div>
+							<p className={'project-property-name'}>Created by</p>
+							<p className={'project-property'}>{projectMetadata.createdBy}</p>
+						</div>
+						<div>
+							<p className={'project-property-name'}>Project file URI</p>
+							<p className={'project-property'}>{projectMetadata.uri}</p>
+						</div>
+						<div className={'propertie'}>
+							<QRcode className={'qr'} value={shareURL} size={220}/>
+						</div>
+					</div>
+					:
+					<div>
+						empty
+					</div>
+				}
 			</Page>
 		);
 	}
@@ -69,8 +78,8 @@ class ProjectProperties extends React.Component {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		fetchProjects:()=>fetchProjects(dispatch),
-		selectProject:(project)=>selectProject(dispatch,project),
+		fetchProjects: () => fetchProjects(dispatch),
+		selectProject: (project) => selectProject(dispatch, project),
 		fetchSingleProject: (uri, dirty) => fetchSingleProject(dispatch, uri, dirty),
 	}
 }
@@ -84,5 +93,4 @@ function mapStateToProps(store) {
 }
 
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectProperties);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectProperties));
