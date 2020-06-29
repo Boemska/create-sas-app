@@ -19,8 +19,8 @@ const logs = ['/applicationLogs', '/errorLogs', '/failedRequests', '/debugLogs']
 export const LeftPanel = (props) => {
 	const history = useHistory();
 	const [showActions, setShowActions] = useState(false);
-	const { projectMedatada} = useSelector(state => state.project)
-	const projectUri = projectMedatada && projectMedatada.uri.split('/').pop()
+	const { projectMetadata} = useSelector(state => state.project)
+	const projectUri = projectMetadata && projectMetadata.uri.split('/').pop()
 
 	const resizeHandle = () => {
 		// At this width carbon hides its navigation bar

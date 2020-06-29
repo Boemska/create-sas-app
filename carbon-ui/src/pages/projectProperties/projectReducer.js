@@ -1,7 +1,7 @@
 import ActionTypes from './ActionTypes';
 
 const initialState = {
-	projectMetadata: JSON.parse(localStorage.getItem("projectMedatada")),
+	projectMetadata: JSON.parse(localStorage.getItem("projectMetadata")),
 	projectContent: JSON.parse(localStorage.getItem("projectContent")),
 	save: JSON.parse(localStorage.getItem('save'))
 }
@@ -11,8 +11,8 @@ export function projectReducer(state = initialState, action) {
 	switch (action.type) {
 
 		case ActionTypes.SELECT_PROJECT: {
-			localStorage.setItem("projectMedatada", JSON.stringify(action.payload));
-			return Object.assign({}, state, {projectMedatada: action.payload})
+			localStorage.setItem("projectMetadata", JSON.stringify(action.payload));
+			return Object.assign({}, state, {projectMetadata: action.payload})
 		}
 
 		case ActionTypes.FETCH_SINGLE_PROJECT: {
@@ -48,7 +48,13 @@ export function projectReducer(state = initialState, action) {
 		case ActionTypes.OVERRIDE: {
 			localStorage.setItem('save', JSON.stringify(false));
 			return Object.assign({}, state, {save: false})
-		}
+    }
+    case ActionTypes.DELETE_PROJECT: {
+      localStorage.removeItem('save')
+      localStorage.removeItem('projectContent');
+      localStorage.removeItem('projectMetadata');
+      return Object.assign({},initialState);
+    }
 
 		default:
 			return state
