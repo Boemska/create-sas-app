@@ -118,7 +118,7 @@ const ProjectProperties = (props) => {
       action();
 		}
   }
-  
+
   const copy = () => {
     navigator.clipboard.writeText(shareURL);
     setClipNotification(true);
@@ -155,7 +155,7 @@ const ProjectProperties = (props) => {
 							onClick={deleteProject}
 						/>
 					</OverflowMenu>
-					<h2>{projectContent.name}</h2>
+					<h2>{projectContent?.name}</h2>
 				</div>
 				{error && <InlineNotification kind={'error'} title={error}/>}
 				<div className={'info lyb4'}>
@@ -190,9 +190,9 @@ const ProjectProperties = (props) => {
                 <Button renderIcon={Share32} className={'propertie'} onClick={() => share(copy)} >Copy URL</Button>
               </div>
               <div  className={'propertie'}>
-                <QRcode onClick={() => share(() => props.openQR(shareURL))} 
-                        className={'qr'} 
-                        value={shareURL} 
+                <QRcode onClick={() => share(() => props.openQR(shareURL))}
+                        className={'qr'}
+                        value={shareURL}
                         size={220} />
               </div>
             </div>: null
@@ -201,7 +201,7 @@ const ProjectProperties = (props) => {
         {
           clipNoification? <InlineNotification kind="info" title="URL copied to clipboard"/> :null
         }
-       
+
 				{/* <NewProject open={openDialog} close={() => setOpenDialog(false)} edit={project.name} /> */}
 
 			</div> : <h1>Project is not loaded</h1>}
