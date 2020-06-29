@@ -29,7 +29,6 @@ class ConformationDialog extends React.Component {
 		if (this.props.conformationDialog.push) {
 			this.props.conformationDialog.push();
 		}
-
 		this.props.closeDialog();
 	}
 

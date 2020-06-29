@@ -48,7 +48,9 @@ class NavBar extends React.Component {
 		return (
 			<Toolbar>
 				<div className='left'>
-					{backButton ? <BackButton onClick={() => navigator.popPage()}>Back</BackButton> : null}
+					{backButton ? <BackButton onClick={() =>{
+						navigator.popPage()
+					}}>Back</BackButton> : null}
 				</div>
 				<div className='center'>
 					{title}

@@ -12,6 +12,7 @@ import ConformationDialog from '../../components/conformationDialog/conformation
 import {openAndEditProjectDialog} from '../../components/projectDialog/projectDialogActions'
 import {selectProject, fetchSingleProject, request} from '../projectProperties/projectPropertiesActions'
 import {openConformationDialog} from '../../components/conformationDialog/conformationDialogActions'
+import history from '../../common/history'
 
 class ProjectList extends React.Component {
 
@@ -26,6 +27,13 @@ class ProjectList extends React.Component {
 	}
 
 	pushPage(navigator, project) {
+		const _project = this.props.projects.find(p => p.id === project.id)
+		if (_project) {
+			let uri = _project.uri.split('/').pop()
+
+			history.push({pathname:'#/project/'+uri})
+		}
+
 		const uri = project.uri;
 		const {projectMetadata} = this.props;
 		if (this.props.dirty) {

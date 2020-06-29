@@ -8,6 +8,7 @@ import {Provider} from 'react-redux'
 import {getStore} from './store'
 import {initializeIcons} from '@uifabric/icons';
 import ToastActionTypes from './components/customToast/ActionTypes'
+import history from './common/history'
 
 initializeIcons()
 
@@ -15,7 +16,7 @@ export const store = getStore();
 
 const RootApp = () =>
 	(<Provider store={store}>
-		<Router>
+		<Router history={history}>
 			<App/>
 		</Router>
 	</Provider>)
