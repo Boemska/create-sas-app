@@ -6,6 +6,10 @@ import {
 } from 'react-onsenui';
 import {closeConformationDialog} from './conformationDialogActions'
 import {fetchProjects} from '../../pages/projectList/projectListActions'
+import ProjectList from '../../pages/projectList/projectList'
+import {platform} from 'onsenui';
+import './conformationDialog.scss'
+
 
 class ConformationDialog extends React.Component {
 
@@ -20,7 +24,12 @@ class ConformationDialog extends React.Component {
 		}
 		if (this.props.conformationDialog.additional) {
 			this.props.fetchProjects();
-			this.props.conformationDialog.additional.popPage();
+			//pop page or reset page
+			if(this.props.conformationDialog.additional.pages.length>1) {
+				this.props.conformationDialog.additional.popPage();
+			}else {
+				this.props.conformationDialog.additional.resetPage({component: ProjectList, props: {key: 'projectList'}}, {animation: 'fade'});
+			}
 		}
 		this.props.closeDialog();
 	}
@@ -37,6 +46,7 @@ class ConformationDialog extends React.Component {
 		const {message, isOpen} = this.props.conformationDialog;
 		return (
 			<AlertDialog isOpen={isOpen} isCancelable={false}>
+				<div className={platform.isAndroid()?'androidAlert':''}>
 				<div className='alert-dialog-title'>{message}</div>
 				<div className='alert-dialog-content'>
 				</div>
@@ -51,6 +61,7 @@ class ConformationDialog extends React.Component {
 						className='alert-dialog-button'>
 						{this.props.conformationDialog.actionName}
 					</Button>
+				</div>
 				</div>
 			</AlertDialog>
 		)
@@ -71,4 +82,4 @@ function mapStateToProps(store) {
 	}
 }
 
-export default (connect(mapStateToProps, mapDispatchToProps)(ConformationDialog))
+export default connect(mapStateToProps, mapDispatchToProps)(ConformationDialog);

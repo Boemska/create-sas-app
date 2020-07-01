@@ -13,7 +13,6 @@ import ConformationDialog from '../../components/conformationDialog/conformation
 import {openAndEditProjectDialog} from '../../components/projectDialog/projectDialogActions'
 import {selectProject, fetchSingleProject, request} from '../projectProperties/projectPropertiesActions'
 import {openConformationDialog} from '../../components/conformationDialog/conformationDialogActions'
-import history from '../../common/history'
 
 class ProjectList extends React.Component {
 
@@ -31,27 +30,17 @@ class ProjectList extends React.Component {
 		const _project = this.props.projects.find(p => p.id === project.id)
 		if (_project) {
 			let uri = _project.uri.split('/').pop()
-
 			this.props.history.push('/project/'+uri)
 		}
 
 		const uri = project.uri;
-		const {projectMetadata} = this.props;
 		if (this.props.dirty) {
 			let action = () => this.props.request(uri);
-
 			let push = () => navigator.pushPage({component: ProjectProperties, props: {project}});
 			this.props.openConformationDialog("You have not saved changes made to this project, opening a new one will override these changes, do you wish to proceed?",
 				action, push);
 		} else {
-			if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
-				//const project = projects.find(p => (p.uri === '/files/files/' + uri))
-				if (project) {
-					this.props.selectProject(project);
-					this.props.fetchSingleProject(project.uri, this.props.dirty);
-				}
-			}
-			navigator.pushPage({component: ProjectProperties, props: {project}})
+			navigator.pushPage({component: ProjectProperties})
 		}
 	}
 
@@ -108,8 +97,7 @@ function mapStateToProps(store) {
 	return {
 		projects: store.projectList.projects,
 		requests: store.adapter.requests,
-		dirty: store.project.save,
-		projectMetadata: store.project.projectMetadata
+		dirty: store.project.save
 	}
 }
 

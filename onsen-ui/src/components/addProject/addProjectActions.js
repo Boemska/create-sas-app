@@ -1,8 +1,6 @@
 import adapterService from '../../adapterService/adapterService'
 import ADAPTER_SETTINGS from '../../adapterService/config'
-//import ActionTypes from './ActionTypes';
 import {fetchProjects} from '../../pages/projectList/projectListActions';
-//import ProjectActionTypes from '../../pages/projectProperties/ActionTypes'
 import ActionTypes from './ActionTypes'
 import {getSelfUriFromLinks} from '../../common/utils'
 export const PROJECT_EXTENTION = ''; //TODO: SET FILE EXTENTION FOR YOUR TYPE OF FILE
