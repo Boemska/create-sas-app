@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router'
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
 import './App.scss';
@@ -22,6 +23,8 @@ import LoadingIndicator from './components/loading-indicator/loading-indicator'
 import {CustomToast} from './components/customToast/customToast'
 import unknownPerson from './assets/images/unknownPerson.png'
 import {setWelcomeMessage} from './pages/home/homeActions'
+import ProjectProperties from './pages/projectProperties/projectProperties'
+import {fetchProjects} from './pages/projectList/projectListActions'
 
 class App extends React.Component {
 	constructor(props) {
@@ -48,6 +51,11 @@ class App extends React.Component {
 		return React.createElement(route.component, route.props)
 	}
 
+	componentDidMount() {
+
+		this.props.fetchProjects()
+	}
+
 	renderToolbar() {
 		return (
 			<Toolbar>
@@ -68,6 +76,24 @@ class App extends React.Component {
 				this.props.setWelcomeMessage(false);
 			}
 			, 2000)
+	}
+
+	getInitialRoute = () => {
+		//uri - /project/projectId/
+		//if projectId exist - loadProject with QR
+		let uri = this.props.history.location.pathname.split('/');
+		console.log(uri[uri.length-2]);
+		//debugger
+		if (uri[uri.length - 2] === 'project') {
+			return {
+				component: ProjectProperties,
+				props: {key: 'projectProperties'}
+			}
+		}
+		return {
+			component: AppTabbar,
+			props: {key: 'appTabbar'}
+		}
 	}
 
 	render() {
@@ -104,10 +130,7 @@ class App extends React.Component {
 					<Page renderToolbar={this.renderToolbar}>
 						<Navigator
 							swipeable
-							initialRoute={{
-								component: AppTabbar,
-								props: {key: 'appTabbar'}
-							}}
+							initialRoute={this.getInitialRoute()}
 							renderPage={this.renderPage}
 							ref={(navigator) => {
 								this.navigator = navigator;
@@ -154,7 +177,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		setWelcomeMessage: isActive => setWelcomeMessage(dispatch, isActive),
+		fetchProjects: () => fetchProjects(dispatch)
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

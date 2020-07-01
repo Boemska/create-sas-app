@@ -3,6 +3,7 @@ import Home from '../../pages/home/home'
 import Settings from '../../pages/settings/settings'
 import {Page, Tabbar, Tab} from 'react-onsenui';
 import {connect} from 'react-redux'
+import ProjectProperties from '../../pages/projectProperties/projectProperties'
 
 class AppTabbar extends React.Component {
 	constructor(props) {
