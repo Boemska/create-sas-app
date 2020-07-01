@@ -1,13 +1,14 @@
 import React from 'react';
 import {withRouter} from 'react-router'
-import {Page} from 'react-onsenui'
+import {Page,Card} from 'react-onsenui'
 import './projectProperties.scss'
 import NavBar from '../../components/navBar/navBar'
 import {connect} from 'react-redux'
 import {fetchProjects} from '../projectList/projectListActions'
 import {fetchSingleProject, selectProject} from '../projectProperties/projectPropertiesActions'
-import history from '../../common/history'
 import QRcode from 'qrcode.react';
+import ConformationDialog from '../../components/conformationDialog/conformationDialog'
+import ProjectDialog from '../../components/projectDialog/projectDialog'
 
 class ProjectProperties extends React.Component {
 
@@ -20,8 +21,8 @@ class ProjectProperties extends React.Component {
 		navigator.popPage();
 	}
 
-	componentDidMount() {
-
+	componentWillUnmount() {
+		this.props.history.goBack();
 	}
 
 
@@ -50,27 +51,36 @@ class ProjectProperties extends React.Component {
 			>
 				{projectMetadata && projectContent ?
 					<div>
-						<div>
-							<p className={'project-property-name'}>Folder Location</p>
-							<p className={'project-property'}>{projectMetadata.parentFolderUri}</p>
-						</div>
-						<div>
-							<p className={'project-property-name'}>Created by</p>
-							<p className={'project-property'}>{projectMetadata.createdBy}</p>
-						</div>
-						<div>
-							<p className={'project-property-name'}>Project file URI</p>
-							<p className={'project-property'}>{projectMetadata.uri}</p>
-						</div>
-						<div className={'propertie'}>
+						<Card>
+						<div className={'property-qr'}>
 							<QRcode className={'qr'} value={shareURL} size={220}/>
 						</div>
+							<div className="title">Scan QR code and share project!</div>
+							<div className="content">
+							<div>
+								<p className={'project-property-name'}>Folder Location</p>
+								<p className={'project-property'}>{projectMetadata.parentFolderUri}</p>
+							</div>
+							<div>
+								<p className={'project-property-name'}>Created by</p>
+								<p className={'project-property'}>{projectMetadata.createdBy}</p>
+							</div>
+							<div>
+								<p className={'project-property-name'}>Project file URI</p>
+								<p className={'project-property'}>{projectMetadata.uri}</p>
+							</div>
+						</div>
+						</Card>
 					</div>
 					:
-					<div>
-						empty
+					<div className={'no-project'}>
+						<h3>
+							There is no project!
+						</h3>
 					</div>
 				}
+				<ConformationDialog/>
+				<ProjectDialog/>
 			</Page>
 		);
 	}

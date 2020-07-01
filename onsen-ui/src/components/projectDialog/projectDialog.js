@@ -8,6 +8,9 @@ import {
 } from 'react-onsenui';
 import {updateProject} from '../../pages/projectProperties/projectPropertiesActions'
 import {closeProjectDialog} from './projectDialogActions'
+import {platform} from 'onsenui';
+import './projectDialog.scss'
+
 
 class ProjectDialog extends React.Component {
 
@@ -44,9 +47,7 @@ class ProjectDialog extends React.Component {
 				name: name,
 				description: description
 			}
-			console.log(newProject);
-			this.props.updateProject(newProject);
-			this.props.closeDialog();
+			this.props.updateProject(newProject).then(()=>this.props.closeDialog());
 		}
 	}
 
@@ -57,41 +58,43 @@ class ProjectDialog extends React.Component {
 		return (
 			<AlertDialog isOpen={this.props.projectDialog.isOpen} isCancelable={true}
 									 onCancel={() => this.props.closeDialog()}>
-				<div className='alert-dialog-title'>{this.props.projectDialog.title}</div>
-				<div className='alert-dialog-content'>
-					<Input
-						className={'name-input'}
-						name="name"
-						value={this.state.name}
-						onChange={this.onChange}
-						modifier='underbar'
-						placeholder='Project name' float
-					/>
-					{error &&
-					<div>
-						<small className={'warning'}>{errorMessage}</small>
+				<div className={platform.isAndroid()?'androidDialog':''}>
+					<div className='alert-dialog-title'>{this.props.projectDialog.title}</div>
+					<div className='alert-dialog-content'>
+						<Input
+							className={'name-input'}
+							name="name"
+							value={this.state.name}
+							onChange={this.onChange}
+							modifier='underbar'
+							placeholder='Project name' float
+						/>
+						{error &&
+						<div>
+							<small className={'warning'}>{errorMessage}</small>
+						</div>
+						}
+						<Input
+							className={'desc-input'}
+							name="description"
+							value={this.state.description}
+							onChange={this.onChange}
+							modifier='underbar'
+							placeholder='Project description' float
+						/>
 					</div>
-					}
-					<Input
-						className={'desc-input'}
-						name="description"
-						value={this.state.description}
-						onChange={this.onChange}
-						modifier='underbar'
-						placeholder='Project description' float
-					/>
-				</div>
-				<div className='alert-dialog-footer'>
-					<Button
-						onClick={() => this.props.closeDialog()}
-						className='alert-dialog-button'>
-						Cancel
-					</Button>
-					<Button
-						onClick={() => this.addNewProject()}
-						className='alert-dialog-button'>
-						{this.props.projectDialog.title}
-					</Button>
+					<div className='alert-dialog-footer'>
+						<Button
+							onClick={() => this.props.closeDialog()}
+							className='alert-dialog-button'>
+							Cancel
+						</Button>
+						<Button
+							onClick={() => this.addNewProject()}
+							className='alert-dialog-button'>
+							{this.props.projectDialog.title}
+						</Button>
+					</div>
 				</div>
 			</AlertDialog>
 		)
@@ -102,7 +105,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		createNewProject: (name, projectObjc, override) => createNewProject(dispatch, name, projectObjc, override),
 		closeDialog: () => closeProjectDialog(dispatch),
-		updateProject:(newProject)=>updateProject(dispatch,newProject)
+		updateProject: (newProject) => updateProject(dispatch, newProject)
 	}
 }
 

@@ -6,9 +6,7 @@ import ProjectDialog from '../projectDialog/projectDialog'
 import {
 	Fab,
 	Icon,
-	Button,
-	Input,
-	AlertDialog
+	Button
 } from 'react-onsenui';
 import {openProjectDialog} from '../projectDialog/projectDialogActions'
 

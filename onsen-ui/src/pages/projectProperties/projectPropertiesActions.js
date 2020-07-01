@@ -1,12 +1,11 @@
 import ActionTypes from './ActionTypes'
 import adapterService from '../../adapterService/adapterService'
-//import AlertActionTypes from '../../components/customAlert/ActionTypes'
-
+import ActionTypesError from '../../components/addProject/ActionTypes'
 const filesPrefix = '/files/files/'
 
 export async function request(dispatch, file) {
 	let uri = file;
-	// Check if uri has /files/files/ alraady
+	// Check if uri has /files/files/ already
 	if (! file.includes(filesPrefix)) {
 		uri = filesPrefix + file;
 	}
@@ -51,10 +50,25 @@ export function selectProject(dispatch, payload) {
 }
 
 export function updateProject(dispatch, newProject) {
+
+	if (newProject.name === ''){
+        dispatch({
+            type: ActionTypesError.SUBMIT_ERROR,
+            payload: {
+                error: true,
+                message: "Please enter a name for the project",
+                override: false
+            }
+        })
+
+        return Promise.reject();
+    }
+
 	dispatch({
 				type: ActionTypes.UPDATE_PROJECT,
 				payload: newProject
 	})
+	return Promise.resolve();
 }
 
 export async function updateFile(dispatch, uri, blob, lastModified) {
@@ -63,10 +77,8 @@ export async function updateFile(dispatch, uri, blob, lastModified) {
 }
 
 export function saveChanges(dispatch,result) {
-	debugger
 		dispatch({
 				type: ActionTypes.CHANGES_SAVED,
 				payload: result
 			})
-
 }
