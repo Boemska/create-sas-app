@@ -38,7 +38,7 @@ class ProjectList extends React.Component {
 			let action = () => this.props.request(uri);
 			let push = () => navigator.pushPage({component: ProjectProperties, props: {project}});
 			this.props.openConformationDialog("You have not saved changes made to this project, opening a new one will override these changes, do you wish to proceed?",
-				action, push);
+				action,push);
 		} else {
 			navigator.pushPage({component: ProjectProperties})
 		}

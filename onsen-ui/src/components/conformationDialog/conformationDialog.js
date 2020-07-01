@@ -36,7 +36,7 @@ class ConformationDialog extends React.Component {
 
 	submitCancel = () => {
 		if (this.props.conformationDialog.push) {
-			this.props.conformationDialog.push();
+			//this.props.conformationDialog.push();
 		}
 		this.props.closeDialog();
 	}
