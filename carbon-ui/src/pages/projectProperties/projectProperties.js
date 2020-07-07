@@ -159,20 +159,26 @@ const ProjectProperties = (props) => {
 				</div>
 				{error && <InlineNotification kind={'error'} title={error}/>}
 				<div className={'info lyb4'}>
-					<h4 className={'propertie'}>Project Properties</h4>
+					<h4 className={'property'}>Project Properties</h4>
 
-					<div className={'propertie'}>
+					<div className={'property'}>
 						<p>Folder Location</p>
 						<p style={{fontWeight: 'bold'}}>{projectMetadata.parentFolderUri}</p>
 					</div>
-					<div className={'propertie'}>
+					<div className={'property'}>
 						<p>Created by</p>
 						<p style={{fontWeight: 'bold'}}>{projectMetadata.createdBy}</p>
 
 					</div>
-					<div className={'propertie'}>
+					<div className={'property'}>
 						<p>Project file URI</p>
 						<p style={{fontWeight: 'bold'}}>{projectMetadata.uri}</p>
+
+					</div>
+
+          <div className={'property'}>
+						<p>Project last modified on:</p>
+						<p style={{fontWeight: 'bold'}}>{projectMetadata.modifiedTimeStamp}</p>
 
 					</div>
 
@@ -182,14 +188,14 @@ const ProjectProperties = (props) => {
           shareURL !== ''?  <div className={'share info flex flex-row lyb4'}>
 
               <div className={'shareInfo'}>
-                <h4 className={'propertie'}>Share project</h4>
-                <div className={'propertie '}>
+                <h4 className={'property'}>Share project</h4>
+                <div className={'property '}>
                     <p>Project URL</p>
                     <p className={'link'}>{shareURL}</p>
                 </div>
-                <Button renderIcon={Share32} className={'propertie'} onClick={() => share(copy)} >Copy URL</Button>
+                <Button renderIcon={Share32} className={'property'} onClick={() => share(copy)} >Copy URL</Button>
               </div>
-              <div  className={'propertie'}>
+              <div  className={'property'}>
                 <QRcode onClick={() => share(() => props.openQR(shareURL))}
                         className={'qr'}
                         value={shareURL}
