@@ -1,14 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-	Button,
 	AlertDialog
 } from 'react-onsenui';
 import {closeConformationDialog} from './conformationDialogActions'
 import {fetchProjects} from '../../pages/projectList/projectListActions'
 import ProjectList from '../../pages/projectList/projectList'
-import {platform} from 'onsenui';
-import './conformationDialog.scss'
 
 
 class ConformationDialog extends React.Component {
@@ -46,22 +43,18 @@ class ConformationDialog extends React.Component {
 		const {message, isOpen} = this.props.conformationDialog;
 		return (
 			<AlertDialog isOpen={isOpen} isCancelable={false}>
-				<div className={platform.isAndroid()?'androidAlert':''}>
-				<div className='alert-dialog-title'>{message}</div>
-				<div className='alert-dialog-content'>
+				<div className='alert-dialog-title'></div>
+				<div className='alert-dialog-content'>{message}
 				</div>
 				<div className='alert-dialog-footer'>
-					<Button
-						onClick={() => this.submitCancel()}
-						className='alert-dialog-button'>
+					<button className='alert-dialog-button'
+						onClick={() => this.submitCancel()}>
 						Cancel
-					</Button>
-					<Button
-						onClick={() => this.submitConformation()}
-						className='alert-dialog-button'>
+					</button>
+					<button className='alert-dialog-button'
+						onClick={() => this.submitConformation()}>
 						{this.props.conformationDialog.actionName}
-					</Button>
-				</div>
+					</button>
 				</div>
 			</AlertDialog>
 		)
