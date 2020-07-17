@@ -38,7 +38,8 @@ export function projectReducer(state = initialState, action) {
 			const newProject = {
 				...state.projectContent,
 				lastModified: action.payload
-			}
+      }
+      localStorage.setItem('projectContent', JSON.stringify(newProject));
 			return Object.assign({}, state, {
 				save: false,
 				projectContent: newProject
@@ -53,7 +54,7 @@ export function projectReducer(state = initialState, action) {
       localStorage.removeItem('save')
       localStorage.removeItem('projectContent');
       localStorage.removeItem('projectMetadata');
-      return Object.assign({},initialState);
+      return Object.assign({}, state, {projectMetadata: null, projectContent: null, save: false});
     }
 
 		default:
