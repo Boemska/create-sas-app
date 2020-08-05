@@ -2,15 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {createNewProject} from '../addProject/addProjectActions'
 import {
-	Button,
 	Input,
 	AlertDialog
 } from 'react-onsenui';
 import {updateProject} from '../../pages/projectProperties/projectPropertiesActions'
 import {closeProjectDialog} from './projectDialogActions'
-import {platform} from 'onsenui';
-import './projectDialog.scss'
-
 
 class ProjectDialog extends React.Component {
 
@@ -58,7 +54,6 @@ class ProjectDialog extends React.Component {
 		return (
 			<AlertDialog isOpen={this.props.projectDialog.isOpen} isCancelable={true}
 									 onCancel={() => this.props.closeDialog()}>
-				<div className={platform.isAndroid()?'androidDialog':''}>
 					<div className='alert-dialog-title'>{this.props.projectDialog.title}</div>
 					<div className='alert-dialog-content'>
 						<Input
@@ -84,18 +79,17 @@ class ProjectDialog extends React.Component {
 						/>
 					</div>
 					<div className='alert-dialog-footer'>
-						<Button
+						<button
 							onClick={() => this.props.closeDialog()}
 							className='alert-dialog-button'>
 							Cancel
-						</Button>
-						<Button
+						</button>
+						<button
 							onClick={() => this.addNewProject()}
 							className='alert-dialog-button'>
 							{this.props.projectDialog.title}
-						</Button>
+						</button>
 					</div>
-				</div>
 			</AlertDialog>
 		)
 	}
