@@ -66,7 +66,7 @@ export const LeftPanel = (props) => {
 							</SideNavLink>
 							<SideNavLink>
                 {/* TODO: This Save is a custom made component which has the color white for the header, it will not be seen properly in the left panel when a project is dirty and ready for save */}
-								<Save />
+								<Save color={'#525252'}/>
 							</SideNavLink>
 						</SideNavItems>
 
@@ -76,7 +76,7 @@ export const LeftPanel = (props) => {
 				<SideNavLink onClick={routing} renderIcon={Home16}>Home</SideNavLink>
 			{constants.VIYA ?<SideNavLink renderIcon={Application16} onClick={() => history.push('/project/'+projectUri)}>Project
 					properties</SideNavLink> : null}
-				
+
 
 
 			</SideNavItems>

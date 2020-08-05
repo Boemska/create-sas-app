@@ -136,7 +136,6 @@ const ProjectProperties = (props) => {
 						<OverflowMenuItem
 							{...overflowProps.menuItem()}
 							itemText="Rename project"
-							primaryFocus
 							onClick={() => props.openDialog(projectContent.name)}
 						/>
 						<OverflowMenuItem
