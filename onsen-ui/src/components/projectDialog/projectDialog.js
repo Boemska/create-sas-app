@@ -34,7 +34,6 @@ class ProjectDialog extends React.Component {
 			}
 			const res = this.props.createNewProject(name, forSubmit, false);
 			res.then((res) => {
-				console.log('response', res)
 				this.props.closeDialog();
 			})
 		} else {
@@ -50,7 +49,6 @@ class ProjectDialog extends React.Component {
 
 	render() {
 		const {errorMessage, error} = this.props.newProject;
-		console.log(this.props);
 		return (
 			<AlertDialog isOpen={this.props.projectDialog.isOpen} isCancelable={true}
 									 onCancel={() => this.props.closeDialog()}>
