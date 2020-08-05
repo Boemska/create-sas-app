@@ -25,7 +25,7 @@ const NewProject = (props) => {
 	const user = useSelector(state => state.home.userData)
 
 	const submit = () => {
-    dispatch({type: ActionTypes.CLEAR})
+		dispatch({type: ActionTypes.CLEAR})
 		if (props.edit === null) {
 			const forSubmit = {
 				name: project.name,
@@ -51,16 +51,14 @@ const NewProject = (props) => {
 				type: ProjectActons.UPDATE_PROJECT,
 				payload: newProject
 			})
-
 			props.close();
 		}
-
 	}
 
 	useEffect(() => {
 		if (props.edit !== null) setProject({...project, name: props.edit});
 		else setProject({...project, name: ''})
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [edit])
 
 	return (
@@ -73,11 +71,12 @@ const NewProject = (props) => {
 					 onRequestSubmit={submit}
 					 modalHeading={`${props.edit !== null ? "Edit project name" : "Add new project" }`}>
 			<div className={'spb3'}>
-				<TextInput id='projectName' labelText="Project name"
-									 value={project.name}
-									 onChange={e => setProject({...project, name: e.target.value})}
-									 invalid={error}
-									 invalidText={errorMessage}/>
+				<TextInput
+					id='projectName' labelText="Project name"
+					value={project.name}
+					onChange={e => setProject({...project, name: e.target.value})}
+					invalid={error}
+					invalidText={errorMessage}/>
 			</div>
 
 			<TextArea
