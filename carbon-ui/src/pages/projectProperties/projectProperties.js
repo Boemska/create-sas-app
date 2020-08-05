@@ -52,7 +52,6 @@ const ProjectProperties = (props) => {
 
 
   const {projectMetadata, projectContent, save} = useSelector(state => state.project);
-  console.log("PROJECT CONTENT", projectContent)
 	const [error, setError] = useState('')
 
 	useEffect(() => {
@@ -137,7 +136,6 @@ const ProjectProperties = (props) => {
 						<OverflowMenuItem
 							{...overflowProps.menuItem()}
 							itemText="Rename project"
-							primaryFocus
 							onClick={() => props.openDialog(projectContent.name)}
 						/>
 						<OverflowMenuItem
