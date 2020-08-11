@@ -14,7 +14,7 @@
     "boxen": "^4.2.0",
     "chalk": "^4.1.0",
     "git-repo-info": "^2.1.1",
-    "h54s": "git+ssh://git@builds.boemskats.com/chris/h54s.git#release-candidate",
+    "h54s": "^2.1.0",
     "http-proxy-middleware": "^1.0.5",
     "inquirer": "^7.3.3",
     "moment": "^2.24.0",
