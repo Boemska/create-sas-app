@@ -1,0 +1,33 @@
+@import './assets/style/colors.scss';
+@import './assets/style/fontawesome.css';
+@import './assets/style/style.scss';
+
+.App {
+  font-family: Avenir,"Helvetica Neue",Arial,sans-serif;
+  height: 100%;
+  .main {
+    display: flex;
+    max-height: calc(100vh - 30px);
+    max-width: 100%;
+    padding-top: 60px;
+    position: relative;
+    .mainContainer {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 2rem 2rem 3rem 2rem;
+      position: relative;
+    }
+  }
+  .modal-open.modal {
+    height: calc(100vh - 200px);
+  }
+}
+
+
+/* Set toastr z-index higher than header */
+#toast-container {
+  position: fixed;
+  z-index: 9999999999999;
+  /*overrides*/
+}

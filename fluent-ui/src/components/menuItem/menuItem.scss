@@ -1,0 +1,82 @@
+@import '../../assets/style/colors.scss';
+.menuContainer {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  flex-wrap: wrap;
+  transition: all .2s;
+  min-width: 200px;
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px 8px 0px;
+    width: 100%;
+    overflow: hidden;
+    justify-content: space-between;
+    transition: all .2s;
+    &:active {
+      background: #ccc;
+      cursor: pointer;
+    }
+    &:focus {
+      background: #ccc;
+      cursor: pointer;
+    }
+    &:visited {
+      background: #ccc;
+      cursor: pointer;
+    }
+    &:hover {
+      background: #ccc;
+      cursor: pointer;
+    }
+    &.active {
+      background: rgba(0,0,0,0.1);
+    }
+
+    .menuItemTitle {
+      display: flex;
+      align-items: center;
+
+      i {
+        color: $primary;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-size: 25px;
+        cursor: pointer;
+      }
+
+      span {
+        color: $primary;
+        display: none;
+        &.open {
+          display: flex;
+          transition: all ease-in-out 0.2s;
+        }
+      }
+    }
+
+    .expandBar {
+      i {
+        color: $primary;
+        &.arrowDown {
+          transform: rotate(90deg);
+        }
+        transition: all ease-in-out 0.2s;
+      }
+
+    }
+  }
+  .expandBox {
+    width: 100%;
+    display: none;
+
+    &.open {
+      display: flex;
+      padding-left: 33px;
+    }
+  }
+
+  transition: .2s;
+}

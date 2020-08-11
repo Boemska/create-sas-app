@@ -1,0 +1,71 @@
+{
+  "name": "boemskaseedcra",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/helper-call-delegate": "^7.8.7",
+    "@babel/plugin-proposal-numeric-separator": "^7.8.3",
+    "@fluentui/react": "^7.105.7",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@uifabric/icons": "^7.3.23",
+    "body": "^5.1.0",
+    "boxen": "^4.2.0",
+    "chalk": "^4.1.0",
+    "git-repo-info": "^2.1.1",
+    "h54s": "git+ssh://git@builds.boemskats.com/chris/h54s.git#release-candidate",
+    "http-proxy-middleware": "^1.0.5",
+    "inquirer": "^7.3.3",
+    "moment": "^2.24.0",
+    "node-sass": "^4.13.0",
+    "ora": "^4.1.0",
+    "react": "^16.12.0",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-app-rewire-workbox": "^2.0.1",
+    "react-app-rewired": "^2.1.5",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "react-toggle": "^4.1.1",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "toastr": "^2.1.4",
+    "workbox-webpack-plugin": "^4.3.1",
+    "xhr2": "^0.2.0"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "configure": "node src/configureMe.js",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "build": "src/"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/compat-data": "~7.8.0",
+    "npm-watch": "^0.6.0"
+  },
+  "homepage": "."
+}

@@ -1,0 +1,137 @@
+@import '../../assets/style/colors';
+
+.info-bar-drop {
+  width: 200px;
+  &:focus, &:active {
+    outline: unset;
+  }
+  .persona {
+    .ms-Persona-primaryText {
+      color: #fff;
+    }
+  }
+  .info-header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 60px;
+    min-width: 200px;
+    &:focus, &:active {
+      outline: unset;
+    }
+    span, i {
+      color: #fafafa;
+    }
+
+    i {
+      &.arrowDown {
+        transform: rotate(-90deg);
+      }
+      transition: all ease-in-out 0.2s;
+    }
+
+    img {
+      max-width: 38px;
+      max-height: 38px;
+      border-radius: 20px;
+    }
+  }
+}
+
+.status-drop-down {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+  width: 220px;
+  transition: ease-in-out .2s;
+  background: #fbfbfb;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
+  padding: 5px;
+  .divider {
+    border-bottom: 1px solid #e4e4e4;
+  }
+  .toggleItem {
+    label {
+      font-weight: normal;
+    }
+  }
+  .item {
+    cursor: pointer;
+    padding: 5px 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &.logout {
+
+      i {
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 2.2rem;
+      }
+    }
+  }
+  .toggleItem, .item {
+    &:hover {
+      background-color: $grayLight;
+      i {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+    &:focus, &:active {
+      i {
+        color: rgba(0, 0, 0, 0.9);
+      }
+    }
+  }
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.react-toggle-track {
+  width: 36px;
+  height: 18px;
+}
+
+.react-toggle-thumb {
+  top: 2px;
+  left: 1px;
+  width: 15px;
+  height: 14px;
+}
+
+.react-toggle-track-x {
+  right: 6px;
+}
+
+.react-toggle-track-check {
+  left: 4px;
+}
+
+.react-toggle--checked .react-toggle-thumb {
+  left: 20px;
+  border-color: #19AB27;
+}
+
+.notifications {
+  background: #000;
+}
+
+.notifications-enter {
+  opacity: 0.5;
+  transition-duration: 200ms;;
+}
+
+.notifications-enter.notifications-enter-active {
+  opacity: 1;
+}
+
+.notifications-leave.notifications-leave-active {
+  opacity: 0.5;
+  transition-duration: 200ms;
+}

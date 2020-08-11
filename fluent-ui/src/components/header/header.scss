@@ -1,0 +1,32 @@
+@import '../../assets/style/colors.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: $primary;
+  z-index: 10000000000;
+  headerContainer {
+    width: 100%;
+  }
+  img {
+    width: 40px;
+    cursor: pointer;
+  }
+  .navbar-nav {
+    align-items: flex-end;
+  }
+}
+
+.info-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 200px;
+}
+
+.info-bar-drop {
+  position: relative;
+}
