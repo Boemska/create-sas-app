@@ -7,7 +7,7 @@ import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
-import {getTheme, Pivot, PivotItem, Customizations} from '@fluentui/react'
+import {Customizations} from '@fluentui/react'
 
 
 class Header extends React.PureComponent {
