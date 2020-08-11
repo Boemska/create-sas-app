@@ -3,13 +3,6 @@ import {adapterConsts as constants} from '../../services/constants'
 import adapterService from '../../adapterService/adapterService'
 import config from '../../adapterService/config'
 
-export function setTestState(dispatch, payload) {
-	dispatch({
-		type: ActionTypes.TEST,
-		payload
-	})
-}
-
 export function setMainSpinner(dispatch, payload) {
 	dispatch({
 		type: ActionTypes.MAIN_SPINNER,
@@ -75,4 +68,11 @@ export async function call(dispatch, program) {
 	console.log('OldCall', callData)
 	return callData
 
+}
+
+export function setRightPanel(dispatch, state) {
+	dispatch({
+		type: ActionTypes.SET_RIGHT_PANEL,
+		state
+	})
 }

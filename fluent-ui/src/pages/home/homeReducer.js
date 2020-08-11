@@ -1,9 +1,8 @@
 import ActionTypes from './ActionTypes'
 
 const initalState = {
-	test: false,
-	mainSpinner: false,
 	userData: null,
+	rightPanel: true
 }
 
 export default function homeReducer(state = initalState, action) {
@@ -16,6 +15,8 @@ export default function homeReducer(state = initalState, action) {
 			return Object.assign({}, state, {
 				userData: action.payload
 			})
+		case ActionTypes.SET_RIGHT_PANEL:
+				return Object.assign({}, state, {rightPanel: action.state})
 		default:
 			return state
 	}

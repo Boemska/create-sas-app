@@ -3,7 +3,7 @@
 @import './assets/style/style.scss';
 
 .App {
-  font-family: Avenir,"Helvetica Neue",Arial,sans-serif;
+  font-family: Avenir, "Helvetica Neue", Arial, sans-serif;
   height: 100%;
   .main {
     display: flex;
@@ -22,12 +22,23 @@
   .modal-open.modal {
     height: calc(100vh - 200px);
   }
+
 }
 
+.rightPanel {
+  z-index: auto;
+}
 
 /* Set toastr z-index higher than header */
 #toast-container {
   position: fixed;
   z-index: 9999999999999;
   /*overrides*/
+}
+
+.toggleRightPanel {
+  position: absolute;
+  top: 80px;
+  left: 0px;
+  z-index: 9999999999999999999999;
 }

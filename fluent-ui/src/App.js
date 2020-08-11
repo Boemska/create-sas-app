@@ -14,13 +14,15 @@ import ApplicationLogs from './pages/applicationLogs/applicationLogs'
 import FailedRequests from './pages/failedRequests/failedRequests'
 import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
+import {Panel} from '@fluentui/react'
+import {useDispatch, useSelector} from 'react-redux';
 
 import {
 	createTheme,
 	Customizations,
 	Fabric,
 } from '@fluentui/react';
-
+import {setRightPanel} from './pages/home/homeActions'
 
 
 const myTheme = createTheme({
@@ -52,10 +54,23 @@ const myTheme = createTheme({
 Customizations.applySettings({theme: myTheme});
 
 function App() {
+	const rightPanel = useSelector(state => state.home.rightPanel)
+	const dispatch = useDispatch()
 	return (
 		<Fabric applyThemeToBody>
 			<div className="App">
 				<Header/>
+				<Panel
+					className={'rightPanel'}
+					headerText="Header if we want"
+					isOpen={rightPanel}
+					// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
+					closeButtonAriaLabel="Close"
+					isHiddenOnDismiss={true}
+					onDismiss={() => setRightPanel(dispatch, false)}
+				>
+					<p>Content goes here.</p>
+				</Panel>
 				<div className={'main'}>
 					<div className={'mainContainer'}>
 						<Switch>

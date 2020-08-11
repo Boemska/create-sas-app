@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
 import Badge from "../badge/badge";
 import toastr from 'toastr'
-import {getUserData, setUserData} from '../../pages/home/homeActions'
+import {getUserData, setRightPanel, setUserData} from '../../pages/home/homeActions'
 import {Persona, Toggle} from '@fluentui/react'
 
 export class UserInfoDropDown extends React.PureComponent {
@@ -72,7 +72,7 @@ export class UserInfoDropDown extends React.PureComponent {
 			<div tabIndex='0' className={'info-bar-drop'}>
 				<div
 					className={'info-header'}
-					onClick={() => this.setState({statusBar: !this.state.statusBar})}
+					onClick={() => this.props.setRightPanel(!this.props.rightPanel)}
 					// onMouseEnter={() => this.statusBarShow(true)}
 					// onMouseLeave={() => this.statusBarShow(false)}
 				>
@@ -141,7 +141,8 @@ export class UserInfoDropDown extends React.PureComponent {
 function mapStateToProps(state) {
 	return {
 		userData: state.home.userData,
-		logs: state.adapter.logs
+		logs: state.adapter.logs,
+		rightPanel: state.home.rightPanel
 	}
 
 }
@@ -149,7 +150,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		getUserData: () => getUserData(dispatch),
-		setUserData: data => setUserData(dispatch, data)
+		setUserData: data => setUserData(dispatch, data),
+		setRightPanel: state => setRightPanel(dispatch, state)
 	}
 }
 
