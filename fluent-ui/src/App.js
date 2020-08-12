@@ -16,6 +16,7 @@ import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
 import {Panel} from '@fluentui/react'
 import {useDispatch, useSelector} from 'react-redux';
+import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 
 import {
 	createTheme,
@@ -68,6 +69,8 @@ function App() {
 					closeButtonAriaLabel="Close"
 					isHiddenOnDismiss={true}
 					onDismiss={() => setRightPanel(dispatch, false)}
+					onRenderFooterContent={()=>{return <RightPanelFooter/>}}
+					isFooterAtBottom={true}
 				>
 					<p>Content goes here.</p>
 				</Panel>
