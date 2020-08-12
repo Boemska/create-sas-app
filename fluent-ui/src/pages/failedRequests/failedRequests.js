@@ -8,7 +8,6 @@ class FailedRequests extends React.Component {
 		const failedRequests = this.props.logs.failedRequests
 		return(
 			<div>
-				<GoBack/>
 				<h2 className={'text-center'}> Failed Requests</h2>
 				{ failedRequests && failedRequests.length >0
 					? failedRequests.map((log, index) =>

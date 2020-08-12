@@ -7,8 +7,9 @@ import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
-import {Customizations} from '@fluentui/react'
-
+import {Customizations, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
+import unknownPerson from '../../assets/images/unknownPerson.png' 
+import {setRightPanel} from '../../pages/home/homeActions'
 
 class Header extends React.PureComponent {
 
@@ -39,15 +40,29 @@ class Header extends React.PureComponent {
 	}
 
 	render() {
+		const avatar = this.props.userData ? this.props.userData.userAvatar || (this.props.userData.userInfo && this.props.userData.userInfo[0].AVATAR_URI) : unknownPerson
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
 				<img src={LogoImg} alt={'logo'} onClick={() => {
 					this.props.history.push('/')
 				}}/>
 				<div className={'info-block'}>
-					<LoadingIndicator/>
 					{/* eslint-disable-next-line react/jsx-no-undef */}
-					<UserInfoDropDown/>
+					{/* <UserInfoDropDown/> */}
+					<Stack 
+						gap={20}
+						horizontal
+					 	onClick={()=>this.props.setRightPanel(!this.props.rightPanel)}
+					 	className={'info-block'}
+					>
+						<LoadingIndicator/>
+						<Persona
+							size={PersonaSize.size32}
+							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
+							imageAlt="User photo"
+							imageUrl={avatar}
+						/>
+					</Stack>
 				</div>
 			</div>)
 	}
@@ -55,14 +70,15 @@ class Header extends React.PureComponent {
 
 function mapStateToProps(state) {
 	return {
-		requests: state.adapter.requests
+		requests: state.adapter.requests,
+		userData: state.home.userData
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		removeRequest: (promise) => removeRequest(dispatch, promise),
-
+		setRightPanel: (rightPanel) => setRightPanel(dispatch,rightPanel)
 	}
 }
 
