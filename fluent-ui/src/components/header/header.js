@@ -7,8 +7,15 @@ import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
-import {Customizations} from '@fluentui/react'
+import {Customizations, FontIcon, mergeStyles} from '@fluentui/react'
+import {setLeftPanel} from '../../pages/home/homeActions'
 
+const iconClass = mergeStyles({
+	fontSize: 50,
+	height: 50,
+	width: 50,
+	color: '#fff'
+})
 
 class Header extends React.PureComponent {
 
@@ -16,7 +23,9 @@ class Header extends React.PureComponent {
 		super(props)
 		this.requestsWatcherInterval = null
 		this.customization = Customizations.getSettings(['theme'])
+		console.log(this.customization)
 	}
+
 
 	requestsWatcher = () => {
 		this.requestsWatcherInterval = setInterval(() => {
@@ -39,11 +48,13 @@ class Header extends React.PureComponent {
 	}
 
 	render() {
+		console.log('color', this.customization.theme.palette.themePrimary)
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
-				<img src={LogoImg} alt={'logo'} onClick={() => {
-					this.props.history.push('/')
-				}}/>
+				<FontIcon
+					iconName="Waffle"
+					className={`${iconClass} leftPanelToggle`}
+					onClick={() => this.props.toggleLeftPanel(!this.props.leftPanel)}/>
 				<div className={'info-block'}>
 					<LoadingIndicator/>
 					{/* eslint-disable-next-line react/jsx-no-undef */}
@@ -55,14 +66,15 @@ class Header extends React.PureComponent {
 
 function mapStateToProps(state) {
 	return {
-		requests: state.adapter.requests
+		requests: state.adapter.requests,
+		leftPanel: state.home.leftPanel
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		removeRequest: (promise) => removeRequest(dispatch, promise),
-
+		toggleLeftPanel: state => setLeftPanel(dispatch, state)
 	}
 }
 

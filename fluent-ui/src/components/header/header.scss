@@ -6,8 +6,18 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  background: $primary;
+  background-color: $primary;
   z-index: 1;
+  align-items: center;
+  .leftPanelToggle {
+    font-size: 50px;
+	height: 50px;
+	width: 50px;
+    margin-left: 5px;
+    color: $gray;
+    cursor: pointer;
+    &:hover {color: #fff;}
+  }
   headerContainer {
     width: 100%;
   }
