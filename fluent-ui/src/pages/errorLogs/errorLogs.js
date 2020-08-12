@@ -8,7 +8,6 @@ class ErrorLogs extends React.Component{
 		const sasErrors = this.props.logs.sasErrors
 		return(
 			<div>
-				<GoBack/>
 				<h2 className={'text-center'}> Error Logs</h2>
 				{ sasErrors && sasErrors.length >0
 					? sasErrors.map((log, index) =>
