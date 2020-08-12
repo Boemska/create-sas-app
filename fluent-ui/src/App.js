@@ -14,7 +14,7 @@ import ApplicationLogs from './pages/applicationLogs/applicationLogs'
 import FailedRequests from './pages/failedRequests/failedRequests'
 import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
-import {Panel} from '@fluentui/react'
+import {Panel, Nav} from '@fluentui/react'
 import {useDispatch, useSelector} from 'react-redux';
 
 import {
@@ -27,7 +27,7 @@ import {setRightPanel} from './pages/home/homeActions'
 
 const myTheme = createTheme({
 	palette: {
-		themePrimary: '#aa78d4',
+		themePrimary: '#04304B',
 		themeLighterAlt: '#eff6fc',
 		themeLighter: '#deecf9',
 		themeLight: '#c7e0f4',
@@ -54,12 +54,64 @@ const myTheme = createTheme({
 Customizations.applySettings({theme: myTheme});
 
 function App() {
+	const leftPanel = useSelector(state => state.home.leftPanel)
+	const navStyles = {
+		root: {
+			top: 60,
+			width: 210,
+			height: 'calc(100% - 90px)',
+			boxSizing: 'border-box',
+			border: '1px solid #eee',
+			overflowY: 'auto',
+			position: 'absolute',
+			left: 0,
+			background: '#fff',
+			zIndex: 1
+		},
+	}
+	const navLinkGroups = [
+		{
+			links: [
+				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
+				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
+				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
+				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
+				{
+					name: 'GroupTitle',
+					links: [
+						{
+							key: 'ActivityItem',
+							name: 'ActivityItem',
+						},
+						{
+							key: 'Breadcrumb',
+							name: 'Breadcrumb',
+						},
+						{
+							key: 'Button',
+							name: 'Button',
+						},
+					]
+				},
+			],
+		},
+	];
 	const rightPanel = useSelector(state => state.home.rightPanel)
 	const dispatch = useDispatch()
 	return (
 		<Fabric applyThemeToBody>
 			<div className="App">
 				<Header/>
+				<Nav
+					className={`nav ${leftPanel ? 'open' : ''}`}
+					onLinkClick={() => console.log('click')}
+					selectedKey="key1"
+					ariaLabel="Nav basic example"
+					styles={navStyles}
+					groups={navLinkGroups}
+				>
+					<NavItem-Icon/>
+				</Nav>
 				<Panel
 					className={'rightPanel'}
 					headerText="Header if we want"

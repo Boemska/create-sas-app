@@ -2,7 +2,8 @@ import ActionTypes from './ActionTypes'
 
 const initalState = {
 	userData: null,
-	rightPanel: true
+	leftPanel: false,
+	rightPanel: false,
 }
 
 export default function homeReducer(state = initalState, action) {
@@ -15,6 +16,8 @@ export default function homeReducer(state = initalState, action) {
 			return Object.assign({}, state, {
 				userData: action.payload
 			})
+		case ActionTypes.SET_LEFT_PANEL:
+				return Object.assign({}, state, {leftPanel: action.state})
 		case ActionTypes.SET_RIGHT_PANEL:
 				return Object.assign({}, state, {rightPanel: action.state})
 		default:
