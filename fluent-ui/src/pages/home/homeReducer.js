@@ -4,6 +4,7 @@ const initalState = {
 	userData: null,
 	leftPanel: false,
 	rightPanel: false,
+	width: 0
 }
 
 export default function homeReducer(state = initalState, action) {
@@ -20,6 +21,8 @@ export default function homeReducer(state = initalState, action) {
 				return Object.assign({}, state, {leftPanel: action.state})
 		case ActionTypes.SET_RIGHT_PANEL:
 				return Object.assign({}, state, {rightPanel: action.state})
+		case ActionTypes.SET_WINDOW_WIDTH:
+				return Object.assign({}, state, {width: action.width})
 		default:
 			return state
 	}

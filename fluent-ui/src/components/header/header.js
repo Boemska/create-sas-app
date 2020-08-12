@@ -1,5 +1,4 @@
 import React from 'react'
-import LogoImg from '../../assets/images/blogo.svg'
 import './header.scss'
 import LoadingIndicator from '../loading-indicator/loading-indicator'
 import UserInfoDropDown from '../userInfoDropDown/userInfoDropDown'
@@ -18,12 +17,10 @@ const iconClass = mergeStyles({
 })
 
 class Header extends React.PureComponent {
-
 	constructor(props) {
 		super(props)
 		this.requestsWatcherInterval = null
 		this.customization = Customizations.getSettings(['theme'])
-		console.log(this.customization)
 	}
 
 
@@ -48,13 +45,13 @@ class Header extends React.PureComponent {
 	}
 
 	render() {
-		console.log('color', this.customization.theme.palette.themePrimary)
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
-				<FontIcon
+				{this.props.width < 600 ? <FontIcon
 					iconName="Waffle"
 					className={`${iconClass} leftPanelToggle`}
-					onClick={() => this.props.toggleLeftPanel(!this.props.leftPanel)}/>
+					onClick={() => this.props.toggleLeftPanel(!this.props.leftPanel)}/> : <div></div>
+				}
 				<div className={'info-block'}>
 					<LoadingIndicator/>
 					{/* eslint-disable-next-line react/jsx-no-undef */}
@@ -67,7 +64,8 @@ class Header extends React.PureComponent {
 function mapStateToProps(state) {
 	return {
 		requests: state.adapter.requests,
-		leftPanel: state.home.leftPanel
+		leftPanel: state.home.leftPanel,
+		width: state.home.width
 	}
 }
 
