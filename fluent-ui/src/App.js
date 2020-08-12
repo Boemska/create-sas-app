@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'react-toggle/style.css'
 import 'toastr/toastr.scss'
 import './App.scss';
@@ -16,6 +16,7 @@ import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
 import {Panel, Nav} from '@fluentui/react'
 import {useDispatch, useSelector} from 'react-redux';
+import ActionTypes from './pages/home/ActionTypes'
 
 import {
 	createTheme,
@@ -54,21 +55,25 @@ const myTheme = createTheme({
 Customizations.applySettings({theme: myTheme});
 
 function App() {
+	const dispatch = useDispatch()
+
+	// Set initial window width
+	setWindowWidth(dispatch, window.innerWidth)
+
+
+	useEffect(() => {
+		const onResize = () => {
+			setWindowWidth(dispatch, window.innerWidth)
+		}
+		window.addEventListener('resize', onResize)
+		return () => {
+			window.removeEventListener('resize', onResize)
+		}
+	}, [dispatch])
+
+	const width = useSelector(state => state.home.width)
+
 	const leftPanel = useSelector(state => state.home.leftPanel)
-	const navStyles = {
-		root: {
-			top: 60,
-			width: 210,
-			height: 'calc(100% - 90px)',
-			boxSizing: 'border-box',
-			border: '1px solid #eee',
-			overflowY: 'auto',
-			position: 'absolute',
-			left: 0,
-			background: '#fff',
-			zIndex: 1
-		},
-	}
 	const navLinkGroups = [
 		{
 			links: [
@@ -97,43 +102,43 @@ function App() {
 		},
 	];
 	const rightPanel = useSelector(state => state.home.rightPanel)
-	const dispatch = useDispatch()
 	return (
 		<Fabric applyThemeToBody>
 			<div className="App">
 				<Header/>
-				<Nav
-					className={`nav ${leftPanel ? 'open' : ''}`}
-					onLinkClick={() => console.log('click')}
-					selectedKey="key1"
-					ariaLabel="Nav basic example"
-					styles={navStyles}
-					groups={navLinkGroups}
-				>
-					<NavItem-Icon/>
-				</Nav>
-				<Panel
-					className={'rightPanel'}
-					headerText="Header if we want"
-					isOpen={rightPanel}
-					// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-					closeButtonAriaLabel="Close"
-					isHiddenOnDismiss={true}
-					onDismiss={() => setRightPanel(dispatch, false)}
-				>
-					<p>Content goes here.</p>
-				</Panel>
-				<div className={'main'}>
-					<div className={'mainContainer'}>
-						<Switch>
-							<Route exact path='/' component={Home}/>
-							<Route exact path='/error' component={Page500}/>
-							<Route exact path='/applicationLogs' component={ApplicationLogs}/>
-							<Route exact path='/errorLogs' component={ErrorLogs}/>
-							<Route exact path='/failedRequests' component={FailedRequests}/>
-							<Route exact path='/debugLogs' component={DebugLogs}/>
-							<Route component={Page404}/>
-						</Switch>
+				<div className={'flex'}>
+					<Nav
+						className={`nav ${leftPanel || width > 600 ? 'open' : ''}`}
+						onLinkClick={() => console.log('click')}
+						selectedKey="key1"
+						ariaLabel="Nav basic example"
+						groups={navLinkGroups}
+					>
+						<NavItem-Icon/>
+					</Nav>
+					<Panel
+						className={'rightPanel'}
+						headerText="Header if we want"
+						isOpen={rightPanel}
+						// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
+						closeButtonAriaLabel="Close"
+						isHiddenOnDismiss={true}
+						onDismiss={() => setRightPanel(dispatch, false)}
+					>
+						<p>Content goes here.</p>
+					</Panel>
+					<div className={'main'}>
+						<div className={'mainContainer'}>
+							<Switch>
+								<Route exact path='/' component={Home}/>
+								<Route exact path='/error' component={Page500}/>
+								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
+								<Route exact path='/errorLogs' component={ErrorLogs}/>
+								<Route exact path='/failedRequests' component={FailedRequests}/>
+								<Route exact path='/debugLogs' component={DebugLogs}/>
+								<Route component={Page404}/>
+							</Switch>
+						</div>
 					</div>
 				</div>
 				<Footer/>
@@ -147,3 +152,11 @@ function App() {
 }
 
 export default App;
+
+
+function setWindowWidth(dispatch, width) {
+	dispatch({
+		type: ActionTypes.SET_WINDOW_WIDTH,
+		width
+	})
+}

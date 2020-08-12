@@ -24,14 +24,17 @@
   }
 
   .nav {
-    transform: translateX(-210px);
-    transition: transform 0.1s ease-out;
+    transition: width 0.1s ease-out;
+    width: 0;
+    height: calc(100vh - 30px);
+    box-sizing: border-box;
+    border: 1px solid #eee;
+    overflow-y: auto;
+    left: 0;
+    background: #fff;
+    padding-top: 60px;
     &.open {
-      -webkit-transform: translateX(0);
-      -moz-transform: translateX(0);
-      -ms-transform: translateX(0);
-      -o-transform: translateX(0);
-      transform: translateX(0);
+     width: 210px;
     }
   }
 }
