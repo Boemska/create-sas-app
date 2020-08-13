@@ -11,12 +11,14 @@
   align-items: center;
   .leftPanelToggle {
     font-size: 50px;
-	height: 50px;
-	width: 50px;
+    height: 50px;
+    width: 50px;
     margin-left: 5px;
     color: $gray;
     cursor: pointer;
-    &:hover {color: #fff;}
+    &:hover {
+      color: #fff;
+    }
   }
   headerContainer {
     width: 100%;
@@ -27,6 +29,15 @@
   }
   .navbar-nav {
     align-items: flex-end;
+  }
+  .offlineIconButton, .updateIconButton {
+    width: 48px;
+    height: 48px;
+    color: white;
+    &:hover {color: unset}
+    i {
+      font-size: 20px;
+    }
   }
 }
 
