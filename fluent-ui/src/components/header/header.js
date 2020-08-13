@@ -66,7 +66,6 @@ class Header extends React.PureComponent {
 					<Stack
 						gap={10}
 						horizontal
-
 						className={'info-block'}
 					>
 						{/* <LoadingIndicator/> */}
