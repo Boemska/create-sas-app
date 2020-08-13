@@ -10,7 +10,6 @@ class ApplicationLogs extends React.Component {
 		const applicationLogs = this.props.logs.applicationLogs
 		return (
 			<div>
-				<GoBack/>
 				<h2 className={'text-center'}> Application Logs</h2>
 				{applicationLogs && applicationLogs.length > 0
 					? applicationLogs.map((log, index) =>
