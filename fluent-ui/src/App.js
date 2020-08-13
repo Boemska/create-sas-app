@@ -26,6 +26,7 @@ import {
 	Fabric,
 } from '@fluentui/react';
 import {setRightPanel} from './pages/home/homeActions'
+import appSettings from './appSettings'
 
 
 const myTheme = createTheme({
@@ -110,14 +111,12 @@ function App() {
 				<Header/>
 				<div className={'flex'}>
 					<Nav
-						className={`nav ${leftPanel || width > 600 ? 'open' : ''}`}
+						className={`nav ${leftPanel || width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
 						onLinkClick={() => console.log('click')}
 						selectedKey="key1"
 						ariaLabel="Nav basic example"
 						groups={navLinkGroups}
-					>
-						<NavItem-Icon/>
-					</Nav>
+					/>
 					<Panel
 						className={'rightPanel'}
 						isOpen={rightPanel}
