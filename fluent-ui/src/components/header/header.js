@@ -1,28 +1,26 @@
 import React from 'react'
 import './header.scss'
-import LoadingIndicator from '../loading-indicator/loading-indicator'
-import UserInfoDropDown from '../userInfoDropDown/userInfoDropDown'
 import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
 import {Customizations, FontIcon, mergeStyles} from '@fluentui/react'
 import {setLeftPanel} from '../../pages/home/homeActions'
-
+import {Customizations, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
+import {setRightPanel} from '../../pages/home/homeActions'
+import {HeaderButton} from '../headerButton/headerButton'
 const iconClass = mergeStyles({
 	fontSize: 50,
 	height: 50,
 	width: 50,
 	color: '#fff'
 })
-
 class Header extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.requestsWatcherInterval = null
 		this.customization = Customizations.getSettings(['theme'])
 	}
-
 
 	requestsWatcher = () => {
 		this.requestsWatcherInterval = setInterval(() => {
@@ -45,6 +43,7 @@ class Header extends React.PureComponent {
 	}
 
 	render() {
+		const avatar = this.props.userData ? this.props.userData.userAvatar || (this.props.userData.userInfo && this.props.userData.userInfo[0].AVATAR_URI) : unknownPerson
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
 				{this.props.width < 600 ? <FontIcon
@@ -53,9 +52,24 @@ class Header extends React.PureComponent {
 					onClick={() => this.props.toggleLeftPanel(!this.props.leftPanel)}/> : <div></div>
 				}
 				<div className={'info-block'}>
-					<LoadingIndicator/>
-					{/* eslint-disable-next-line react/jsx-no-undef */}
-					<UserInfoDropDown/>
+					<Stack
+						gap={10}
+						horizontal
+					 	onClick={()=>this.props.setRightPanel(!this.props.rightPanel)}
+					 	className={'info-block'}
+					>
+						{/* <LoadingIndicator/> */}
+						<HeaderButton
+							color={'white'}
+							background={'#005A9E'}
+							value={this.props.logs.applicationLogs.length}/>
+						<Persona
+							size={PersonaSize.size32}
+							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
+							imageAlt="User photo"
+							imageUrl={avatar}
+						/>
+					</Stack>
 				</div>
 			</div>)
 	}
@@ -66,13 +80,16 @@ function mapStateToProps(state) {
 		requests: state.adapter.requests,
 		leftPanel: state.home.leftPanel,
 		width: state.home.width
+		userData: state.home.userData,
+		logs: state.adapter.logs,
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		removeRequest: (promise) => removeRequest(dispatch, promise),
-		toggleLeftPanel: state => setLeftPanel(dispatch, state)
+		toggleLeftPanel: state => setLeftPanel(dispatch, state),
+		setRightPanel: (rightPanel) => setRightPanel(dispatch,rightPanel)
 	}
 }
 

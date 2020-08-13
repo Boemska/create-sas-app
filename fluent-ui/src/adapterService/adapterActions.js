@@ -13,3 +13,9 @@ export function removeRequest(dispatch, promise) {
 		payload: promise
 	})
 }
+
+export function clearRequests(dispatch) {
+	dispatch({
+		type: ActionTypes.CLEAR_REQUESTS
+	})
+}

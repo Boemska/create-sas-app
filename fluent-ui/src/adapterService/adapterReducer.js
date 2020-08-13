@@ -24,6 +24,11 @@ export function adapterReducer(state = initialState, action) {
 			return Object.assign({}, state, {
 				requests: requestsToRemove
 			})
+		case ActionTypes.CLEAR_REQUESTS: {
+			return Object.assign({}, state, {
+				requests: new Map()
+			})
+		}
 		default:
 			return state
 	}

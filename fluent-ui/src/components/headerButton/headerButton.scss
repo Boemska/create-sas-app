@@ -1,0 +1,26 @@
+.header-btn{
+  //position: absolute;
+  width: 48px;
+  height: 48px;
+ // left: 72px;
+ // top: 56px;
+ color:white
+}
+
+.badge {
+  border-radius: 8px;
+  background: blue;
+  width: 16px;
+  height: 16px;
+  right: 9px;
+  top: -9px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+    .value{
+      font-size: 10px;
+      line-height: 12px;
+    }
+}
