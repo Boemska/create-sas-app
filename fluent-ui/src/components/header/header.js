@@ -55,7 +55,7 @@ class Header extends React.PureComponent {
 					 	onClick={()=>this.props.setRightPanel(!this.props.rightPanel)}
 					 	className={'info-block'}
 					>
-						<LoadingIndicator/>
+						{/* <LoadingIndicator/> */}
 						<Persona
 							size={PersonaSize.size32}
 							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
