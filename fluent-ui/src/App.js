@@ -17,6 +17,8 @@ import DebugLogs from './pages/debugLogs/debugLogs'
 import {Panel, Nav} from '@fluentui/react'
 import {useDispatch, useSelector} from 'react-redux';
 import ActionTypes from './pages/home/ActionTypes'
+import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
+import RightPanelContent from './components/rightPanelContent/rightPanelContent'
 
 import {
 	createTheme,
@@ -118,14 +120,14 @@ function App() {
 					</Nav>
 					<Panel
 						className={'rightPanel'}
-						headerText="Header if we want"
 						isOpen={rightPanel}
 						// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
 						closeButtonAriaLabel="Close"
 						isHiddenOnDismiss={true}
-						onDismiss={() => setRightPanel(dispatch, false)}
+						onDismiss={() => setRightPanel(dispatch, false)}onRenderFooterContent={()=>{return <RightPanelFooter/>}}
+						isFooterAtBottom={true}
 					>
-						<p>Content goes here.</p>
+						<RightPanelContent/>
 					</Panel>
 					<div className={'main'}>
 						<div className={'mainContainer'}>

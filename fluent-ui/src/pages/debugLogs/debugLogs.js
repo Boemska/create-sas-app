@@ -9,7 +9,6 @@ class DebugLogs extends React.Component {
 		const debugData = this.props.logs.debugData
 		return (
 			<div>
-				<GoBack/>
 				<h2 className={'text-center'}> Debug Logs</h2>
 				{debugData && debugData.length > 0 ?
 					debugData.map((log, index) => <BoCollapsible
