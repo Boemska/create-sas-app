@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'react-toggle/style.css'
 import 'toastr/toastr.scss'
 import './App.scss';
@@ -14,8 +14,9 @@ import ApplicationLogs from './pages/applicationLogs/applicationLogs'
 import FailedRequests from './pages/failedRequests/failedRequests'
 import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
-import {Panel} from '@fluentui/react'
+import {Panel, Nav} from '@fluentui/react'
 import {useDispatch, useSelector} from 'react-redux';
+import ActionTypes from './pages/home/ActionTypes'
 import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 import RightPanelContent from './components/rightPanelContent/rightPanelContent'
 
@@ -29,7 +30,7 @@ import {setRightPanel} from './pages/home/homeActions'
 
 const myTheme = createTheme({
 	palette: {
-		themePrimary: '#aa78d4',
+		themePrimary: '#04304B',
 		themeLighterAlt: '#eff6fc',
 		themeLighter: '#deecf9',
 		themeLight: '#c7e0f4',
@@ -56,35 +57,90 @@ const myTheme = createTheme({
 Customizations.applySettings({theme: myTheme});
 
 function App() {
-	const rightPanel = useSelector(state => state.home.rightPanel)
 	const dispatch = useDispatch()
+
+	// Set initial window width
+	setWindowWidth(dispatch, window.innerWidth)
+
+
+	useEffect(() => {
+		const onResize = () => {
+			setWindowWidth(dispatch, window.innerWidth)
+		}
+		window.addEventListener('resize', onResize)
+		return () => {
+			window.removeEventListener('resize', onResize)
+		}
+	}, [dispatch])
+
+	const width = useSelector(state => state.home.width)
+
+	const leftPanel = useSelector(state => state.home.leftPanel)
+	const navLinkGroups = [
+		{
+			links: [
+				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
+				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
+				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
+				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
+				{
+					name: 'GroupTitle',
+					links: [
+						{
+							key: 'ActivityItem',
+							name: 'ActivityItem',
+						},
+						{
+							key: 'Breadcrumb',
+							name: 'Breadcrumb',
+						},
+						{
+							key: 'Button',
+							name: 'Button',
+						},
+					]
+				},
+			],
+		},
+	];
+	const rightPanel = useSelector(state => state.home.rightPanel)
 	return (
 		<Fabric applyThemeToBody>
 			<div className="App">
 				<Header/>
-				<Panel
-					className={'rightPanel'}
-					isOpen={rightPanel}
-					// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-					closeButtonAriaLabel="Close"
-					isHiddenOnDismiss={true}
-					onDismiss={() => setRightPanel(dispatch, false)}
-					onRenderFooterContent={()=>{return <RightPanelFooter/>}}
-					isFooterAtBottom={true}
-				>
-					<RightPanelContent/>
-				</Panel>
-				<div className={'main'}>
-					<div className={'mainContainer'}>
-						<Switch>
-							<Route exact path='/' component={Home}/>
-							<Route exact path='/error' component={Page500}/>
-							<Route exact path='/applicationLogs' component={ApplicationLogs}/>
-							<Route exact path='/errorLogs' component={ErrorLogs}/>
-							<Route exact path='/failedRequests' component={FailedRequests}/>
-							<Route exact path='/debugLogs' component={DebugLogs}/>
-							<Route component={Page404}/>
-						</Switch>
+				<div className={'flex'}>
+					<Nav
+						className={`nav ${leftPanel || width > 600 ? 'open' : ''}`}
+						onLinkClick={() => console.log('click')}
+						selectedKey="key1"
+						ariaLabel="Nav basic example"
+						groups={navLinkGroups}
+					>
+						<NavItem-Icon/>
+					</Nav>
+					<Panel
+						className={'rightPanel'}
+						isOpen={rightPanel}
+						// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
+						closeButtonAriaLabel="Close"
+						isHiddenOnDismiss={true}
+						onDismiss={() => setRightPanel(dispatch, false)}onRenderFooterContent={()=>{return <RightPanelFooter/>}}
+						isFooterAtBottom={true}
+					>
+						<RightPanelContent/>
+					</Panel>
+					<div className={'main'}>
+						<div className={'mainContainer'}>
+							<Switch>
+								<Route exact path='/' component={Home}/>
+								<Route exact path='/error' component={Page500}/>
+								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
+								<Route exact path='/errorLogs' component={ErrorLogs}/>
+								<Route exact path='/failedRequests' component={FailedRequests}/>
+								<Route exact path='/debugLogs' component={DebugLogs}/>
+								<Route component={Page404}/>
+							</Switch>
+						</div>
 					</div>
 				</div>
 				<Footer/>
@@ -98,3 +154,11 @@ function App() {
 }
 
 export default App;
+
+
+function setWindowWidth(dispatch, width) {
+	dispatch({
+		type: ActionTypes.SET_WINDOW_WIDTH,
+		width
+	})
+}

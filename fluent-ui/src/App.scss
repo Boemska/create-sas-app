@@ -23,6 +23,20 @@
     height: calc(100vh - 200px);
   }
 
+  .nav {
+    transition: width 0.1s ease-out;
+    width: 0;
+    height: calc(100vh - 30px);
+    box-sizing: border-box;
+    border: 1px solid #eee;
+    overflow-y: auto;
+    left: 0;
+    background: #fff;
+    padding-top: 60px;
+    &.open {
+     width: 210px;
+    }
+  }
 }
 
 .rightPanel {

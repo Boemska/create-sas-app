@@ -70,6 +70,14 @@ export async function call(dispatch, program) {
 
 }
 
+
+
+export function setLeftPanel(dispatch, state) {
+	dispatch({
+		type: ActionTypes.SET_LEFT_PANEL,
+		state
+	})
+}
 export function setRightPanel(dispatch, state) {
 	dispatch({
 		type: ActionTypes.SET_RIGHT_PANEL,
