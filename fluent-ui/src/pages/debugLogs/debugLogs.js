@@ -1,6 +1,5 @@
 import React from 'react'
 import BoCollapsible from '../../components/colapsable/boCollapsible'
-import GoBack from '../../components/goBack/goBack'
 import {connect} from 'react-redux'
 import LogHeader from '../../components/logHeader/logHeader'
 

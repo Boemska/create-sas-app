@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import GoBack from '../../components/goBack/goBack'
 import LogHeader from '../../components/logHeader/logHeader'
 
 

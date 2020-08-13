@@ -1,9 +1,8 @@
 import React from 'react'
 import adapterService from "../../adapterService/adapterService"
-import {useSelector, connect} from 'react-redux'
+import {connect} from 'react-redux'
 import {setUserData,getUserData} from '../../pages/home/homeActions'
-import { DefaultButton, Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence, Separator } from 'office-ui-fabric-react';
-import { FontIcon } from 'office-ui-fabric-react/lib/Icon';
+import {Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence} from '@fluentui/react';
 import {clearRequests} from '../../adapterService/adapterActions'
 
 class RightPanelFooter extends React.Component{
@@ -23,7 +22,7 @@ class RightPanelFooter extends React.Component{
 				//toastr.error('Something went wrong!')
 			})
   }
-  
+
   render(){
   const {userData} = this.props;
   return(
