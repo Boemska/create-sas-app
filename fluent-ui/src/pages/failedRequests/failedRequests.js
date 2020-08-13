@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import LogHeader from '../../components/logHeader/logHeader'
-import GoBack from '../../components/goBack/goBack'
 class FailedRequests extends React.Component {
 
 	render() {
