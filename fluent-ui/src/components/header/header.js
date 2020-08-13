@@ -4,11 +4,12 @@ import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
-import {Customizations, FontIcon, mergeStyles} from '@fluentui/react'
+import {Customizations, FontIcon, mergeStyles, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
 import {setLeftPanel} from '../../pages/home/homeActions'
-import {Customizations, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
 import {setRightPanel} from '../../pages/home/homeActions'
 import {HeaderButton} from '../headerButton/headerButton'
+import unknownPerson from '../../assets/images/unknownPerson.png'
+
 const iconClass = mergeStyles({
 	fontSize: 50,
 	height: 50,
@@ -79,7 +80,7 @@ function mapStateToProps(state) {
 	return {
 		requests: state.adapter.requests,
 		leftPanel: state.home.leftPanel,
-		width: state.home.width
+		width: state.home.width,
 		userData: state.home.userData,
 		logs: state.adapter.logs,
 	}

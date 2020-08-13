@@ -1,6 +1,7 @@
 @import './assets/style/colors.scss';
 @import './assets/style/fontawesome.css';
 @import './assets/style/style.scss';
+@import './assets/style/variables.scss';
 
 .App {
   font-family: Avenir, "Helvetica Neue", Arial, sans-serif;
@@ -9,7 +10,7 @@
     display: flex;
     max-height: calc(100vh - 30px);
     max-width: 100%;
-    padding-top: 60px;
+    padding-top: $headerHeight;
     position: relative;
     .mainContainer {
       flex: 1 1 auto;
@@ -32,7 +33,7 @@
     overflow-y: auto;
     left: 0;
     background: #fff;
-    padding-top: 60px;
+    padding-top: $headerHeight;
     &.open {
      width: 210px;
     }
