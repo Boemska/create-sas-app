@@ -5,12 +5,13 @@ import './headerButton.scss'
 export const HeaderButton=(props)=>{
 
   const {background,color,value} = props;
-  
+
   //to compute width of badge(for more digits we need bigger width)
   const numberOfDigits = value.toString().length
   return (
     <div>
-      <IconButton 
+      <IconButton
+				onClick={props.onClick}
         style={{width:`${49+numberOfDigits}px`}}
         className={'header-btn'}
         iconProps={{iconName:'List'}} title="Emoji" ariaLabel="Emoji">

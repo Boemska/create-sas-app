@@ -4,17 +4,28 @@ import {withRouter} from 'react-router'
 import {connect} from 'react-redux'
 import {removeRequest} from '../../adapterService/adapterActions'
 import moment from 'moment'
-import {Customizations, FontIcon, mergeStyles} from '@fluentui/react'
 import {setLeftPanel} from '../../pages/home/homeActions'
-import {Customizations, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
+import {
+	Customizations,
+	Stack,
+	Persona,
+	PersonaPresence,
+	PersonaSize,
+	FontIcon,
+	mergeStyles,
+	IconButton
+} from '@fluentui/react'
 import {setRightPanel} from '../../pages/home/homeActions'
 import {HeaderButton} from '../headerButton/headerButton'
+import unknownPerson from '../../assets/images/unknownPerson.png'
+
 const iconClass = mergeStyles({
 	fontSize: 50,
 	height: 50,
 	width: 50,
 	color: '#fff'
 })
+
 class Header extends React.PureComponent {
 	constructor(props) {
 		super(props)
@@ -55,15 +66,35 @@ class Header extends React.PureComponent {
 					<Stack
 						gap={10}
 						horizontal
-					 	onClick={()=>this.props.setRightPanel(!this.props.rightPanel)}
-					 	className={'info-block'}
+
+						className={'info-block'}
 					>
 						{/* <LoadingIndicator/> */}
+						{
+							this.props.update &&
+								<IconButton
+								onClick={() => window.location.reload()}
+								style={{width: '60px', fontSize: '50px'}}
+								className={'updateIconButton'}
+								iconProps={{iconName: 'CloudDownload'}}
+								title={'New update available'}
+								ariaLabel={'New update available'}/>
+						}
+						{
+							this.props.offline &&
+							<IconButton
+								style={{width: '60px'}}
+								className={'offlineIconButton'}
+								iconProps={{iconName: 'StreamingOff'}} title={'App working in offline mode'}
+								ariaLabel={'App working in offline mode'}/>
+						}
 						<HeaderButton
+							onClick={() => this.props.setRightPanel(!this.props.rightPanel)}
 							color={'white'}
 							background={'#005A9E'}
 							value={this.props.logs.applicationLogs.length}/>
 						<Persona
+							onClick={() => this.props.setRightPanel(!this.props.rightPanel)}
 							size={PersonaSize.size32}
 							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
 							imageAlt="User photo"
@@ -79,9 +110,11 @@ function mapStateToProps(state) {
 	return {
 		requests: state.adapter.requests,
 		leftPanel: state.home.leftPanel,
-		width: state.home.width
+		width: state.home.width,
 		userData: state.home.userData,
 		logs: state.adapter.logs,
+		offline: state.header.offline,
+		update: state.header.update
 	}
 }
 
@@ -89,7 +122,7 @@ function mapDispatchToProps(dispatch) {
 	return {
 		removeRequest: (promise) => removeRequest(dispatch, promise),
 		toggleLeftPanel: state => setLeftPanel(dispatch, state),
-		setRightPanel: (rightPanel) => setRightPanel(dispatch,rightPanel)
+		setRightPanel: (rightPanel) => setRightPanel(dispatch, rightPanel)
 	}
 }
 
