@@ -18,11 +18,8 @@ import DebugLogs from '../../pages/debugLogs/debugLogs'
 class RightPanelContent extends React.Component {
   constructor(props) {
 		super(props);
-		this.statusBarShow = this.statusBarShow.bind(this);
-		this.logout = this.logout.bind(this);
 		this.handleSwitchChange = this.handleSwitchChange.bind(this);
 		this.state = {
-			statusBar: false,
 			debugMode: false
 		}
 	}
@@ -39,26 +36,6 @@ class RightPanelContent extends React.Component {
 				adapterService._debugMode = this.state.debugMode;
 			})
 		}
-	}
-
-	logout() {
-		adapterService.logout()
-			.then(() => {
-				// This will trigger getting user's data and
-				// creating of fresh csrf token for login form
-				// which will pop up automatically
-				this.props.setUserData(null)
-				this.props.getUserData()
-			})
-			.catch(e => {
-				toastr.error('Something went wrong!')
-			})
-	}
-
-	statusBarShow(show) {
-		this.setState({
-			statusBar: show
-		})
 	}
 
 	handleSwitchChange() {
