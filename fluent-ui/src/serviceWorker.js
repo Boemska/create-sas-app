@@ -10,6 +10,9 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
+import {store} from './index.js';
+import HeaderActionTypes from './components/header/ActionTypes';
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -77,6 +80,11 @@ function registerValidSW(swUrl, config) {
                   'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
               );
 
+              store.dispatch({
+                type: HeaderActionTypes.UPDATE_AVAILABLE,
+                payload: true
+              })
+
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
@@ -95,6 +103,9 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
+      setInterval(() => registration.update().catch(e => {
+      	console.log("ERROR DURING SERVICE WORKER UPDATE")
+			}), 5000);
     })
     .catch(error => {
       console.error('Error during service worker registration:', error);

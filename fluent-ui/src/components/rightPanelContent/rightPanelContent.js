@@ -1,13 +1,9 @@
 import React from 'react';
-import unknownPerson from '../../assets/images/unknownPerson.png'
 import adapterService from "../../adapterService/adapterService";
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
-import Badge from "../badge/badge";
-import toastr from 'toastr'
 import {getUserData, setRightPanel, setUserData} from '../../pages/home/homeActions'
-import {Persona, Toggle, Stack, Separator} from '@fluentui/react'
-import {Pivot, PivotItem, Label} from '@fluentui/react'
+import {Toggle, Stack, Separator, Pivot, PivotItem} from '@fluentui/react'
 import './rightPanelContent.scss'
 import ApplicationLogs from '../../pages/applicationLogs/applicationLogs'
 import FailedRequests from '../../pages/failedRequests/failedRequests'
@@ -54,7 +50,7 @@ class RightPanelContent extends React.Component {
 				<Stack>
 					<Stack.Item className={'stack-toggle'}>
 					<Toggle
-						checked={this.state.debugMode} 
+						checked={this.state.debugMode}
 						onChange={this.handleSwitchChange}
 						label={"Debug mode"}
 						inlineLabel
@@ -81,7 +77,7 @@ class RightPanelContent extends React.Component {
               <FailedRequests/>
             </PivotItem>
           }
-          <PivotItem headerText="Error" 
+          <PivotItem headerText="Error"
             itemCount={this.props.logs && this.props.logs.sasErrors.length > 0 ? this.props.logs.sasErrors.length : 0}
           >
             <ErrorLogs/>
