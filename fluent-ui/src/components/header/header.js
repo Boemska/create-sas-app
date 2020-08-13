@@ -10,6 +10,7 @@ import moment from 'moment'
 import {Customizations, Stack, Persona, PersonaPresence, PersonaSize} from '@fluentui/react'
 import unknownPerson from '../../assets/images/unknownPerson.png' 
 import {setRightPanel} from '../../pages/home/homeActions'
+import {HeaderButton} from '../headerButton/headerButton'
 
 class Header extends React.PureComponent {
 
@@ -50,12 +51,16 @@ class Header extends React.PureComponent {
 					{/* eslint-disable-next-line react/jsx-no-undef */}
 					{/* <UserInfoDropDown/> */}
 					<Stack 
-						gap={20}
+						gap={10}
 						horizontal
 					 	onClick={()=>this.props.setRightPanel(!this.props.rightPanel)}
 					 	className={'info-block'}
 					>
 						{/* <LoadingIndicator/> */}
+						<HeaderButton 
+							color={'white'} 
+							background={'#005A9E'}
+							value={this.props.logs.applicationLogs.length}/>
 						<Persona
 							size={PersonaSize.size32}
 							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
@@ -71,7 +76,8 @@ class Header extends React.PureComponent {
 function mapStateToProps(state) {
 	return {
 		requests: state.adapter.requests,
-		userData: state.home.userData
+		userData: state.home.userData,
+		logs: state.adapter.logs,
 	}
 }
 
