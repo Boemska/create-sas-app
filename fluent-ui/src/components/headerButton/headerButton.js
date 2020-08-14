@@ -14,7 +14,7 @@ export const HeaderButton=(props)=>{
 				onClick={props.onClick}
         style={{width:`${49+numberOfDigits}px`}}
         className={'header-btn'}
-        iconProps={{iconName:'List'}} title="Emoji" ariaLabel="Emoji">
+        iconProps={{iconName:'List'}} title="List" ariaLabel="List">
           <div style={{backgroundColor: background, width:`${18+numberOfDigits}px`}} className={'badge'}>
             <span style={{color: color}}className={'value'}>
               {props.value}
