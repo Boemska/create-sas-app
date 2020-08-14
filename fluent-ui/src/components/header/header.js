@@ -75,7 +75,7 @@ class Header extends React.PureComponent {
 								onClick={() => window.location.reload()}
 								style={{width: '60px', fontSize: '50px'}}
 								className={'updateIconButton'}
-								iconProps={{iconName: 'CloudDownload'}}
+								iconProps={{iconName: 'Refresh'}}
 								title={'New update available'}
 								ariaLabel={'New update available'}/>
 						}
@@ -84,7 +84,7 @@ class Header extends React.PureComponent {
 							<IconButton
 								style={{width: '60px'}}
 								className={'offlineIconButton'}
-								iconProps={{iconName: 'StreamingOff'}} title={'App working in offline mode'}
+								iconProps={{iconName: 'WifiWarning4'}} title={'App working in offline mode'}
 								ariaLabel={'App working in offline mode'}/>
 						}
 						<HeaderButton

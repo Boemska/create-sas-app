@@ -2,13 +2,19 @@ import React from 'react'
 import adapterService from "../../adapterService/adapterService"
 import {connect} from 'react-redux'
 import {setUserData,getUserData} from '../../pages/home/homeActions'
-import {Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence} from '@fluentui/react';
+import {Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence, Dialog, DialogFooter,DialogType, PrimaryButton, DefaultButton} from '@fluentui/react';
 import {clearRequests} from '../../adapterService/adapterActions'
 
 class RightPanelFooter extends React.Component{
-
+  constructor(props){
+    super(props)
+    this.state={
+      isHidden : true
+    }
+  }
 
   logout=()=>{
+    this.setState({isHidden:true})
 		adapterService.logout()
 			.then(() => {
 				// This will trigger getting user's data and
@@ -46,12 +52,24 @@ class RightPanelFooter extends React.Component{
           text="Clear history"
           />
           <CommandBarButton
-          onClick={()=>this.logout()}
+          onClick={()=>this.setState({isHidden:false})}
           iconProps={ { iconName: 'Contact' }}
           text="Log out"
           />
         </Stack>
       </Stack.Item>
+      <Dialog
+        hidden={this.state.isHidden}
+        dialogContentProps={{
+          type: DialogType.normal,
+          title: 'Log out?',
+          subText: 'Are you sure you want to log out of the application?'}}
+      >
+        <DialogFooter>
+          <PrimaryButton  text="I'm sure" onClick={this.logout}/>
+          <DefaultButton  text="No, take me back" onClick={()=>this.setState({isHidden:true})}/>
+        </DialogFooter>
+      </Dialog>
   </Stack>
   )
   }
