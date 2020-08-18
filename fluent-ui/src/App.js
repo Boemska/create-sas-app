@@ -118,6 +118,7 @@ function App() {
 						groups={navLinkGroups}
 					/>
 					<Panel
+						layerProps={{ styles: { root: { zIndex: 999998 }}}}
 						className={'rightPanel'}
 						isOpen={rightPanel}
 						//isLightDismiss
