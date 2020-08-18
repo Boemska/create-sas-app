@@ -120,10 +120,11 @@ function App() {
 					<Panel
 						className={'rightPanel'}
 						isOpen={rightPanel}
+						isLightDismiss
 						// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-						closeButtonAriaLabel="Close"
-						isHiddenOnDismiss={true}
-						onDismiss={() => setRightPanel(dispatch, false)}onRenderFooterContent={()=>{return <RightPanelFooter/>}}
+					  closeButtonAriaLabel="Close"
+					  onDismiss={() => setRightPanel(dispatch, false)}
+						onRenderFooterContent={()=>{return <RightPanelFooter/>}}
 						isFooterAtBottom={true}
 					>
 						<RightPanelContent/>

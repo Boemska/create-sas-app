@@ -109,6 +109,7 @@ function mapStateToProps(state) {
 	return {
 		requests: state.adapter.requests,
 		leftPanel: state.home.leftPanel,
+		rightPanel: state.home.rightPanel,
 		width: state.home.width,
 		userData: state.home.userData,
 		logs: state.adapter.logs,
