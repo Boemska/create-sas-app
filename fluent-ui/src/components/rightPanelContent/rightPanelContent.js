@@ -48,7 +48,7 @@ class RightPanelContent extends React.Component {
     return(
       <div>
 				<Stack>
-					<Stack.Item className={'stack-toggle'}>
+					<Stack.Item>
 					<Toggle
 						checked={this.state.debugMode}
 						onChange={this.handleSwitchChange}
