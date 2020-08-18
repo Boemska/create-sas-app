@@ -12,6 +12,7 @@
     max-width: 100%;
     padding-top: $headerHeight;
     position: relative;
+    width: 100%;
     .mainContainer {
       flex: 1 1 auto;
       overflow-y: auto;
@@ -42,6 +43,7 @@
 
 .rightPanel {
   z-index: auto;
+  top: 48px;
 }
 
 /* Set toastr z-index higher than header */
