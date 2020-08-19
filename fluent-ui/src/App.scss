@@ -28,7 +28,7 @@
   .nav {
     transition: width 0.1s ease-out;
     width: 0;
-    height: calc(100vh - 30px);
+    height: 100vh;
     box-sizing: border-box;
     border: 1px solid #eee;
     overflow-y: auto;
