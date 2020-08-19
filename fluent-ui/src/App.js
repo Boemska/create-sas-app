@@ -145,7 +145,6 @@ function App() {
 						</div>
 					</div>
 				</div>
-				<Footer/>
 				<Portal>
 					<LoginModal/>
 				</Portal>
