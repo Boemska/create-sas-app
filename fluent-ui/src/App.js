@@ -27,6 +27,7 @@ import {
 } from '@fluentui/react';
 import {setRightPanel} from './pages/home/homeActions'
 import appSettings from './appSettings'
+import ProjectProperties from './pages/projectProperties/projectProperties';
 
 
 const myTheme = createTheme({
@@ -80,7 +81,7 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
-				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
+				{name: 'Home', url: '/', key: 'key1',  icon: 'home'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
 				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
@@ -135,6 +136,7 @@ function App() {
 						<div className={'mainContainer'}>
 							<Switch>
 								<Route exact path='/' component={Home}/>
+                <Route exact path='/project/:id' component={ProjectProperties} />
 								<Route exact path='/error' component={Page500}/>
 								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
 								<Route exact path='/errorLogs' component={ErrorLogs}/>
