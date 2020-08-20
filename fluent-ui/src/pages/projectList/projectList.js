@@ -11,6 +11,8 @@ import {
         fetchFolderChildren,
         fetchFolderChildrenByUri 
 } from './projectListActions'
+import moment from 'moment'
+
 const newMenuProps = {
   items: [
     {
@@ -72,6 +74,7 @@ class ProjectList extends React.PureComponent {
         isSortedDescending: false,
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
+        //onColumnClick: this._onColumnClick,
         data: 'string',
         isPadded: true,
         onRender: (item) => {
@@ -82,15 +85,15 @@ class ProjectList extends React.PureComponent {
         key: 'column2', 
         name: 'Modified', 
         fieldName: 'modified',  
-        minWidth: 70,
-        maxWidth: 90, 
+        minWidth: 100,
+        maxWidth: 130, 
         data: 'number',
         isResizable: true,
         onRender: (item) => {
-          return <span>{item.modifiedTimeStamp}</span>;
+          return <span>{moment(item.modifiedTimeStamp).format('DD-MM-YYYY HH:mm')}</span>;
         }
        },
-      { key: 'column3', name: 'Modified By', fieldName: 'modifiedBy', minWidth: 70, maxWidth: 90, isResizable: true, data: 'string'},
+      { key: 'column3', name: 'Modified By', fieldName: 'modifiedBy', minWidth: 200, maxWidth: 230, isResizable: true, data: 'string'},
       { key: 'column4', name: 'File size (kB)', fieldName: 'fileSize', minWidth: 70, maxWidth: 90, isResizable: true,  data: 'number' },
       { key: 'column5', name: 'Sharing', fieldName: 'sharing', minWidth: 70, maxWidth: 90, isResizable: true },
     ];
@@ -103,7 +106,11 @@ class ProjectList extends React.PureComponent {
   }
 
   componentDidMount = () => {
-		this.props.fetchRootFolders();
+    this.props.fetchRootFolders();
+  }
+
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    this.setState({items : nextProps.folders})
   }
   
   renderRow= (props) => {
@@ -140,7 +147,7 @@ class ProjectList extends React.PureComponent {
   }
 
   render(){
-    const items = this.props.folders
+    //const items = this.props.folders
     return (
       <div className={'align-center'}>
         <Stack>
@@ -167,7 +174,7 @@ class ProjectList extends React.PureComponent {
             overflowAriaLabel="More links"
           />
           <DetailsList
-            items={items}
+            items={this.state.items}
             columns={this.state.columns}
             setKey="none"
             selectionMode={SelectionMode.none} //select row feature
