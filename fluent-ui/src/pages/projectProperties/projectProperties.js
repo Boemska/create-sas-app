@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {getProject} from './projectActions'
+import {getProject, fetchSingleProject} from './projectActions'
 import {useDispatch, useSelector} from 'react-redux'
 import './projectProperties.scss'
 import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link} from '@fluentui/react'
-
+import {useParams } from 'react-router-dom';
+import ActionTypes from './ActionTypes';
 
 const noOp = () => undefined;
 
@@ -27,22 +28,25 @@ const onRenderOverflowButton = overflowItems => {
   );
 };
 
-
-
-const ProjectProperties = () => {
+const ProjectProperties = props => {
 
   const dispatch = useDispatch();
   const shareURL = window.location.href;
   const [message, setMessage] = useState(false);
-
+  // const {uri} = useParams();
+  const uri = '34292165-c0a3-4652-b678-70cc85aae540'; //hardcoded project from EconoAp
   const {save, projectContent, projectMetadata} = useSelector(state => state.project);
 
   useEffect(() => {
-    getProject(dispatch, '34292165-c0a3-4652-b678-70cc85aae540') //hardcoded project from EconoApp
+
+    if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
+      
+      getProject(dispatch, uri);
+		}
     return () => {
       
     }
-  }, [])
+  }, [uri])
 
   const copy = url => {
     navigator.clipboard.writeText(url);
@@ -57,7 +61,7 @@ const ProjectProperties = () => {
       {
       key: 'rename',
       name: 'Rename project',
-      onClick: noOp,
+      onClick: () => props.rename(projectContent.name),
     },
     {
       key: 'delete',
@@ -67,7 +71,7 @@ const ProjectProperties = () => {
   ]
 
   return (
-    projectMetadata?
+    projectMetadata && projectContent?
       <div className={'projectProperties'}>
           
         <div className={'projectDetails'}>
@@ -113,7 +117,7 @@ const ProjectProperties = () => {
           message && <MessageBar messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar>
         }
        
-      </div> : <h1 style={{color: 'red'}}>No project selected</h1>
+      </div> : <div> <h1 style={{color: 'red'}}>{(uri !== null && uri !== 'noProject')? "404. Project with the given URI could not be found." : "No project selected"}</h1></div>
       
  
   )
