@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import {getProject, fetchSingleProject} from './projectActions'
+import {getProject, fetchSingleProject, deleteProject} from './projectActions'
 import {useDispatch, useSelector} from 'react-redux'
 import './projectProperties.scss'
-import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link} from '@fluentui/react'
-import {useParams } from 'react-router-dom';
+import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton} from '@fluentui/react'
+import {useParams, useHistory } from 'react-router-dom';
 import ActionTypes from './ActionTypes';
+import { useBoolean } from '@uifabric/react-hooks';
 
 const noOp = () => undefined;
 
@@ -28,14 +29,27 @@ const onRenderOverflowButton = overflowItems => {
   );
 };
 
-const ProjectProperties = props => {
+const ConfirmationModal = props => {
+  return (
+    <Dialog title="Deleting a project can not be reversed, are you sure you want to continue?" hidden={props.hidden}>
+      <DialogFooter>
+        <PrimaryButton text="Delete" onClick={() => props.confirm()} />
+        <DefaultButton text="Cancel" onClick={props.close}/>
+      </DialogFooter>
+    </Dialog>
+  )
+}
 
+const ProjectProperties = props => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const shareURL = window.location.href;
   const [message, setMessage] = useState(false);
   // const {uri} = useParams();
-  const uri = '34292165-c0a3-4652-b678-70cc85aae540'; //hardcoded project from EconoAp
+  const uri = 'bb18a9de-0b90-4d69-85a2-dd9385e0180c'; //hardcoded project from EconoAp
   const {save, projectContent, projectMetadata} = useSelector(state => state.project);
+
+  const [hideDialog, {toggle: toggleDialog}] = useBoolean(true);
 
   useEffect(() => {
 
@@ -66,7 +80,7 @@ const ProjectProperties = props => {
     {
       key: 'delete',
       name: 'Delete project',
-      onClick: noOp,
+      onClick: toggleDialog,
     },
   ]
 
@@ -116,7 +130,11 @@ const ProjectProperties = props => {
         {
           message && <MessageBar messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar>
         }
-       
+       <ConfirmationModal hidden={hideDialog} close={toggleDialog}
+          confirm={() => deleteProject(dispatch, projectMetadata.uri).then(() => {
+         toggleDialog();
+         history.push('/');
+       })} />
       </div> : <div> <h1 style={{color: 'red'}}>{(uri !== null && uri !== 'noProject')? "404. Project with the given URI could not be found." : "No project selected"}</h1></div>
       
  

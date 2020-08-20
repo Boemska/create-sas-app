@@ -91,6 +91,22 @@ export async function renameProject(dispatch, newName, projectContent, uri) {
 
 }
 
+export async function deleteProject(dispatch, uri) {
+  try{
+    await adapterService.deleteItem(dispatch, uri);
+
+    dispatch({
+      type: ActionTypes.DELETE_PROJECT
+    })
+    return Promise.resolve();
+  }
+  catch(e) {
+    console.log("DELETE PROJECT ERROR", e);
+
+    return Promise.reject(e.message);
+  }
+}
+
 export function selectProject(dispatch, payload) {
 	dispatch({
 		type: ActionTypes.SELECT_PROJECT,
