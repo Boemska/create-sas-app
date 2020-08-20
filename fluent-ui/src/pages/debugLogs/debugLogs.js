@@ -1,8 +1,6 @@
 import React from 'react'
-import BoCollapsible from '../../components/colapsable/boCollapsible'
 import {connect} from 'react-redux'
 import { Stack, Panel, PanelType , CommandBarButton, DefaultButton} from '@fluentui/react'
-import LogHeader from '../../components/logHeader/logHeader'
 import './debugLogs.scss'
 
 class DebugLogs extends React.Component {
