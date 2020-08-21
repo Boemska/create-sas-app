@@ -126,11 +126,11 @@ const ProjectProperties = props => {
         <Separator />
           
         <div className={'content'}>
-          <div className={'fs-42'}>{projectContent.name}</div>
+          <div className={'fs-42 ms-fontWeight-bold'}>{projectContent.name}</div>
           <div className={'fs-16 mt-15'}> Last modified {projectContent.lastModified}</div>
 
 
-          <div className={'mt-20 mb-15 fs-28 section'}>Created by</div>
+          <div className={'mt-20 mb-15 fs-20 section ms-fontWeight-bold'}>Created by</div>
           {
             userData && <Persona text={userData.name} 
             secondaryText= {userData ? "Software Engineer" : ""} 
@@ -140,7 +140,7 @@ const ProjectProperties = props => {
             imageUrl={userData? userData.userAvatar : null}/>
           }
 
-          <div className={'mt-20 fs-28 section'}>Project URI</div>
+          <div className={'mt-20 fs-20 section ms-fontWeight-bold'}>Project URI</div>
           <div className={'mt15 fs-16'}>{shareURL}</div>
 
           <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
