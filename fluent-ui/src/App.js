@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ActionTypes from './pages/home/ActionTypes'
 import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 import RightPanelContent from './components/rightPanelContent/rightPanelContent'
+import ProjectList from './pages/projectList/projectList'
 
 import {
 	createTheme,
@@ -87,8 +88,10 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
-				{name: 'Home', url: '#/', key: 'home',  icon: 'home'},
-				{name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
+
+        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
+				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
+				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
 				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
@@ -151,12 +154,12 @@ function App() {
 								<Route exact path='/errorLogs' component={ErrorLogs}/>
 								<Route exact path='/failedRequests' component={FailedRequests}/>
 								<Route exact path='/debugLogs' component={DebugLogs}/>
+								<Route exact path='/projectList' component={ProjectList}/>
 								<Route component={Page404}/>
 							</Switch>
 						</div>
 					</div>
 				</div>
-				<Footer/>
 				<Portal>
 					<LoginModal/>
           <RenameProject isOpen={renameProject.isOpen} value={renameProject.value} close={() => setRenameProject({isOpen: false, value: ''})}/>

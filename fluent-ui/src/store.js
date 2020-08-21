@@ -6,6 +6,8 @@ import loginReducer from './components/loginModal/loginReducer'
 import {adapterReducer} from './adapterService/adapterReducer' // eslint-disable-line no-unused-vars
 import headerReducer from "./components/header/headerReducer" // eslint-disable-line no-unused-vars
 import {projectReducer} from './pages/projectProperties/projectReducer';
+import projectListReducer from './pages/projectList/projectListReducer'
+
 
 let middlewares = []
 
@@ -33,8 +35,9 @@ const reducer = combineReducers({
 	home: homeReducer,
 	login: loginReducer,
 	adapter: adapterReducer,
-  header: headerReducer,
   project: projectReducer
+	header: headerReducer,
+	projectList: projectListReducer
 })
 
 export function getStore(preloadedState) {
