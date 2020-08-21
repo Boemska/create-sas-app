@@ -1,16 +1,9 @@
 import React from 'react'
 import "./projectList.scss";
-//import {fetchProjects, setMainSpinner} from './projectListActions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-//import {PROJECT_EXTENTION} from '../../components/newProject/newProjectActions'
-import ADAPTER_SETTINGS from '../../adapterService/config'
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
-import { 
-        fetchRootFolders,
-        fetchFolderChildren,
-        fetchFolderChildrenByUri 
-} from './projectListActions'
+import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from './projectListActions'
 import moment from 'moment'
 
 const newMenuProps = {
@@ -57,8 +50,6 @@ class ProjectList extends React.PureComponent {
         fieldName: 'name',
         minWidth: 16,
         maxWidth: 16,
-        //sort func
-        //onColumnClick: this._onColumnClick,
         onRender: (item) => {
           const icon = this.getIconDependOnItemType(item);
           return <FontIcon iconName={icon} className={'fileIconImg'} />
@@ -71,11 +62,6 @@ class ProjectList extends React.PureComponent {
         minWidth: 210,
         maxWidth: 350, 
         isResizable: true, 
-        isSorted: true,
-        isSortedDescending: false,
-        sortAscendingAriaLabel: 'Sorted A to Z',
-        sortDescendingAriaLabel: 'Sorted Z to A',
-        //onColumnClick: this._onColumnClick,
         data: 'string',
         isPadded: true,
         onRender: (item) => {
@@ -86,17 +72,17 @@ class ProjectList extends React.PureComponent {
         key: 'column2', 
         name: 'Modified', 
         fieldName: 'modified',  
-        minWidth: 100,
-        maxWidth: 130, 
+        minWidth: 200,
+        maxWidth: 230, 
         data: 'number',
         isResizable: true,
         onRender: (item) => {
           return <span>{moment(item.modifiedTimeStamp).format('DD-MM-YYYY HH:mm')}</span>;
         }
        },
-      { key: 'column3', name: 'Modified By', fieldName: 'modifiedBy', minWidth: 200, maxWidth: 230, isResizable: true, data: 'string'},
-      { key: 'column4', name: 'File size (kB)', fieldName: 'fileSize', minWidth: 70, maxWidth: 90, isResizable: true,  data: 'number' },
-      { key: 'column5', name: 'Sharing', fieldName: 'sharing', minWidth: 70, maxWidth: 90, isResizable: true },
+      { key: 'column3', name: 'Modified By', fieldName: 'modifiedBy', minWidth: 200, maxWidth: 230, isResizable: true, data: 'string'}
+      // { key: 'column4', name: 'File size (kB)', fieldName: 'fileSize', minWidth: 70, maxWidth: 90, isResizable: true,  data: 'number' },
+      // { key: 'column5', name: 'Sharing', fieldName: 'sharing', minWidth: 70, maxWidth: 90, isResizable: true }
     ];
 
     this.state={
@@ -160,7 +146,6 @@ class ProjectList extends React.PureComponent {
   }
 
   render(){
-    //const items = this.props.folders
     return (
       <div className={'align-center'}>
         <Stack>
