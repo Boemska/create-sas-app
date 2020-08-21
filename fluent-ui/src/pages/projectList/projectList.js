@@ -2,7 +2,7 @@ import React from 'react'
 import "./projectList.scss";
 //import {fetchProjects, setMainSpinner} from './projectListActions';
 import { connect } from 'react-redux';
-import {useHistory} from 'react-router';
+import { withRouter } from 'react-router-dom';
 //import {PROJECT_EXTENTION} from '../../components/newProject/newProjectActions'
 import ADAPTER_SETTINGS from '../../adapterService/config'
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
@@ -60,7 +60,8 @@ class ProjectList extends React.PureComponent {
         //sort func
         //onColumnClick: this._onColumnClick,
         onRender: (item) => {
-          return <FontIcon iconName="OpenFolderHorizontal" className={'fileIconImg'} />
+          const icon = this.getIconDependOnItemType(item);
+          return <FontIcon iconName={icon} className={'fileIconImg'} />
         },
       },
       { 
@@ -112,6 +113,13 @@ class ProjectList extends React.PureComponent {
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     this.setState({items : nextProps.folders})
   }
+
+  getIconDependOnItemType= (item) =>{
+    switch(item.contentType){
+      case 'file': return 'TextDocument'
+      default: return 'OpenFolderHorizontal'
+    }
+  }
   
   renderRow= (props) => {
     const {item} = props;
@@ -119,18 +127,23 @@ class ProjectList extends React.PureComponent {
   }
 
   handleRowClick= (item) => {
-    const { breadCrumb } = this.state;
-    let bc = { 
-      text: item.name,
-      key: item.id, 
-      uri: item.uri? item.uri : null,
-      onClick: () => {this.handleBcClick(item)}}
-		if (breadCrumb.length === 1) { // we are in root folder
-      this.props.fetchFolderChildren(item.id);
-		} else {
-      this.props.fetchFolderChildrenByUri(item.uri);
-		}
-    this.setState({ breadCrumb : breadCrumb.concat(bc) })
+    if(item.contentType==='file'){
+      let uri = item.uri.split('/').pop()
+      this.props.history.push(`/project/${uri}`)
+    }else {
+      const { breadCrumb } = this.state;
+      let bc = { 
+        text: item.name,
+        key: item.id, 
+        uri: item.uri? item.uri : null,
+        onClick: () => {this.handleBcClick(item)}}
+      if (breadCrumb.length === 1) { // we are in root folder
+        this.props.fetchFolderChildren(item.id);
+      } else {
+        this.props.fetchFolderChildrenByUri(item.uri);
+      }
+      this.setState({ breadCrumb : breadCrumb.concat(bc) })
+    }
   }
 
   handleBcClick= (item) => {
@@ -200,4 +213,4 @@ function mapStateToProps(store) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectList));

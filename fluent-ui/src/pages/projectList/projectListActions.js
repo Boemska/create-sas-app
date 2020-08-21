@@ -15,7 +15,7 @@ export async function fetchRootFolders(dispatch) {
 }
 
 export async function fetchFolderChildren(dispatch,folderId) {
-	let url = "/folders/folders/" + folderId + "/members?filter=in(contentType,'applicationDataFolder','folder','favoritesFolder','historyFolder','myFolder','userFolder','userRoot','trashFolder','hiddenFolder')&limit=10000";
+	let url = "/folders/folders/" + folderId + "/members?filter=in(contentType,'applicationDataFolder','folder','favoritesFolder','historyFolder','myFolder','userFolder','userRoot','trashFolder','hiddenFolder','file')&limit=10000";
 	try {
 		let res = await adapterService.managedRequest(dispatch, 'get', url, {});
 		dispatch({
@@ -29,7 +29,7 @@ export async function fetchFolderChildren(dispatch,folderId) {
 
 export async function fetchFolderChildrenByUri(dispatch,uri) {
 	//uri - folder/folder/ID
-	let url =uri+"/members?filter=in(contentType,'applicationDataFolder','folder','favoritesFolder','historyFolder','myFolder','userFolder','userRoot','trashFolder','hiddenFolder')&limit=10000";
+	let url =uri+"/members?filter=in(contentType,'applicationDataFolder','folder','favoritesFolder','historyFolder','myFolder','userFolder','userRoot','trashFolder','hiddenFolder','file')&limit=10000";
 	try {
 		let res = await adapterService.managedRequest(dispatch, 'get', url, {});
 		dispatch({
