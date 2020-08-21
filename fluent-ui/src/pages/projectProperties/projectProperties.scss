@@ -1,6 +1,11 @@
 .projectProperties {
-  margin: -2rem; //Override fluents "main" padding so menu will stay on top
- 
+  //margin: -2rem; //Override fluents "main" padding so menu will stay on top
+  
+  .projectPropertiesHeader{
+    position: absolute;
+    top: 4px;
+  }
+
   .shareProject, .projectDetails {
     max-width: 700px;
   }

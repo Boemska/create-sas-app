@@ -35,7 +35,7 @@ const reducer = combineReducers({
 	home: homeReducer,
 	login: loginReducer,
 	adapter: adapterReducer,
-  project: projectReducer
+  project: projectReducer,
 	header: headerReducer,
 	projectList: projectListReducer
 })

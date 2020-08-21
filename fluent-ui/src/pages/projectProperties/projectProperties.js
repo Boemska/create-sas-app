@@ -54,9 +54,7 @@ const ProjectProperties = props => {
   const [qrDialog, {toggle: toggleQR}] = useBoolean(false);
 
   useEffect(() => {
-
     if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
-      
       getProject(dispatch, uri).then(({projectMetadata}) => getUserAvatar(dispatch, projectMetadata.createdBy));
       // getUserAvatar(dispatch, projectMetadata.createdBy)
 		}
@@ -75,7 +73,7 @@ const ProjectProperties = props => {
   }
 
   const items = [
-      {
+    {
       key: 'rename',
       name: 'Rename project',
       onClick: () => props.rename(projectContent.name),
@@ -84,7 +82,7 @@ const ProjectProperties = props => {
       key: 'delete',
       name: 'Delete project',
       onClick: toggleDialog,
-    },
+    }
   ]
 
   
@@ -101,7 +99,7 @@ const ProjectProperties = props => {
         text: 'Delete project',
         iconProps: { iconName: 'Delete' },
         onClick: toggleDialog,
-      },
+      }
     ]
   };
 
@@ -109,7 +107,7 @@ const ProjectProperties = props => {
     projectMetadata && projectContent?
       <div className={'projectProperties align-center'}>
 
-        <Stack horizontal verticalAlign={'center'}>
+        <Stack horizontal verticalAlign={'center'} className={'projectPropertiesHeader'}>
           <CommandButton text='Show QR code' iconProps={{iconName: "Share"}}  onClick={toggleQR}/>
           <CommandButton text='Copy link' iconProps={{iconName: "Copy"}} onClick={() => copy(shareURL)}/>
           <CommandButton text="" iconProps={{iconName:'CollapseMenu'}} menuProps={projectActions}/>

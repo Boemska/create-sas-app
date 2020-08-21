@@ -17,7 +17,7 @@ import {
 } from '@fluentui/react'
 import {setRightPanel} from '../../pages/home/homeActions'
 import {HeaderButton} from '../headerButton/headerButton'
-import unknownPerson from '../../assets/images/unknownPerson.png'
+import {getUserData} from '../../pages/home/homeActions'
 
 const iconClass = mergeStyles({
 	fontSize: 50,
@@ -47,6 +47,7 @@ class Header extends React.PureComponent {
 
 	componentDidMount() {
 		this.requestsWatcher();
+		this.props.getUserData();
 	}
 
 	componentWillUnmount() {
@@ -54,7 +55,7 @@ class Header extends React.PureComponent {
 	}
 
 	render() {
-		const avatar = this.props.userData ? this.props.userData.userAvatar || (this.props.userData.userInfo && this.props.userData.userInfo[0].AVATAR_URI) : unknownPerson
+		const avatar = this.props.userData? this.props.userData.userAvatar : null
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
 				{this.props.width < 600 ? <FontIcon
@@ -97,7 +98,7 @@ class Header extends React.PureComponent {
 							size={PersonaSize.size32}
 							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
 							imageAlt="User photo"
-							imageUrl={this.props.userData? this.props.userData.userAvatar : null}
+							imageUrl={avatar}
 						/>
 					</Stack>
 				</div>
@@ -122,7 +123,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		removeRequest: (promise) => removeRequest(dispatch, promise),
 		toggleLeftPanel: state => setLeftPanel(dispatch, state),
-		setRightPanel: (rightPanel) => setRightPanel(dispatch, rightPanel)
+		setRightPanel: (rightPanel) => setRightPanel(dispatch, rightPanel),
+		getUserData: () => getUserData(dispatch)
 	}
 }
 

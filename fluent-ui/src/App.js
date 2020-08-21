@@ -88,9 +88,8 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
-
-        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
 				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
+        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
 				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
