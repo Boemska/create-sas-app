@@ -91,6 +91,22 @@ export async function renameProject(dispatch, newName, projectContent, uri) {
 
 }
 
+export async function getUserAvatar(dispatch, username) {
+  const url = `/identities/users/${username}`
+  try{
+    const res = await adapterService.managedRequest(dispatch, 'get', url, {});
+
+    res.body.userAvatar = url + '/avatar/content';
+
+    console.log("res", res);
+
+    setCreatorAvatar(dispatch, res.body)
+  }
+  catch(e) {
+    console.log("USER AVATAR ERROR", e)
+  }
+}
+
 export async function deleteProject(dispatch, uri) {
   try{
     await adapterService.deleteItem(dispatch, uri);
@@ -117,6 +133,13 @@ export function selectProject(dispatch, payload) {
 export function updateProject(dispatch, payload){
   dispatch({
     type: ActionTypes.UPDATE_PROJECT,
+    payload
+  })
+}
+
+export function setCreatorAvatar(dispatch, payload) {
+  dispatch({
+    type: ActionTypes.GET_CREATOR_AVATAR,
     payload
   })
 }

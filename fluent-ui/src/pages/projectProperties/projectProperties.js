@@ -2,11 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {getProject, fetchSingleProject, deleteProject} from './projectActions'
 import {useDispatch, useSelector} from 'react-redux'
 import './projectProperties.scss'
-import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton, Modal} from '@fluentui/react'
+import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton, Modal, Stack, CommandButton, Separator, Persona, PersonaSize} from '@fluentui/react'
 import {useParams, useHistory } from 'react-router-dom';
 import ActionTypes from './ActionTypes';
 import { useBoolean } from '@uifabric/react-hooks';
 import QRcode from 'qrcode.react';
+import {getUserAvatar} from './projectActions'
 
 
 const onRenderOverflowButton = overflowItems => {
@@ -15,7 +16,7 @@ const onRenderOverflowButton = overflowItems => {
       minWidth: 0,
       padding: '0 4px',
       alignSelf: 'center',
-      height: '50px',
+     
     },
   };
   return (
@@ -45,9 +46,9 @@ const ProjectProperties = props => {
   const dispatch = useDispatch();
   const shareURL = window.location.href;
   const [message, setMessage] = useState(false);
-  // const {uri} = useParams();
-  const uri = '34292165-c0a3-4652-b678-70cc85aae540'; //hardcoded project from EconoAp
-  const {save, projectContent, projectMetadata} = useSelector(state => state.project);
+  const {uri} = useParams();
+  // const uri = '34292165-c0a3-4652-b678-70cc85aae540'; //hardcoded project from EconoAp
+  const {save, projectContent, projectMetadata, createdByAvatar: userData} = useSelector(state => state.project);
 
   const [hideDialog, {toggle: toggleDialog}] = useBoolean(true);
   const [qrDialog, {toggle: toggleQR}] = useBoolean(false);
@@ -56,7 +57,8 @@ const ProjectProperties = props => {
 
     if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
       
-      getProject(dispatch, uri);
+      getProject(dispatch, uri).then(({projectMetadata}) => getUserAvatar(dispatch, projectMetadata.createdBy));
+      // getUserAvatar(dispatch, projectMetadata.createdBy)
 		}
     return () => {
       
@@ -85,66 +87,72 @@ const ProjectProperties = props => {
     },
   ]
 
+  
+  const projectActions = {
+    items: [
+      {
+        key: 'rename',
+        text: 'Rename project',
+        iconProps: { iconName: 'Edit' },
+        onClick: () => props.rename(projectContent.name)
+      },
+      {
+        key: 'delete',
+        text: 'Delete project',
+        iconProps: { iconName: 'Delete' },
+        onClick: toggleDialog,
+      },
+    ]
+  };
+
   return (
     projectMetadata && projectContent?
-      <div className={'projectProperties'}>
-          
-        <div className={'projectDetails ms-depth-16 p-2r'}>
+      <div className={'projectProperties align-center'}>
 
-        <div className={'flex flex-row mb-15 '}>
-          <OverflowSet
+        <Stack horizontal verticalAlign={'center'}>
+          <CommandButton text='Show QR code' iconProps={{iconName: "Share"}}  onClick={toggleQR}/>
+          <CommandButton text='Copy link' iconProps={{iconName: "Copy"}} onClick={() => copy(shareURL)}/>
+          <CommandButton text="" iconProps={{iconName:'CollapseMenu'}} menuProps={projectActions}/>
+          {/* <OverflowSet
               aria-label="Basic Menu Example"
               role="menubar"
               overflowItems={items}
               onRenderOverflowButton={onRenderOverflowButton}
-            />
-            <div className={'ml-15 fs-42'}>{projectMetadata.name}</div>
-          </div>
-          <div className={'fs-32 mb-15'}>Project properties:</div>
-
-          {projectMetadata.parentFolderUri && <div> <div className={'fs-24 mb-10'}>Parent folder</div> <div className={'fs-16 mb-15'}>{projectMetadata.parentFolderUri}</div> </div>}
-        
-      
-          <div className={'fs-24 mb-10'}>Created by</div>
-        <div className={'fs-16 mb-15'}>{projectMetadata.createdBy}</div>
-
-          <div className={'fs-24 mb-10'}>Project file URI</div>
-          <div className={'fs-16 mb-15'}>{projectMetadata.uri}</div>
-
-          {
-            projectContent && <div> 
-              <div className={'fs-24 mb-10'}>Last modified</div>
-            <div className={'fs-16 mb-15'}>{projectContent.lastModified}</div>
-            </div>
-          }
-        </div>
-
-        <div className={'shareProject mt-20 p-2r ms-depth-16 flex flex-row'}>
-
-          <div >
-            <div className={'fs-24 mb-15'}>Share project</div>
-
-            <div className={'fs-16 mb-10'}>Project URL</div>
-            <div className={'fs-16 mb-15'}>{shareURL}</div>
-
-            <Button onClick={() => copy(shareURL)}>Copy URL</Button>
-            {
-              message && <div style={{width: '300px'}}> <MessageBar className={'mt-15'}  messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar> </div>
+            /> */}
+             {
+              message && <div style={{width: '300px'}}> <MessageBar   messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar> </div>
             }
-          </div> 
-          <QRcode size={220} className={'qr'} value={shareURL} onClick={toggleQR}/>
-          <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
-            <QRcode value={shareURL} size={window.innerWidth < 500 ? 250 : 500} />
-          </Modal>
-         
-        </div>
+        </Stack>
+        <Separator />
+          
+        <div className={'content'}>
+          <div className={'fs-42'}>{projectContent.name}</div>
+          <div className={'fs-16 mt-15'}> Last modified {projectContent.lastModified}</div>
 
-        
-       <ConfirmationModal hidden={hideDialog} close={toggleDialog}
-          confirm={() => deleteProject(dispatch, projectMetadata.uri).then(() => {
-         toggleDialog();
-         history.push('/');
-       })} />
+
+          <div className={'mt-20 mb-15 fs-28 section'}>Created by</div>
+          {
+            userData && <Persona text={userData.name} 
+            secondaryText= {userData ? "Software Engineer" : ""} 
+            size={PersonaSize.size56}
+            hidePersonaDetails={false}
+            imageAlt="User photo"
+            imageUrl={userData? userData.userAvatar : null}/>
+          }
+
+          <div className={'mt-20 fs-28 section'}>Project URI</div>
+          <div className={'mt15 fs-16'}>{shareURL}</div>
+
+          <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
+              <QRcode value={shareURL} size={window.innerWidth < 500 ? 250 : 500} />
+            </Modal>
+
+            <ConfirmationModal hidden={hideDialog} close={toggleDialog}
+                confirm={() => deleteProject(dispatch, projectMetadata.uri).then(() => {
+              toggleDialog();
+              history.push('/');
+            })} />
+        </div>
       </div> : <div> <h1 style={{color: 'red'}}>{(uri !== null && uri !== 'noProject')? "404. Project with the given URI could not be found." : "No project selected"}</h1></div>
       
  

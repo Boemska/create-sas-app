@@ -4,19 +4,22 @@ const initialState = {
 	projectMetadata: JSON.parse(localStorage.getItem("projectMetadata")),
 	projectContent: JSON.parse(localStorage.getItem("projectContent")),
   save: JSON.parse(localStorage.getItem('save')),
+  createdByAvatar: JSON.parse(localStorage.getItem('createdBy'))
 }
 
-const saveChanges = (projectContent, newArray, action) => {
-  const newProject = Object.assign({}, projectContent, {
-    [action.payload.field]: newArray
-  })
-  localStorage.setItem("projectContent", JSON.stringify(newProject));
-  localStorage.setItem("save" , JSON.stringify(true))
-  return {
-      projectContent: newProject,
-      save: true
-  }
-}
+// Usefull function of project has more then one array properties which members change over time
+
+// const saveChanges = (projectContent, newArray, action) => {
+//   const newProject = Object.assign({}, projectContent, {
+//     [action.payload.field]: newArray
+//   })
+//   localStorage.setItem("projectContent", JSON.stringify(newProject));
+//   localStorage.setItem("save" , JSON.stringify(true))
+//   return {
+//       projectContent: newProject,
+//       save: true
+//   }
+// }
 
 export function projectReducer(state = initialState, action) {
 
@@ -69,7 +72,13 @@ export function projectReducer(state = initialState, action) {
       localStorage.removeItem('save')
       localStorage.removeItem('projectContent');
       localStorage.removeItem('projectMetadata');
+      localStorage.removeItem('createdBy');
       return Object.assign({}, {projectMetadata: null, projectContent: null, save: false});
+    }
+
+    case ActionTypes.GET_CREATOR_AVATAR :{
+      localStorage.setItem('createdBy', JSON.stringify(action.payload))
+      return Object.assign({}, state, {createdByAvatar: action.payload})
     }
     
 		default:

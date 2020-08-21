@@ -1,19 +1,31 @@
 .projectProperties {
-
+  margin: -2rem; //Override fluents "main" padding so menu will stay on top
+ 
   .shareProject, .projectDetails {
     max-width: 700px;
   }
 
+  .content {
+    // Add regular padding for rest of content
+    padding: 2rem;
+  }
   
   .qr:hover{
     cursor: pointer;
 
   }
 
+  .section {
+    margin-top: 70px;
+  }
+
+  .root-102 {
+    height: 0;
+  }
 }
 
 .qrDialog{ 
-  .main-109 {
+  .ms-Dialog-main {
     max-height: 800px;
     max-width: 800px;
     padding: 4.5rem;
