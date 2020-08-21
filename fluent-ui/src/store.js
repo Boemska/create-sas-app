@@ -5,12 +5,13 @@ import homeReducer from './pages/home/homeReducer'
 import loginReducer from './components/loginModal/loginReducer'
 import {adapterReducer} from './adapterService/adapterReducer' // eslint-disable-line no-unused-vars
 import headerReducer from "./components/header/headerReducer" // eslint-disable-line no-unused-vars
+import projectListReducer from './pages/projectList/projectListReducer'
 
 let middlewares = []
 
 middlewares.push(thunk)
 
-const showLogs = false
+const showLogs = true
 
 // if (process.env.NODE_ENV !== 'production') {
 // 	if (showLogs) {
@@ -32,7 +33,8 @@ const reducer = combineReducers({
 	home: homeReducer,
 	login: loginReducer,
 	adapter: adapterReducer,
-	header: headerReducer
+	header: headerReducer,
+	projectList: projectListReducer
 })
 
 export function getStore(preloadedState) {

@@ -1,8 +1,6 @@
 import React from 'react'
-import BoCollapsible from '../../components/colapsable/boCollapsible'
 import {connect} from 'react-redux'
 import { Stack, Panel, PanelType , CommandBarButton, DefaultButton} from '@fluentui/react'
-import LogHeader from '../../components/logHeader/logHeader'
 import './debugLogs.scss'
 
 class DebugLogs extends React.Component {
@@ -29,14 +27,10 @@ class DebugLogs extends React.Component {
 				</div>
 				<Panel 
 					className={'debugPanel'}
-					//zIndex should be less than zIndex in rightPanel(App.js)
+					//this subpanel goes above rightPanel
 					layerProps={{ styles: { root: { zIndex: 999999 }}}}
 					type={PanelType.medium}
 					isOpen={this.state.isOpen}
-					//isLightDismiss
-					// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-					//closeButtonAriaLabel="Close"
-					//onDismiss={() => setRightPanel(dispatch, false)}
 					hasCloseButton={false}
 				>
 				 {this.state.log && <div

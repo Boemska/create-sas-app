@@ -97,7 +97,7 @@ class Header extends React.PureComponent {
 							size={PersonaSize.size32}
 							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
 							imageAlt="User photo"
-							imageUrl={avatar}
+							imageUrl={this.props.userData? this.props.userData.userAvatar : null}
 						/>
 					</Stack>
 				</div>
