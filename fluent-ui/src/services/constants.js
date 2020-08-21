@@ -4,3 +4,5 @@ export const adapterConsts = {
 	'STARTUP_SERVICE': 'common/startupService'
 	// 'USER_INDENTITIES': '/SASJobExecution/'
 }
+
+export const PROJECT_EXTENTION = '';

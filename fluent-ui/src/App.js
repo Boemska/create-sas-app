@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'react-toggle/style.css'
 import 'toastr/toastr.scss'
 import './App.scss';
@@ -28,6 +28,9 @@ import {
 } from '@fluentui/react';
 import {setRightPanel} from './pages/home/homeActions'
 import appSettings from './appSettings'
+import ProjectProperties from './pages/projectProperties/projectProperties';
+import RenameProject from './pages/projectProperties/renameProject';
+import {PROJECT_EXTENTION} from './services/constants';
 
 
 const myTheme = createTheme({
@@ -59,7 +62,11 @@ const myTheme = createTheme({
 Customizations.applySettings({theme: myTheme});
 
 function App() {
-	const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  
+  const [renameProject, setRenameProject] = useState({isOpen: false, value: ''})
+  const {projectMetadata} = useSelector(state => state.project)
+  const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
 
 	// Set initial window width
 	setWindowWidth(dispatch, window.innerWidth)
@@ -82,6 +89,7 @@ function App() {
 		{
 			links: [
 				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
+        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
 				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
@@ -114,7 +122,7 @@ function App() {
 				<div className={'flex'}>
 					<Nav
 						className={`nav ${leftPanel || width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
-						onLinkClick={() => console.log('click')}
+						onLinkClick={e =>  console.log('click', e)}
 						selectedKey="key1"
 						ariaLabel="Nav basic example"
 						groups={navLinkGroups}
@@ -137,6 +145,9 @@ function App() {
 						<div className={'mainContainer'}>
 							<Switch>
 								<Route exact path='/' component={Home}/>
+                <Route exact path='/project/:uri'>
+                  <ProjectProperties  rename={oldValue => setRenameProject({isOpen: true, value: oldValue})} />
+                </Route>
 								<Route exact path='/error' component={Page500}/>
 								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
 								<Route exact path='/errorLogs' component={ErrorLogs}/>
@@ -150,6 +161,7 @@ function App() {
 				</div>
 				<Portal>
 					<LoginModal/>
+          <RenameProject isOpen={renameProject.isOpen} value={renameProject.value} close={() => setRenameProject({isOpen: false, value: ''})}/>
 				</Portal>
 			</div>
 		</Fabric>
