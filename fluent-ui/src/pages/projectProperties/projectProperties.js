@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {getProject, fetchSingleProject, deleteProject} from './projectActions'
 import {useDispatch, useSelector} from 'react-redux'
 import './projectProperties.scss'
-import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton} from '@fluentui/react'
+import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton, Modal} from '@fluentui/react'
 import {useParams, useHistory } from 'react-router-dom';
 import ActionTypes from './ActionTypes';
 import { useBoolean } from '@uifabric/react-hooks';
+import QRcode from 'qrcode.react';
 
-const noOp = () => undefined;
 
 const onRenderOverflowButton = overflowItems => {
   const buttonStyles = {
@@ -46,10 +46,11 @@ const ProjectProperties = props => {
   const shareURL = window.location.href;
   const [message, setMessage] = useState(false);
   // const {uri} = useParams();
-  const uri = 'bb18a9de-0b90-4d69-85a2-dd9385e0180c'; //hardcoded project from EconoAp
+  const uri = '34292165-c0a3-4652-b678-70cc85aae540'; //hardcoded project from EconoAp
   const {save, projectContent, projectMetadata} = useSelector(state => state.project);
 
   const [hideDialog, {toggle: toggleDialog}] = useBoolean(true);
+  const [qrDialog, {toggle: toggleQR}] = useBoolean(false);
 
   useEffect(() => {
 
@@ -88,48 +89,57 @@ const ProjectProperties = props => {
     projectMetadata && projectContent?
       <div className={'projectProperties'}>
           
-        <div className={'projectDetails'}>
+        <div className={'projectDetails ms-depth-16 p-2r'}>
 
-        <div className={'flex flex-row'}>
+        <div className={'flex flex-row mb-15 '}>
           <OverflowSet
               aria-label="Basic Menu Example"
               role="menubar"
               overflowItems={items}
               onRenderOverflowButton={onRenderOverflowButton}
             />
-            <h1 className={'ml-15'}>{projectMetadata.name}</h1>
+            <div className={'ml-15 fs-42'}>{projectMetadata.name}</div>
           </div>
-          <h2>Project properties</h2>
+          <div className={'fs-32 mb-15'}>Project properties:</div>
 
-          {projectMetadata.parentFolderUri && <div> <h3>Parent folder</h3> <p>{projectMetadata.parentFolderUri}</p> </div>}
+          {projectMetadata.parentFolderUri && <div> <div className={'fs-24 mb-10'}>Parent folder</div> <div className={'fs-16 mb-15'}>{projectMetadata.parentFolderUri}</div> </div>}
+        
+      
+          <div className={'fs-24 mb-10'}>Created by</div>
+        <div className={'fs-16 mb-15'}>{projectMetadata.createdBy}</div>
 
-          <h3>Created by</h3>
-        <p>{projectMetadata.createdBy}</p>
-
-          <h3>Project file URI</h3>
-          <p>{projectMetadata.uri}</p>
+          <div className={'fs-24 mb-10'}>Project file URI</div>
+          <div className={'fs-16 mb-15'}>{projectMetadata.uri}</div>
 
           {
             projectContent && <div> 
-              <h3>Last modified</h3>
-            <p>{projectContent.lastModified}</p>
+              <div className={'fs-24 mb-10'}>Last modified</div>
+            <div className={'fs-16 mb-15'}>{projectContent.lastModified}</div>
             </div>
           }
         </div>
 
-        <div className={'shareProject'}>
+        <div className={'shareProject mt-20 p-2r ms-depth-16 flex flex-row'}>
 
-          <h2>Share project</h2>
+          <div >
+            <div className={'fs-24 mb-15'}>Share project</div>
 
-          <p>Project URL</p>
-          <p>{shareURL}</p>
+            <div className={'fs-16 mb-10'}>Project URL</div>
+            <div className={'fs-16 mb-15'}>{shareURL}</div>
 
-          <Button onClick={() => copy(shareURL)}>Copy URL</Button>
+            <Button onClick={() => copy(shareURL)}>Copy URL</Button>
+            {
+              message && <div style={{width: '300px'}}> <MessageBar className={'mt-15'}  messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar> </div>
+            }
+          </div> 
+          <QRcode size={220} className={'qr'} value={shareURL} onClick={toggleQR}/>
+          <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
+            <QRcode value={shareURL} size={window.innerWidth < 500 ? 250 : 500} />
+          </Modal>
+         
         </div>
 
-        {
-          message && <MessageBar messageBarType={MessageBarType.success}>URL copied to clipboard</MessageBar>
-        }
+        
        <ConfirmationModal hidden={hideDialog} close={toggleDialog}
           confirm={() => deleteProject(dispatch, projectMetadata.uri).then(() => {
          toggleDialog();

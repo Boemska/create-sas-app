@@ -64,6 +64,8 @@ function App() {
   const dispatch = useDispatch()
   
   const [renameProject, setRenameProject] = useState({isOpen: false, value: ''})
+  const {projectMetadata} = useSelector(state => state.project)
+  const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
 
 	// Set initial window width
 	setWindowWidth(dispatch, window.innerWidth)
@@ -85,7 +87,8 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
-				{name: 'Home', url: '/', key: 'key1',  icon: 'home'},
+				{name: 'Home', url: '#/', key: 'home',  icon: 'home'},
+				{name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
 				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
@@ -117,7 +120,7 @@ function App() {
 				<div className={'flex'}>
 					<Nav
 						className={`nav ${leftPanel || width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
-						onLinkClick={() => console.log('click')}
+						onLinkClick={e =>  console.log('click', e)}
 						selectedKey="key1"
 						ariaLabel="Nav basic example"
 						groups={navLinkGroups}
