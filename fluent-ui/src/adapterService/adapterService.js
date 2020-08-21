@@ -5,6 +5,8 @@ import ADAPTER_SETTINGS from './config'
 import {setShouldLogin} from '../components/loginModal/loginModalActions'
 import {setRequest} from './adapterActions'
 import toastr from 'toastr'
+import {PROJECT_EXTENTION} from '../services/constants'
+import {getSelfUriFromLinks} from '../components/utils'
 
 toastr.options.progressBar = true;
 
@@ -296,6 +298,38 @@ class adapterService {
 		});
 		this._handleRequest(dispatch, promise, 'Update ' + itemUri)
 		return promise
+  }
+  
+  async getAllProjects(dispatch) {
+
+		let url = "/folders/folders/@item?path=" + ADAPTER_SETTINGS.metadataRoot;
+		let res = await this.managedRequest(dispatch, 'get', url, {});
+		const afiUrl = getSelfUriFromLinks(res.body)
+		if (afiUrl !== '') {
+			let url = afiUrl + "/members?filter=and(eq('contentType', 'file'),endsWith('name','" + PROJECT_EXTENTION + "'))&limit=10000";
+			res = await this.managedRequest(dispatch, 'get', url, {});
+		}
+
+		return res.body.items;
+	}
+
+	getProject(dispatch, projectUri) {
+		if (!projectUri.includes('/files/files')) projectUri = '/files/files/' + projectUri;
+
+		return this.getFileDetails(dispatch, projectUri).then(res => {
+			let projectMetadata = res.body
+
+			const content = this.getFileContent(dispatch, projectUri);
+
+			return content.then(contentRes => {
+				const projectContent = Object.assign({}, contentRes.body,
+					{lastModified: contentRes.headers['last-modified'] || contentRes.headers.get('Last-Modified')});
+				projectMetadata.uri = projectUri
+				return {
+					projectMetadata, projectContent
+				}
+			})
+		})
 	}
 }
 
