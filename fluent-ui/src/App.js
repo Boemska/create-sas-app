@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ActionTypes from './pages/home/ActionTypes'
 import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 import RightPanelContent from './components/rightPanelContent/rightPanelContent'
+import ProjectList from './pages/projectList/projectList'
 
 import {
 	createTheme,
@@ -80,6 +81,7 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
+				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
 				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
 				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
 				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
@@ -140,6 +142,7 @@ function App() {
 								<Route exact path='/errorLogs' component={ErrorLogs}/>
 								<Route exact path='/failedRequests' component={FailedRequests}/>
 								<Route exact path='/debugLogs' component={DebugLogs}/>
+								<Route exact path='/projectList' component={ProjectList}/>
 								<Route component={Page404}/>
 							</Switch>
 						</div>

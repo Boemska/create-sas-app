@@ -35,7 +35,7 @@ class RightPanelFooter extends React.Component{
     <Stack gap={10}>
       <Stack.Item>
         <Persona
-          text= {userData? userData.name : "Unknown person"}
+          text= {userData? userData.name : null}
           secondaryText= {userData ? "Software Engineer" : ""}
           size={PersonaSize.size56}
           hidePersonaDetails={false}
