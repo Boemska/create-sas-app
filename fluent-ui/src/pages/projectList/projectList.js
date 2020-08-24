@@ -4,23 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
 import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from './projectListActions'
+import NewProject from '../../components/newProject/newProject'
 import moment from 'moment'
-
-const newMenuProps = {
-  items: [
-    {
-      key: 'Test',
-      text: 'Test',
-      iconProps: { iconName: 'Mail' },
-      onClick: ()=>{console.log("Test")}
-    },
-    {
-      key: 'calendarEvent',
-      text: 'Calendar event',
-      iconProps: { iconName: 'Calendar' },
-    },
-  ]
-};
 
 const uploadMenuProps = {
   items: [
@@ -34,10 +19,10 @@ const uploadMenuProps = {
 };
 
 class ProjectList extends React.PureComponent {
-
+  
   constructor(props){
     super(props);
-
+    
     const columns = [
       {
         key: 'column0',
@@ -79,27 +64,43 @@ class ProjectList extends React.PureComponent {
         onRender: (item) => {
           return <span>{moment(item.modifiedTimeStamp).format('DD-MM-YYYY HH:mm')}</span>;
         }
-       },
+      },
       { key: 'column3', name: 'Modified By', fieldName: 'modifiedBy', minWidth: 200, maxWidth: 230, isResizable: true, data: 'string'}
-      // { key: 'column4', name: 'File size (kB)', fieldName: 'fileSize', minWidth: 70, maxWidth: 90, isResizable: true,  data: 'number' },
-      // { key: 'column5', name: 'Sharing', fieldName: 'sharing', minWidth: 70, maxWidth: 90, isResizable: true }
     ];
-
+    
     this.state={
+      menuProps : {
+        items: [
+          {
+            key: 'Project',
+            text: 'Project',
+            iconProps: { iconName: 'TextDocument' },
+            onClick: ()=>{this.setState({isOpenNewProject:true})}
+          },
+          {
+            key: 'Folder',
+            text: 'Folder',
+            iconProps: { iconName: 'OpenFolderHorizontal' },
+            onClick: ()=>console.log("Add new folder")
+          }
+        ]
+      },
+      metadataRoot: "/", //use it for creating a new project
+      isOpenNewProject: false,
       breadCrumb : [{ text: 'Files', key: 'Files', onClick: ()=>{this.handleBcClick({id:'Files'})}}],
       columns: columns,
       items: []
     }
   }
-
+  
   componentDidMount = () => {
     this.props.fetchRootFolders();
   }
-
+  
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     this.setState({items : nextProps.folders})
   }
-
+  
   getIconDependOnItemType= (item) =>{
     switch(item.contentType){
       case 'file': return 'TextDocument'
@@ -110,6 +111,10 @@ class ProjectList extends React.PureComponent {
   renderRow= (props) => {
     const {item} = props;
     return <DetailsRow {...props} onClick={()=>this.handleRowClick(item)} />
+  }
+
+  generateMetadataRoot=(folderName)=>{
+    this.setState({metadataRoot : `${this.state.metadataRoot}/${folderName}`})
   }
 
   handleRowClick= (item) => {
@@ -129,6 +134,7 @@ class ProjectList extends React.PureComponent {
         this.props.fetchFolderChildrenByUri(item.uri);
       }
       this.setState({ breadCrumb : breadCrumb.concat(bc) })
+      this.setState({ metadataRoot : `${this.state.metadataRoot}${bc.text}/`})
     }
   }
 
@@ -143,6 +149,11 @@ class ProjectList extends React.PureComponent {
       this.props.fetchFolderChildrenByUri(item.uri);
 		}
     this.setState({breadCrumb: breadCrumb.slice(0, index+1)})
+    if(breadCrumb[index+1]){ //handle for click on last on breadCrumb
+    let position = this.state.metadataRoot.search(`${breadCrumb[index+1].text}/`)
+    let newMetadataRoot = this.state.metadataRoot.slice(0,position);
+    this.setState({metadataRoot: newMetadataRoot})
+    }
   }
 
   render(){
@@ -153,7 +164,7 @@ class ProjectList extends React.PureComponent {
             <CommandButton
               iconProps={ { iconName: 'Add' }}
               text="New"
-              menuProps={newMenuProps}
+              menuProps={this.state.menuProps}
             />
             <CommandButton
               iconProps={ { iconName: 'Upload' }}
@@ -179,6 +190,7 @@ class ProjectList extends React.PureComponent {
             onRenderRow={this.renderRow}
           />
         </Stack>
+        <NewProject isOpen={this.state.isOpenNewProject} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewProject:false})}/>
       </div>
     )
   }
