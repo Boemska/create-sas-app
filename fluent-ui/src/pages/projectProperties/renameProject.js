@@ -1,5 +1,5 @@
-import React, {useState, useEffect, Component} from 'react'
-import {Modal, TextField, Dialog, PrimaryButton, DefaultButton, DialogFooter} from '@fluentui/react'
+import React, { Component} from 'react'
+import { TextField, Dialog, PrimaryButton, DefaultButton, DialogFooter} from '@fluentui/react'
 import {connect} from 'react-redux';
 import {renameProject} from './projectActions';
 
@@ -28,9 +28,14 @@ class RenameProject extends Component {
 
   rename = () => {
     //No need to send request of name stayed the same
+    this.setState({error: ''})
+    if (this.state.name === '') {
+      this.setState({error: "Please enter a name for the project"});
+      return;
+    }
     if (this.state.name !== this.state.oldPropsName) {
       this.props.rename(this.state.name, this.props.projectContent, this.props.projectMetadata.uri)
-                .then(() => this.props.close())
+                .then(() => this.close())
                 .catch(e => this.setState({error: e}))
     }
   }

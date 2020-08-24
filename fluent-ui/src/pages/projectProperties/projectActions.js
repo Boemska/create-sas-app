@@ -84,6 +84,10 @@ export async function renameProject(dispatch, newName, projectContent, uri) {
       return Promise.reject("The file has been updated since you last retrieved it");
     }
 
+    if (e.status === 409) {
+      return Promise.reject("A project with this name already exists");
+    }
+
     //TODO: Add more custom error handlers if needed
 
     return Promise.reject(e.message);
