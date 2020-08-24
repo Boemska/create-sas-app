@@ -1,34 +1,13 @@
 import React, {useEffect, useState} from 'react'
-import {getProject, fetchSingleProject, deleteProject} from './projectActions'
+import {getProject,  deleteProject} from './projectActions'
 import {useDispatch, useSelector} from 'react-redux'
 import './projectProperties.scss'
-import {Button, MessageBar, MessageBarType, OverflowSet, IconButton, Link, Dialog, DialogFooter, PrimaryButton, DefaultButton, Modal, Stack, CommandButton, Separator, Persona, PersonaSize} from '@fluentui/react'
+import { MessageBar, MessageBarType,  Dialog, DialogFooter, PrimaryButton, DefaultButton, Modal, Stack, CommandButton, Separator, Persona, PersonaSize} from '@fluentui/react'
 import {useParams, useHistory } from 'react-router-dom';
-import ActionTypes from './ActionTypes';
 import { useBoolean } from '@uifabric/react-hooks';
 import QRcode from 'qrcode.react';
 import {getUserAvatar} from './projectActions'
-
-
-const onRenderOverflowButton = overflowItems => {
-  const buttonStyles = {
-    root: {
-      minWidth: 0,
-      padding: '0 4px',
-      alignSelf: 'center',
-     
-    },
-  };
-  return (
-    <IconButton
-      role="menuitem"
-      title="More options"
-      styles={buttonStyles}
-      menuIconProps={{ iconName: 'More' }}
-      menuProps={{ items: overflowItems }}
-    />
-  );
-};
+import RenameProject from './renameProject';
 
 const ConfirmationModal = props => {
   return (
@@ -41,7 +20,7 @@ const ConfirmationModal = props => {
   )
 }
 
-const ProjectProperties = props => {
+const ProjectProperties = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const shareURL = window.location.href;
@@ -52,11 +31,11 @@ const ProjectProperties = props => {
 
   const [hideDialog, {toggle: toggleDialog}] = useBoolean(true);
   const [qrDialog, {toggle: toggleQR}] = useBoolean(false);
+  const [renameProject, setRenameProject] = useState({isOpen: false, value: ''})
 
   useEffect(() => {
     if (uri !== null && uri !== "noProject" && (!projectMetadata || (projectMetadata && projectMetadata.uri.split('/').pop() !== uri))) {
       getProject(dispatch, uri).then(({projectMetadata}) => getUserAvatar(dispatch, projectMetadata.createdBy));
-      // getUserAvatar(dispatch, projectMetadata.createdBy)
 		}
     return () => {
       
@@ -72,27 +51,13 @@ const ProjectProperties = props => {
     }, 2000)
   }
 
-  const items = [
-    {
-      key: 'rename',
-      name: 'Rename project',
-      onClick: () => props.rename(projectContent.name),
-    },
-    {
-      key: 'delete',
-      name: 'Delete project',
-      onClick: toggleDialog,
-    }
-  ]
-
-  
   const projectActions = {
     items: [
       {
         key: 'rename',
         text: 'Rename project',
         iconProps: { iconName: 'Edit' },
-        onClick: () => props.rename(projectContent.name)
+        onClick: () => setRenameProject({isOpen: true, value: projectContent.name})
       },
       {
         key: 'delete',
@@ -144,7 +109,7 @@ const ProjectProperties = props => {
           <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
               <QRcode value={shareURL} size={window.innerWidth < 500 ? 250 : 500} />
             </Modal>
-
+            <RenameProject isOpen={renameProject.isOpen} value={renameProject.value} close={() => setRenameProject({isOpen: false, value: ''})}/>
             <ConfirmationModal hidden={hideDialog} close={toggleDialog}
                 confirm={() => deleteProject(dispatch, projectMetadata.uri).then(() => {
               toggleDialog();

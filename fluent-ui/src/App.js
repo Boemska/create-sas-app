@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import 'react-toggle/style.css'
 import 'toastr/toastr.scss'
 import './App.scss';
 import {Switch, Route} from 'react-router-dom';
 import Home from './pages/home/home'
-import Footer from './components/footer/footer'
 import Header from './components/header/header'
 import Page500 from './pages/Page500/Page500'
 import Page404 from './pages/Page404/Page404'
@@ -20,17 +19,14 @@ import ActionTypes from './pages/home/ActionTypes'
 import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 import RightPanelContent from './components/rightPanelContent/rightPanelContent'
 import ProjectList from './pages/projectList/projectList'
-
 import {
 	createTheme,
 	Customizations,
 	Fabric,
 } from '@fluentui/react';
-import {setRightPanel} from './pages/home/homeActions'
 import appSettings from './appSettings'
 import ProjectProperties from './pages/projectProperties/projectProperties';
-import RenameProject from './pages/projectProperties/renameProject';
-import {PROJECT_EXTENTION} from './services/constants';
+
 
 
 const myTheme = createTheme({
@@ -64,7 +60,6 @@ Customizations.applySettings({theme: myTheme});
 function App() {
   const dispatch = useDispatch()
   
-  const [renameProject, setRenameProject] = useState({isOpen: false, value: ''})
   const {projectMetadata} = useSelector(state => state.project)
   const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
 
@@ -145,9 +140,7 @@ function App() {
 						<div className={'mainContainer'}>
 							<Switch>
 								<Route exact path='/' component={Home}/>
-                <Route exact path='/project/:uri'>
-                  <ProjectProperties  rename={oldValue => setRenameProject({isOpen: true, value: oldValue})} />
-                </Route>
+                <Route exact path='/project/:uri' component={ProjectProperties} />
 								<Route exact path='/error' component={Page500}/>
 								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
 								<Route exact path='/errorLogs' component={ErrorLogs}/>
@@ -161,7 +154,7 @@ function App() {
 				</div>
 				<Portal>
 					<LoginModal/>
-          <RenameProject isOpen={renameProject.isOpen} value={renameProject.value} close={() => setRenameProject({isOpen: false, value: ''})}/>
+          
 				</Portal>
 			</div>
 		</Fabric>
