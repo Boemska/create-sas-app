@@ -21,7 +21,6 @@ class RightPanelContent extends React.Component {
 	}
 
   componentDidMount() {
-		this.props.getUserData()
 		let debugMode;
 		const debugModeLocalStore = localStorage.getItem('debugMode');
 		if (debugModeLocalStore) {
