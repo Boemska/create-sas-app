@@ -57,7 +57,7 @@ const ProjectProperties = () => {
         key: 'rename',
         text: 'Rename project',
         iconProps: { iconName: 'Edit' },
-        onClick: () => setRenameProject({isOpen: true, value: projectContent.name})
+        onClick: () => setRenameProject({isOpen: true, value: projectMetadata.name})
       },
       {
         key: 'delete',
@@ -73,9 +73,11 @@ const ProjectProperties = () => {
       <div className={'projectProperties align-center'}>
 
         <Stack horizontal verticalAlign={'center'} className={'projectPropertiesHeader'}>
-          <CommandButton text='Show QR code' iconProps={{iconName: "Share"}}  onClick={toggleQR}/>
+          <CommandButton text='Show QR' iconProps={{iconName: "QRCode"}}  onClick={toggleQR}/>
           <CommandButton text='Copy link' iconProps={{iconName: "Copy"}} onClick={() => copy(shareURL)}/>
-          <CommandButton text="" iconProps={{iconName:'CollapseMenu'}} menuProps={projectActions}/>
+          <CommandButton text='Rename project' iconProps={{iconName: "Edit"}} onClick={() => setRenameProject({isOpen: true, value: projectMetadata.name})}/>
+          <CommandButton text='Delete project' iconProps={{iconName: "Delete"}} onClick={toggleDialog}/>
+          {/* <CommandButton text="" iconProps={{iconName:'CollapseMenu'}} menuProps={projectActions}/> */}
           {/* <OverflowSet
               aria-label="Basic Menu Example"
               role="menubar"
@@ -89,11 +91,11 @@ const ProjectProperties = () => {
         <Separator />
           
         <div className={'content'}>
-          <div className={'fs-42 ms-fontWeight-bold'}>{projectContent.name}</div>
+          <div className={'fs-42 ms-fontWeight-bold'}>{projectMetadata.name}</div>
           <div className={'fs-16 mt-15'}> Last modified {projectContent.lastModified}</div>
 
 
-          <div className={'mt-20 mb-15 fs-20 section ms-fontWeight-bold'}>Created by</div>
+          <div className={'mt-20 mb-15 fs-16 section ms-fontWeight-bold'}>Created by</div>
           {
             userData && <Persona text={userData.name} 
             secondaryText= {userData ? "Software Engineer" : ""} 
@@ -103,7 +105,7 @@ const ProjectProperties = () => {
             imageUrl={userData? userData.userAvatar : null}/>
           }
 
-          <div className={'mt-20 fs-20 section ms-fontWeight-bold'}>Project URI</div>
+          <div className={'mt-20 fs-16 section ms-fontWeight-bold'}>Project URI</div>
           <div className={'mt15 fs-16'}>{shareURL}</div>
 
           <Modal isOpen={qrDialog} onDismiss={toggleQR} className={'qrDialog'}>
