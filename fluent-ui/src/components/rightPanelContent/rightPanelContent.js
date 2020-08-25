@@ -11,7 +11,7 @@ import ErrorLogs from '../../pages/errorLogs/errorLogs'
 import DebugLogs from '../../pages/debugLogs/debugLogs'
 
 
-class RightPanelContent extends React.Component {
+class RightPanelContent extends React.PureComponent {
   constructor(props) {
 		super(props);
 		this.handleSwitchChange = this.handleSwitchChange.bind(this);
@@ -37,9 +37,7 @@ class RightPanelContent extends React.Component {
 		this.setState({
 			debugMode: !this.state.debugMode
 		}, () => {
-			adapterService._debugMode = this.state.debugMode;
-			const debugMode = adapterService._debugMode
-			localStorage.setItem("debugMode", debugMode);
+			adapterService.setDebugMode(this.state.debugMode)
 		})
 	}
 

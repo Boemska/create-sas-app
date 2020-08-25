@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import { Stack, Panel, PanelType , CommandBarButton, DefaultButton} from '@fluentui/react'
 import './debugLogs.scss'
 
-class DebugLogs extends React.Component {
+class DebugLogs extends React.PureComponent {
 
 	constructor(props){
 		super(props);
