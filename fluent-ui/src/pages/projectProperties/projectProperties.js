@@ -118,7 +118,7 @@ const ProjectProperties = () => {
               history.push('/');
             })} />
         </div>
-      </div> : <div> <h1 style={{color: 'red'}}>{(uri !== null && uri !== 'noProject')? "404. Project with the given URI could not be found." : "No project selected"}</h1></div>
+      </div> : <div className={' fs-24'}> {(uri !== null && uri !== 'noProject')? "404. Project with the given URI could not be found." : "No project currently active. Projects can be created or loaded from the SAS Folders section of the app"}</div>
       
  
   )
