@@ -85,10 +85,7 @@ function App() {
 			links: [
 				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
         {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
-				{name: 'Home', url: 'http://msn.com', key: 'key1', target: '_blank', icon: 'home'},
-				{name: 'Title1', url: 'http://msn.com', key: 'key2', target: '_blank'},
-				{name: 'Title2', url: 'http://msn.com', key: 'key4', target: '_blank'},
-				{name: 'Title3', url: 'http://msnsdf.com', key: 'key3', target: '_blank'},
+				{name: 'Home', url: '#/', key: 'home', icon: 'home'},
 				{
 					name: 'GroupTitle',
 					links: [
