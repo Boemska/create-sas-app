@@ -83,8 +83,8 @@ function App() {
 	const navLinkGroups = [
 		{
 			links: [
-				{name: 'My Projects', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
-        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'ProjectLogo16'},
+				{name: 'SAS Folders', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
+        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'AllApps'},
 				{name: 'Home', url: '#/', key: 'home', icon: 'home'},
 				{
 					name: 'GroupTitle',
