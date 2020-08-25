@@ -5,6 +5,7 @@ import {setUserData,getUserData} from '../../pages/home/homeActions'
 import {Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence, Dialog, DialogFooter,DialogType, PrimaryButton, DefaultButton} from '@fluentui/react';
 import {clearRequests} from '../../adapterService/adapterActions'
 import moment from 'moment'
+import {removeRequest} from '../../adapterService/adapterActions'
 
 class RightPanelFooter extends React.Component{
   constructor(props){
@@ -18,6 +19,7 @@ class RightPanelFooter extends React.Component{
 
   logout=()=>{
     this.setState({isHidden:true})
+    setTimeout(()=>{ 
 		adapterService.logout()
 			.then(() => {
 				// This will trigger getting user's data and
@@ -29,7 +31,8 @@ class RightPanelFooter extends React.Component{
 			.catch(e => {
         //TO DO
 				//toastr.error('Something went wrong!')
-			})
+      })
+    },500)
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -142,7 +145,8 @@ function mapDispatchToProps(dispatch) {
 	return {
 		clearRequests: () => clearRequests(dispatch),
     setUserData: (payload) => setUserData(dispatch,payload),
-    getUserData: () => getUserData(dispatch)
+    getUserData: () => getUserData(dispatch),
+    removeRequest: (key) => removeRequest(dispatch, key)
 	}
 }
 
