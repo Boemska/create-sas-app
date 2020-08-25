@@ -58,8 +58,8 @@ class Header extends React.PureComponent {
 		const avatar = this.props.userData? this.props.userData.userAvatar : null
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
-				{this.props.width < 600 ? <FontIcon
-					iconName="Waffle"
+				{this.props.width < 600 ? <IconButton
+          iconProps={{iconName: 'GlobalNavButton'}}
 					className={`${iconClass} leftPanelToggle`}
 					onClick={() => this.props.toggleLeftPanel(!this.props.leftPanel)}/> : <div></div>
 				}
