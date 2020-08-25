@@ -83,10 +83,22 @@ class Header extends React.PureComponent {
 	}
 
 	getPresentanceStage=()=>{
-		if (this.props.offline) return PersonaPresence.offline
-		if (this.state.loading) return PersonaPresence.away
-    if (!this.state.loading && this.state.requests.length > 0 &&  !this.state.requests[0].successful) return PersonaPresence.dnd
-    if (!this.state.loading && this.state.requests.length > 0 &&  this.state.requests[0].successful)  return PersonaPresence.online
+		if (this.props.offline) {
+			this.props.changeAvatarPresence(PersonaPresence.offline)
+			return PersonaPresence.offline
+			}
+		if (this.state.loading){
+			this.props.changeAvatarPresence(PersonaPresence.away)
+			return PersonaPresence.away
+		}
+    if (!this.state.loading && this.state.requests.length > 0 &&  !this.state.requests[0].successful){
+			this.props.changeAvatarPresence(PersonaPresence.dnd)
+			return PersonaPresence.dnd
+		} 
+    if (!this.state.loading && this.state.requests.length > 0 &&  this.state.requests[0].successful){
+			this.props.changeAvatarPresence(PersonaPresence.online)
+			return PersonaPresence.online
+		}  
 	}
 
 	render() {
