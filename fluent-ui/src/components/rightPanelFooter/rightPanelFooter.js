@@ -4,12 +4,15 @@ import {connect} from 'react-redux'
 import {setUserData,getUserData} from '../../pages/home/homeActions'
 import {Stack, CommandBarButton, Persona, PersonaSize, PersonaPresence, Dialog, DialogFooter,DialogType, PrimaryButton, DefaultButton} from '@fluentui/react';
 import {clearRequests} from '../../adapterService/adapterActions'
+import moment from 'moment'
 
 class RightPanelFooter extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      isHidden : true
+      isHidden : true,
+      requests: [],
+      loading: false
     }
   }
 
@@ -29,6 +32,58 @@ class RightPanelFooter extends React.Component{
 			})
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+		if (this.props.requests !== nextProps.requests) {
+		 this.getRequestsList(nextProps)
+		}
+   }
+
+   requestsWatcher = () => {
+		this.requestsWatcherInterval = setInterval(() => {
+			Array.from(this.props.requests.keys()).forEach(key => {
+				let param = this.props.requests.get(key)
+				let timeDiff = moment().diff(moment(param.timestamp), 'seconds')
+				if (timeDiff > 360) {
+					this.props.removeRequest(key)
+				}
+			})
+		})
+	}
+   
+   componentDidMount() {
+    this.requestsWatcher();
+    this.props.getUserData();
+  }
+  
+  componentWillUnmount() {
+		clearInterval(this.requestsWatcherInterval);
+	}
+
+  getRequestsList (props) {
+    const requests = Array.from(props.requests.values()).reverse()
+
+    let loading = false;
+    for (let file of requests) {
+      if (file.running) {
+        loading = true;
+        break;
+      }
+    }
+
+    this.loading = loading;
+    this.setState({
+      loading,
+      requests
+    })
+  }
+
+  getPresentanceStage=()=>{
+		if (this.props.offline) return PersonaPresence.offline
+		if (this.state.loading) return PersonaPresence.away
+    if (!this.state.loading && this.state.requests.length > 0 &&  !this.state.requests[0].successful) return PersonaPresence.dnd
+    if (!this.state.loading && this.state.requests.length > 0 &&  this.state.requests[0].successful)  return PersonaPresence.online
+	}
+
   render(){
   const {userData} = this.props;
   return(
@@ -39,7 +94,7 @@ class RightPanelFooter extends React.Component{
           secondaryText= {userData ? "Software Engineer" : ""}
           size={PersonaSize.size56}
           hidePersonaDetails={false}
-          presence={userData ? PersonaPresence.online : PersonaPresence.away}
+          presence={this.getPresentanceStage()}
           imageAlt="User photo"
           imageUrl={userData? userData.userAvatar : null}
         />
@@ -77,7 +132,9 @@ class RightPanelFooter extends React.Component{
 
 function mapStateToProps(state) {
 	return {
+    requests: state.adapter.requests,
     userData: state.home.userData,
+		offline: state.header.offline,
   }
 }
 
