@@ -5,3 +5,10 @@ export function getSelfUriFromLinks(body) {
 	}
 	return null
 }
+
+export function getSelfUri(links){
+	return links
+	.filter(e => e.rel === 'self')
+	.map(e => e.uri)
+	.shift();
+}

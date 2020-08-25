@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
 import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from './projectListActions'
 import NewProject from '../../components/newProject/newProject'
+import NewFolder from '../../components/newProject/newFolder'
 import moment from 'moment'
 
 const uploadMenuProps = {
@@ -81,11 +82,12 @@ class ProjectList extends React.PureComponent {
             key: 'Folder',
             text: 'Folder',
             iconProps: { iconName: 'OpenFolderHorizontal' },
-            onClick: ()=>console.log("Add new folder")
+            onClick: ()=>{this.setState({isOpenNewFolder:true})}
           }
         ]
       },
       metadataRoot: "/", //use it for creating a new project
+      isOpenNewFolder: false,
       isOpenNewProject: false,
       breadCrumb : [{ text: 'Files', key: 'Files', onClick: ()=>{this.handleBcClick({id:'Files'})}}],
       columns: columns,
@@ -191,6 +193,7 @@ class ProjectList extends React.PureComponent {
           />
         </Stack>
         <NewProject isOpen={this.state.isOpenNewProject} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewProject:false})}/>
+        <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})}/>
       </div>
     )
   }
