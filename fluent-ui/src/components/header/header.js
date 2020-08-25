@@ -31,6 +31,10 @@ class Header extends React.PureComponent {
 		super(props)
 		this.requestsWatcherInterval = null
 		this.customization = Customizations.getSettings(['theme'])
+		this.state = {
+      requests: [],
+      loading: false
+    }
 	}
 
 	requestsWatcher = () => {
@@ -45,6 +49,30 @@ class Header extends React.PureComponent {
 		})
 	}
 
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (this.props.requests !== nextProps.requests) {
+		 this.getRequestsList(nextProps)
+		}
+	 }
+
+	 getRequestsList (props) {
+    const requests = Array.from(props.requests.values()).reverse()
+
+    let loading = false;
+    for (let file of requests) {
+      if (file.running) {
+        loading = true;
+        break;
+      }
+    }
+
+    this.loading = loading;
+    this.setState({
+      loading,
+      requests
+    })
+  }
+
 	componentDidMount() {
 		this.requestsWatcher();
 		this.props.getUserData();
@@ -52,6 +80,13 @@ class Header extends React.PureComponent {
 
 	componentWillUnmount() {
 		clearInterval(this.requestsWatcherInterval);
+	}
+
+	getPresentanceStage=()=>{
+		if (this.props.offline) return PersonaPresence.offline
+		if (this.state.loading) return PersonaPresence.away
+    if (!this.state.loading && this.state.requests.length > 0 &&  !this.state.requests[0].successful) return PersonaPresence.dnd
+    if (!this.state.loading && this.state.requests.length > 0 &&  this.state.requests[0].successful)  return PersonaPresence.online
 	}
 
 	render() {
@@ -96,7 +131,7 @@ class Header extends React.PureComponent {
 						<Persona
 							onClick={() => this.props.setRightPanel(!this.props.rightPanel)}
 							size={PersonaSize.size32}
-							presence={this.props.userData ? PersonaPresence.online : PersonaPresence.away}
+							presence={this.getPresentanceStage()}
 							imageAlt="User photo"
 							imageUrl={avatar}
 						/>
