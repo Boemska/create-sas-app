@@ -3,6 +3,7 @@ import {TextField, Dialog, PrimaryButton, DefaultButton, DialogFooter} from '@fl
 import {connect} from 'react-redux';
 import { createNewFolder } from './newFolderActions';
 import {withRouter} from 'react-router-dom'
+import {getSelfUri} from '../utils'
 
 class NewFolder extends Component {
 
@@ -17,9 +18,10 @@ class NewFolder extends Component {
 
   submit = () => {
     const res =this.props.createNewFolder(this.props.metadataRoot, this.state.name, {})
-    res.then(() => {
+    res.then((newFolder) => {
       console.log("Successfully created new folder!")
       this.close();
+      this.props.openFolder({...newFolder, uri:getSelfUri(newFolder.links)})
     }).catch((er)=>{
       this.setState({error : er})
     })

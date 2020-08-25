@@ -193,7 +193,9 @@ class ProjectList extends React.PureComponent {
           />
         </Stack>
         <NewProject isOpen={this.state.isOpenNewProject} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewProject:false})}/>
-        <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})}/>
+        <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})} 
+           openFolder={(newFolder)=>this.handleRowClick(newFolder)} 
+          />
       </div>
     )
   }
