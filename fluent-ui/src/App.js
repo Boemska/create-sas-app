@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'react-toggle/style.css'
 import 'toastr/toastr.scss'
 import './App.scss';
@@ -61,7 +61,8 @@ function App() {
   const dispatch = useDispatch()
   
   const {projectMetadata} = useSelector(state => state.project)
-  const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
+	const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
+	const [avatarPresence, setAvatarPresence] = useState(null)
 
 	// Set initial window width
 	setWindowWidth(dispatch, window.innerWidth)
@@ -110,7 +111,7 @@ function App() {
 	return (
 		<Fabric applyThemeToBody>
 			<div className="App">
-				<Header/>
+				<Header changeAvatarPresence={(presence)=>setAvatarPresence(presence) }/>
 				<div className={'flex'}>
 					<Nav
 						className={`nav ${leftPanel || width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
@@ -128,7 +129,7 @@ function App() {
 					  //closeButtonAriaLabel="Close"
 						//onDismiss={() => setRightPanel(dispatch, false)}
 						hasCloseButton={false}
-						onRenderFooterContent={()=>{return <RightPanelFooter/>}}
+						onRenderFooterContent={()=>{return <RightPanelFooter avatarPresence={avatarPresence} />}}
 						isFooterAtBottom={true}
 					>
 						<RightPanelContent/>
