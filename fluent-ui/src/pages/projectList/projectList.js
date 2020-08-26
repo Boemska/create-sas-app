@@ -7,6 +7,7 @@ import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from
 import NewProject from '../../components/newProject/newProject'
 import NewFolder from '../../components/newProject/newFolder'
 import moment from 'moment'
+import RenameFolder from '../../components/newProject/renameFolder';
 
 const uploadMenuProps = {
   items: [
@@ -87,6 +88,8 @@ class ProjectList extends React.PureComponent {
         ]
       },
       metadataRoot: "/", //use it for creating a new project
+      folderName: 'Files',
+      isOpenRenameFolder: false,
       isOpenNewFolder: false,
       isOpenNewProject: false,
       breadCrumb : [{ text: 'Files', key: 'Files', onClick: ()=>{this.handleBcClick({id:'Files'})}}],
@@ -144,16 +147,16 @@ class ProjectList extends React.PureComponent {
     const {breadCrumb} = this.state;
     const index = breadCrumb.findIndex((bc)=>bc.key === item.id)
     if(index===0){ //root
-      this.props.fetchRootFolders();
+      this.props.fetchRootFolders()
     } else if (index === 1) { // we are in root folder
-      this.props.fetchFolderChildren(item.id);
+      this.props.fetchFolderChildren(item.id)
 		} else {
-      this.props.fetchFolderChildrenByUri(item.uri);
+      this.props.fetchFolderChildrenByUri(item.uri)
 		}
     this.setState({breadCrumb: breadCrumb.slice(0, index+1)})
     if(breadCrumb[index+1]){ //handle for click on last on breadCrumb
     let position = this.state.metadataRoot.search(`${breadCrumb[index+1].text}/`)
-    let newMetadataRoot = this.state.metadataRoot.slice(0,position);
+    let newMetadataRoot = this.state.metadataRoot.slice(0,position)
     this.setState({metadataRoot: newMetadataRoot})
     }
   }
@@ -174,8 +177,9 @@ class ProjectList extends React.PureComponent {
               menuProps={uploadMenuProps}
             />
             <CommandButton
-              iconProps={ { iconName: 'Link' }}
-              text="Copy link"
+              iconProps={ { iconName: 'Edit' }}
+              text="Rename folder"
+              onClick={()=>this.setState({isOpenRenameFolder:true})}
             />
           </Stack>
           <Separator/>
@@ -196,6 +200,7 @@ class ProjectList extends React.PureComponent {
         <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})} 
            openFolder={(newFolder)=>this.handleRowClick(newFolder)} 
           />
+        <RenameFolder isOpen={this.state.isOpenRenameFolder} folder={this.state.breadCrumb[this.state.breadCrumb.length-1]} close={()=>this.setState({isOpenRenameFolder:false})}/>
       </div>
     )
   }
