@@ -3,7 +3,7 @@ import "./projectList.scss";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
-import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from './projectListActions'
+import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri, setCurrentFolder } from './projectListActions'
 import NewProject from '../../components/newProject/newProject'
 import NewFolder from '../../components/newProject/newFolder'
 import moment from 'moment'
@@ -123,6 +123,8 @@ class ProjectList extends React.PureComponent {
   }
 
   handleRowClick= (item) => {
+    console.log("FOLDERS", this.props.folders)
+
     if(item.contentType==='file'){
       let uri = item.uri.split('/').pop()
       this.props.history.push(`/project/${uri}`)
@@ -134,8 +136,10 @@ class ProjectList extends React.PureComponent {
         uri: item.uri? item.uri : null,
         onClick: () => {this.handleBcClick(item)}}
       if (breadCrumb.length === 1) { // we are in root folder
+ 
         this.props.fetchFolderChildren(item.id);
       } else {
+      
         this.props.fetchFolderChildrenByUri(item.uri);
       }
       this.setState({ breadCrumb : breadCrumb.concat(bc) })
@@ -147,8 +151,10 @@ class ProjectList extends React.PureComponent {
     const {breadCrumb} = this.state;
     const index = breadCrumb.findIndex((bc)=>bc.key === item.id)
     if(index===0){ //root
+      this.props.setCurrentFolder(null);
       this.props.fetchRootFolders()
     } else if (index === 1) { // we are in root folder
+
       this.props.fetchFolderChildren(item.id)
 		} else {
       this.props.fetchFolderChildrenByUri(item.uri)
@@ -159,6 +165,16 @@ class ProjectList extends React.PureComponent {
     let newMetadataRoot = this.state.metadataRoot.slice(0,position)
     this.setState({metadataRoot: newMetadataRoot})
     }
+  }
+
+  handleRename = newName => {
+    const breadCrumbs = [...this.state.breadCrumb];
+
+    breadCrumbs[breadCrumbs.length - 1].text = newName;
+
+    this.setState({
+      breadCrumb: breadCrumbs
+    })
   }
 
   render(){
@@ -179,7 +195,8 @@ class ProjectList extends React.PureComponent {
             <CommandButton
               iconProps={ { iconName: 'Edit' }}
               text="Rename folder"
-              onClick={()=>this.setState({isOpenRenameFolder:true})}
+              onClick={()=>{this.setState({isOpenRenameFolder:true})}}
+              disabled={this.props.currentFolder === null}
             />
           </Stack>
           <Separator/>
@@ -200,7 +217,11 @@ class ProjectList extends React.PureComponent {
         <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})} 
            openFolder={(newFolder)=>this.handleRowClick(newFolder)} 
           />
-        <RenameFolder isOpen={this.state.isOpenRenameFolder} folder={this.state.breadCrumb[this.state.breadCrumb.length-1]} close={()=>this.setState({isOpenRenameFolder:false})}/>
+        <RenameFolder isOpen={this.state.isOpenRenameFolder} folder={this.state.breadCrumb[this.state.breadCrumb.length-1]} close={newName =>{
+          this.setState({isOpenRenameFolder:false})
+          if (newName && newName !== this.state.breadCrumb[this.state.breadCrumb.length -1].text) 
+            this.handleRename(newName);
+        }}/>
       </div>
     )
   }
@@ -210,13 +231,15 @@ function mapDispatchToProps(dispatch) {
 	return {
     fetchRootFolders: () => fetchRootFolders(dispatch),
     fetchFolderChildren: (folderId) => fetchFolderChildren(dispatch, folderId),
-		fetchFolderChildrenByUri: (uri) => fetchFolderChildrenByUri(dispatch, uri)
+    fetchFolderChildrenByUri: (uri) => fetchFolderChildrenByUri(dispatch, uri),
+    setCurrentFolder: folder => setCurrentFolder(dispatch, folder),
 	}
 }
 
 function mapStateToProps(store) {
 	return {
-		 folders: store.projectList.folders,
+     folders: store.projectList.folders,
+     currentFolder: store.projectList.currentFolder
 	}
 }
 

@@ -61,36 +61,38 @@ export async function fetchSingleProject(dispatch, uri) {
 
 export async function renameProject(dispatch, newName, projectContent, uri) {
 
+  try {
+    if (!uri.includes(filesPrefix)) uri = filesPrefix + uri;
+    let forBlob = JSON.stringify({name: newName});
+    let blob = new Blob([forBlob], {type: "octet/stream"});
 
-  try{ 
-    let newProject = Object.assign({}, projectContent, {name: newName});
-    const blob = getProjectBlob(newProject);
+    const res = await adapterService.updateFileMetadata(dispatch, uri, blob, projectContent.lastModified);
 
-    const res = await adapterService.updateFile(dispatch, uri, blob, newProject.lastModified);
-
-    console.log("RES", res);
-
-    newProject.lastModified = res.headers['last-modified'] || res.headers.get('Last-Modified');
     res.body.uri = uri;
-    updateProject(dispatch, newProject);
     selectProject(dispatch, res.body);
-
+    projectContent.lastModified = res.headers['last-modified'] || res.headers.get('Last-Modified');
+    dispatch({
+      type: ActionTypes.FETCH_SINGLE_PROJECT,
+      payload: projectContent
+    })
+    console.log("RES", res);
     return Promise.resolve();
   }
   catch(e) {
     console.log("RENAME PROJECT ERROR", e)
 
-    if (e.status === 412) {
-      return Promise.reject("The file has been updated since you last retrieved it");
-    }
+      if (e.status === 412) {
+        return Promise.reject("The file has been updated since you last retrieved it");
+      }
+  
+      if (e.status === 409) {
+        return Promise.reject("A project with this name already exists");
+      }
+  
+      //TODO: Add more custom error handlers if needed
+  
+      return Promise.reject(e.message);
 
-    if (e.status === 409) {
-      return Promise.reject("A project with this name already exists");
-    }
-
-    //TODO: Add more custom error handlers if needed
-
-    return Promise.reject(e.message);
   }
 
 }

@@ -330,7 +330,28 @@ class adapterService {
 				}
 			})
 		})
-	}
+  }
+  
+  updateFileMetadata(dispatch, itemUri, changes, lastModified) {
+    const promise = new Promise((resolve, reject) => {
+			this._adapter.updateFileMetadata(itemUri, changes, lastModified, {
+				callback: (err, res) => this._callback(err, res, resolve, reject, dispatch)
+			});
+		});
+		this._handleRequest(dispatch, promise, 'Update file' + itemUri)
+		return promise
+  }
+
+  updateFolderMetadata(dispatch, folderUri, changes, lastModified, partialData = false) {
+    const promise = new Promise((resolve, reject) => {
+			this._adapter.updateFolderMetadata(folderUri, changes, lastModified, {
+        partialData,
+				callback: (err, res) => this._callback(err, res, resolve, reject, dispatch)
+			});
+		});
+		this._handleRequest(dispatch, promise, 'Update folder' + folderUri)
+		return promise
+  }
 }
 
 export default new adapterService()

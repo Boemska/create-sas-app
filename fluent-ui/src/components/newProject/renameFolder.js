@@ -1,6 +1,7 @@
 import React, { Component} from 'react'
 import { TextField, Dialog, PrimaryButton, DefaultButton, DialogFooter} from '@fluentui/react'
 import {connect} from 'react-redux';
+import {renameFolder} from './newFolderActions';
 //import {renameProject} from './projectActions';
 
 class RenameFolder extends Component {
@@ -16,9 +17,9 @@ class RenameFolder extends Component {
     }
   }
 
-  close = () => {
+  close = newName => {
     this.setState({name: '', error: '', oldPropsName: ''});
-    this.props.close();
+    this.props.close(newName);
   }
 
   static getDerivedStateFromProps(props, state){
@@ -28,6 +29,10 @@ class RenameFolder extends Component {
   }
 
   rename = () => {
+
+    console.log("FOLDE", this.props.currentFolder)
+
+
     //No need to send request of name stayed the same
     // this.setState({error: ''})
     // if (this.state.name === '') {
@@ -41,6 +46,10 @@ class RenameFolder extends Component {
     // }
     console.log("NAME",this.state.name)
     console.log("ID",this.state.folderId)
+    const uri = '/folders/folders/' + this.props.currentFolder.id;
+    this.props.renameFolder(uri, this.state.name, this.props.currentFolder.lastModified)
+      .then(() => this.close(this.state.name))
+      .catch(error => this.setState({error}));
   }
   
   render() {
@@ -53,7 +62,7 @@ class RenameFolder extends Component {
   
         <DialogFooter>
           <PrimaryButton text="Rename" onClick={this.rename} disabled={this.state.name==='Files'?true:false}/>
-          <DefaultButton text="Close" onClick={this.close}/>
+          <DefaultButton text="Close" onClick={() => this.close(null)}/>
         </DialogFooter>
       </Dialog>
     )
@@ -64,13 +73,15 @@ class RenameFolder extends Component {
 function mapStateToProps(store) {
 	return {
     projectContent: store.project.projectContent,
-    projectMetadata: store.project.projectMetadata
+    projectMetadata: store.project.projectMetadata,
+    currentFolder: store.projectList.currentFolder
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-   // rename: (newName, projectContent, uri) => renameProject(dispatch, newName, projectContent, uri)
+    // renameFolder: (folder, newName) => renameFolder(dispatch, folder, newName),
+    renameFolder: (uri, newName, lastModified) => renameFolder(dispatch, uri, newName, lastModified),
 	}
 }
 

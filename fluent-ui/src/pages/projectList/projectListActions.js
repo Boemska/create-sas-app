@@ -21,7 +21,8 @@ export async function fetchFolderChildren(dispatch,folderId) {
 		dispatch({
 			type: ActionTypes.FETCH_FOLDER_CHILDREN,
 			payload: res.body.items
-		})
+    })
+
 	} catch (error) {
 		console.log("Fetch folder's children error: ", error);
 	}
@@ -35,7 +36,12 @@ export async function fetchFolderChildrenByUri(dispatch,uri) {
 		dispatch({
 			type: ActionTypes.FETCH_FOLDER_CHILDREN,
 			payload: res.body.items
-		})
+    })
+    
+    let currentFolderDetails = await adapterService.managedRequest(dispatch, 'get', uri);
+    currentFolderDetails.body.lastModified = currentFolderDetails.headers['last-modified'] || currentFolderDetails.headers.get('Last-Modified');
+    setCurrentFolder(dispatch, currentFolderDetails.body);
+
 	} catch (error) {
 		console.log("Fetch folder's children by uri error: ", error);
 	}
@@ -44,5 +50,12 @@ export async function fetchFolderChildrenByUri(dispatch,uri) {
 export async function leaveCurrentFolder(dispatch) {
   dispatch({
     type: ActionTypes.LEAVE_CURRENT_FOLDER
+  })
+}
+
+export function setCurrentFolder(dispatch, folder) {
+  dispatch({
+    type: ActionTypes.SET_CURRENT_FOLDER,
+    payload: folder
   })
 }
