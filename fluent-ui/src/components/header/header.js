@@ -67,10 +67,12 @@ class Header extends React.PureComponent {
     }
 
     this.loading = loading;
-    this.setState({
-      loading,
+    const obj = {
+      loading, 
       requests
-    })
+    }
+    this.setState(obj)
+    props.setHeaderState(obj)
   }
 
 	componentDidMount() {
@@ -84,25 +86,26 @@ class Header extends React.PureComponent {
 
 	getPresentanceStage=()=>{
 		if (this.props.offline) {
-			this.props.changeAvatarPresence(PersonaPresence.offline)
+
 			return PersonaPresence.offline
 			}
 		if (this.state.loading){
-			this.props.changeAvatarPresence(PersonaPresence.away)
+		
 			return PersonaPresence.away
 		}
     if (!this.state.loading && this.state.requests.length > 0 &&  !this.state.requests[0].successful){
-			this.props.changeAvatarPresence(PersonaPresence.dnd)
+
 			return PersonaPresence.dnd
 		} 
     if (!this.state.loading && this.state.requests.length > 0 &&  this.state.requests[0].successful){
-			this.props.changeAvatarPresence(PersonaPresence.online)
+
 			return PersonaPresence.online
 		}  
 	}
 
 	render() {
-		const avatar = this.props.userData? this.props.userData.userAvatar : null
+    const avatar = this.props.userData? this.props.userData.userAvatar : null;
+    const presence = this.getPresentanceStage();
 		return (
 			<div className={'header'} style={{backgroundColor: this.customization.theme.palette.themePrimary}}>
 				{this.props.width < 600 ? <IconButton
@@ -143,7 +146,7 @@ class Header extends React.PureComponent {
 						<Persona
 							onClick={() => this.props.setRightPanel(!this.props.rightPanel)}
 							size={PersonaSize.size32}
-							presence={this.getPresentanceStage()}
+							presence={presence}
 							imageAlt="User photo"
 							imageUrl={avatar}
 						/>

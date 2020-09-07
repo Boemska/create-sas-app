@@ -14,7 +14,7 @@ import FailedRequests from './pages/failedRequests/failedRequests'
 import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
 import {Panel, Nav} from '@fluentui/react'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import ActionTypes from './pages/home/ActionTypes'
 import RightPanelFooter from './components/rightPanelFooter/rightPanelFooter'
 import RightPanelContent from './components/rightPanelContent/rightPanelContent'
@@ -22,7 +22,8 @@ import ProjectList from './pages/projectList/projectList'
 import {
 	createTheme,
 	Customizations,
-	Fabric,
+  Fabric,
+  PersonaPresence
 } from '@fluentui/react';
 import appSettings from './appSettings'
 import ProjectProperties from './pages/projectProperties/projectProperties';
@@ -57,110 +58,137 @@ const myTheme = createTheme({
 });
 Customizations.applySettings({theme: myTheme});
 
-function App() {
-  const dispatch = useDispatch()
+class App extends React.Component {
+
+  constructor(props) {
+		super(props)
+		this.state = {
+			avatarPresence: null,
+			headerState: {
+				requests: [],
+				loading: false
+			}
+		}
+  }
   
-  const {projectMetadata} = useSelector(state => state.project)
-	const projectUri = projectMetadata?  projectMetadata.uri.split('/').pop() : 'noProject';
-	const [avatarPresence, setAvatarPresence] = useState(null)
+  onResize = () => {
+		this.props.setWindowWidth(window.innerWidth)
+	}
 
-	// Set initial window width
-	setWindowWidth(dispatch, window.innerWidth)
+	componentDidMount() {
+		this.onResize()
+		window.addEventListener('resize', this.onResize)
+	}
 
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.onResize)
+  }
 
-	useEffect(() => {
-		const onResize = () => {
-			setWindowWidth(dispatch, window.innerWidth)
+  getPresentanceStage = () => {
+		if (this.props.offline) {
+			// this.props.changeAvatarPresence(PersonaPresence.offline)
+			return PersonaPresence.offline
+			}
+		if (this.state.headerState.loading){
+			// this.props.changeAvatarPresence(PersonaPresence.away)
+			return PersonaPresence.away
 		}
-		window.addEventListener('resize', onResize)
-		return () => {
-			window.removeEventListener('resize', onResize)
+    if (!this.state.headerState.loading && this.state.headerState.requests.length > 0 &&  !this.state.headerState.requests[0].successful){
+			// this.props.changeAvatarPresence(PersonaPresence.dnd)
+			return PersonaPresence.dnd
 		}
-	}, [dispatch])
+    if (!this.state.headerState.loading && this.state.headerState.requests.length > 0 &&  this.state.headerState.requests[0].successful){
+			// this.props.changeAvatarPresence(PersonaPresence.online)
+			return PersonaPresence.online
+		}
+	}
 
-	const width = useSelector(state => state.home.width)
 
-	const leftPanel = useSelector(state => state.home.leftPanel)
-	const navLinkGroups = [
-		{
-			links: [
-				{name: 'SAS Folders', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
-        {name: 'Project properties', url: `#/project/${projectUri}`, key: 'project',  icon: 'AllApps'},
-				{name: 'Home', url: '#/', key: 'home', icon: 'home'},
-				{
-					name: 'GroupTitle',
-					links: [
-						{
-							key: 'ActivityItem',
-							name: 'ActivityItem',
-						},
-						{
-							key: 'Breadcrumb',
-							name: 'Breadcrumb',
-						},
-						{
-							key: 'Button',
-							name: 'Button',
-						},
-					]
-				},
-			],
-		},
-	];
-	const rightPanel = useSelector(state => state.home.rightPanel)
-	return (
-		<Fabric applyThemeToBody>
-			<div className="App">
-				<Header changeAvatarPresence={(presence)=>setAvatarPresence(presence) }/>
-				<div className={'flex'}>
-					<Nav
-						className={`nav ${leftPanel || width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
-						onLinkClick={e =>  console.log('click', e)}
-						selectedKey="key1"
-						ariaLabel="Nav basic example"
-						groups={navLinkGroups}
-					/>
-					<Panel
-						layerProps={{ styles: { root: { zIndex: 999998 }}}}
-						className={'rightPanel'}
-						isOpen={rightPanel}
-						//isLightDismiss
-						// You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-					  //closeButtonAriaLabel="Close"
-						//onDismiss={() => setRightPanel(dispatch, false)}
-						hasCloseButton={false}
-						onRenderFooterContent={()=>{return <RightPanelFooter avatarPresence={avatarPresence} />}}
-						isFooterAtBottom={true}
-					>
-						<RightPanelContent/>
-					</Panel>
-					<div className={'main'}>
-						<div className={'mainContainer'}>
-							<Switch>
-								<Route exact path='/' component={Home}/>
-                <Route exact path='/project/:uri' component={ProjectProperties} />
-								<Route exact path='/error' component={Page500}/>
-								<Route exact path='/applicationLogs' component={ApplicationLogs}/>
-								<Route exact path='/errorLogs' component={ErrorLogs}/>
-								<Route exact path='/failedRequests' component={FailedRequests}/>
-								<Route exact path='/debugLogs' component={DebugLogs}/>
-								<Route exact path='/projectList' component={ProjectList}/>
-								<Route component={Page404}/>
-							</Switch>
-						</div>
-					</div>
-				</div>
-				<Portal>
-					<LoginModal/>
-          
-				</Portal>
-			</div>
-		</Fabric>
+  render() {
+    const projectMetadata = this.props.project.projectMetadata
+		const projectUri = projectMetadata ? projectMetadata.uri.split('/').pop() : 'noProject';
+		let links = [
+			{name: 'SAS Folders', url: '#/projectList', key: 'projectList', icon: 'FolderHorizontal'},
+			{name: 'Project properties', url: `#/project/${projectUri}`, key: 'project', icon: 'AllApps'},
+			{name: 'Home', url: '#/', key: 'home', icon: 'home'},
+		]
+		const navLinkGroups = [{links}];
 
-	);
+		const presence = this.getPresentanceStage()
+		// const presence = PersonaPresence.offline
+    return (
+      <Fabric applyThemeToBody>
+        <div className="App">
+          <Header changeAvatarPresence={(presence) => this.setState({avatarPresence: presence})} setHeaderState={state => this.setState({headerState: state})}/>
+          <div className={'flex'}>
+            <Nav
+              className={`nav ${this.props.leftPanel || this.props.width > appSettings.leftNavBrakPoint ? 'open' : ''}`}
+              onLinkClick={e =>  console.log('click', e)}
+              selectedKey="key1"
+              ariaLabel="Nav basic example"
+              groups={navLinkGroups}
+            />
+            <Panel
+              layerProps={{ styles: { root: { zIndex: 999998 }}}}
+              className={'rightPanel'}
+              isOpen={this.props.rightPanel}
+              //isLightDismiss
+              // You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
+              //closeButtonAriaLabel="Close"
+              //onDismiss={() => setRightPanel(dispatch, false)}
+              hasCloseButton={false}
+              onRenderFooterContent={()=>{return <RightPanelFooter avatarPresence={presence} />}}
+              isFooterAtBottom={true}
+            >
+              <RightPanelContent/>
+            </Panel>
+            <div className={'main'}>
+              <div className={'mainContainer'}>
+                <Switch>
+                  <Route exact path='/' component={Home}/>
+                  <Route exact path='/project/:uri' component={ProjectProperties} />
+                  <Route exact path='/error' component={Page500}/>
+                  <Route exact path='/applicationLogs' component={ApplicationLogs}/>
+                  <Route exact path='/errorLogs' component={ErrorLogs}/>
+                  <Route exact path='/failedRequests' component={FailedRequests}/>
+                  <Route exact path='/debugLogs' component={DebugLogs}/>
+                  <Route exact path='/projectList' component={ProjectList}/>
+                  <Route component={Page404}/>
+                </Switch>
+              </div>
+            </div>
+          </div>
+          <Portal>
+            <LoginModal/>
+            
+          </Portal>
+        </div>
+      </Fabric>
+  
+    )
+  }
+
 }
 
-export default App;
+function mapStateToProps(state) {
+	return {
+		project: state.project,
+		width: state.home.width,
+		rightPanel: state.home.rightPanel,
+		leftPanel: state.home.leftPanel,
+		offline: state.header.offline
+	}
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		setWindowWidth: width => setWindowWidth(dispatch, width)
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
 
 
 function setWindowWidth(dispatch, width) {
