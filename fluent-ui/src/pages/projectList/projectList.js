@@ -3,7 +3,7 @@ import "./projectList.scss";
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Stack, Separator,CommandButton,  Breadcrumb , DetailsList, FontIcon, SelectionMode, DetailsRow} from '@fluentui/react'
-import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri } from './projectListActions'
+import {  fetchRootFolders, fetchFolderChildren, fetchFolderChildrenByUri, setBreadcrumbs,  updateBreadCrumb, resetBreadcrumbs } from './projectListActions'
 import NewProject from '../../components/newProject/newProject'
 import NewFolder from '../../components/newProject/newFolder'
 import moment from 'moment'
@@ -99,7 +99,9 @@ class ProjectList extends React.PureComponent {
   }
   
   componentDidMount = () => {
-    this.props.fetchRootFolders();
+    if (!this.props.folders.length) {
+			this.props.fetchRootFolders();
+    }
   }
   
   UNSAFE_componentWillUpdate(nextProps, nextState) {
@@ -118,8 +120,16 @@ class ProjectList extends React.PureComponent {
     return <DetailsRow {...props} onClick={()=>this.handleRowClick(item)} />
   }
 
-  generateMetadataRoot=(folderName)=>{
-    this.setState({metadataRoot : `${this.state.metadataRoot}/${folderName}`})
+  generateMetadataRoot=(breadCrumb)=>{
+    let metadataRoot='/';
+    if(breadCrumb.length>1){
+      breadCrumb.forEach((bc,index) => {
+        if(index!==0){
+          metadataRoot +=`${bc.text}/`
+        }
+      });
+    }
+    return metadataRoot;
   }
 
   handleRowClick= (item) => {
@@ -127,25 +137,24 @@ class ProjectList extends React.PureComponent {
       let uri = item.uri.split('/').pop()
       this.props.history.push(`/project/${uri}`)
     }else {
-      const { breadCrumb } = this.state;
+      const breadcrumbs = this.props.breadcrumbs;
       let bc = { 
         text: item.name,
         key: item.id, 
         uri: item.uri? item.uri : null,
         onClick: () => {this.handleBcClick(item)}}
-      if (breadCrumb.length === 1) { // we are in root folder
+      if (breadcrumbs.length === 1) { // we are in root folder
         this.props.fetchFolderChildren(item.id);
       } else {
         this.props.fetchFolderChildrenByUri(item.uri);
       }
-      this.setState({ breadCrumb : breadCrumb.concat(bc) })
-      this.setState({ metadataRoot : `${this.state.metadataRoot}${bc.text}/`})
+      this.props.setBreadcrumbs(this.props.breadcrumbs.concat(bc))
     }
   }
 
   handleBcClick= (item) => {
-    const {breadCrumb} = this.state;
-    const index = breadCrumb.findIndex((bc)=>bc.key === item.id)
+    const breadcrumbs = this.props.breadcrumbs;
+    const index = breadcrumbs.findIndex((bc)=>bc.key === item.id)
     if(index===0){ //root
       this.props.fetchRootFolders()
     } else if (index === 1) { // we are in root folder
@@ -153,15 +162,11 @@ class ProjectList extends React.PureComponent {
 		} else {
       this.props.fetchFolderChildrenByUri(item.uri)
 		}
-    this.setState({breadCrumb: breadCrumb.slice(0, index+1)})
-    if(breadCrumb[index+1]){ //handle for click on last on breadCrumb
-    let position = this.state.metadataRoot.search(`${breadCrumb[index+1].text}/`)
-    let newMetadataRoot = this.state.metadataRoot.slice(0,position)
-    this.setState({metadataRoot: newMetadataRoot})
-    }
+		this.props.setBreadcrumbs(this.props.breadcrumbs.slice(0, index+1))
   }
 
   render(){
+    const metadataPath = this.generateMetadataRoot(this.props.breadcrumbs);
     return (
       <div className={'align-center'}>
         <Stack>
@@ -184,20 +189,20 @@ class ProjectList extends React.PureComponent {
           </Stack>
           <Separator/>
           <Breadcrumb
-            items={this.state.breadCrumb}
+            items={this.props.breadcrumbs}
             ariaLabel="With last item rendered as heading"
             overflowAriaLabel="More links"
           />
           <DetailsList
-            items={this.state.items}
+            items={this.props.folders}
             columns={this.state.columns}
             setKey="none"
             selectionMode={SelectionMode.none} //select row feature
             onRenderRow={this.renderRow}
           />
         </Stack>
-        <NewProject isOpen={this.state.isOpenNewProject} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewProject:false})}/>
-        <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={this.state.metadataRoot} close={()=>this.setState({isOpenNewFolder:false})} 
+        <NewProject isOpen={this.state.isOpenNewProject} metadataRoot={metadataPath} close={()=>this.setState({isOpenNewProject:false})}/>
+        <NewFolder isOpen={this.state.isOpenNewFolder} metadataRoot={metadataPath} close={()=>this.setState({isOpenNewFolder:false})} 
            openFolder={(newFolder)=>this.handleRowClick(newFolder)} 
           />
         <RenameFolder isOpen={this.state.isOpenRenameFolder} folder={this.state.breadCrumb[this.state.breadCrumb.length-1]} close={()=>this.setState({isOpenRenameFolder:false})}/>
@@ -208,15 +213,19 @@ class ProjectList extends React.PureComponent {
 
 function mapDispatchToProps(dispatch) {
 	return {
+    resetBreadcrumbs: ()=> resetBreadcrumbs(dispatch),
+    updateBreadCrumb: (item) => updateBreadCrumb(dispatch, item),
     fetchRootFolders: () => fetchRootFolders(dispatch),
     fetchFolderChildren: (folderId) => fetchFolderChildren(dispatch, folderId),
-		fetchFolderChildrenByUri: (uri) => fetchFolderChildrenByUri(dispatch, uri)
+    fetchFolderChildrenByUri: (uri) => fetchFolderChildrenByUri(dispatch, uri),
+    setBreadcrumbs: bc =>  setBreadcrumbs(dispatch, bc),
 	}
 }
 
 function mapStateToProps(store) {
 	return {
-		 folders: store.projectList.folders,
+     folders: store.projectList.folders,
+     breadcrumbs: store.projectList.breadcrumbs
 	}
 }
 

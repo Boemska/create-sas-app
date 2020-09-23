@@ -46,3 +46,27 @@ export async function leaveCurrentFolder(dispatch) {
     type: ActionTypes.LEAVE_CURRENT_FOLDER
   })
 }
+
+export function setBreadcrumbs(dispatch, bc) {
+	dispatch({
+		type: ActionTypes.SET_BREADCRUMBS,
+		payload: bc
+	})
+}
+
+export function updateBreadCrumb(dispatch, report) {
+	let bc= {
+			text: report.name,
+			key:  report.id
+		}
+	dispatch({
+		type: ActionTypes.UPDATE_BREADCRUMBS_EL_SEARCH,
+		payload: bc
+	})
+}
+
+export function resetBreadcrumbs(dispatch) {
+	dispatch({
+		type: ActionTypes.RESET_BREADCRUMBS
+	})
+}
