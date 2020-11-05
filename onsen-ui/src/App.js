@@ -22,14 +22,14 @@ import {
 import LoadingIndicator from './components/loading-indicator/loading-indicator'
 import {CustomToast} from './components/customToast/customToast'
 import unknownPerson from './assets/images/unknownPerson.png'
-import {setWelcomeMessage} from './pages/home/homeActions'
+import {setWelcomeMessage, setSplitter, setLeftSplitter} from './pages/home/homeActions'
 import ProjectProperties from './pages/projectProperties/projectProperties'
 import {fetchProjects} from './pages/projectList/projectListActions'
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.renderToolbar = this.renderToolbar.bind(this);
+		//this.renderToolbar = this.renderToolbar.bind(this);
 		this.state = {
 			isOpenLeftSplitter: false,
 			isOpenUserInfoSplitter: false
@@ -40,10 +40,6 @@ class App extends React.Component {
 		this.setState({isOpenLeftSplitter: isOpen});
 	}
 
-	setShowUserInfoSplitter = (isOpen) => {
-		this.setState({isOpenUserInfoSplitter: isOpen});
-	}
-
 
 	renderPage(route, navigator) {
 		route.props = route.props || {};
@@ -52,24 +48,32 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-
 		this.props.fetchProjects()
 	}
 
-	renderToolbar() {
-		return (
-			<Toolbar>
-				<div className="left">
-					<ToolbarButton onClick={() => this.setShowSplitter(true)}>
-						<Icon icon='md-menu'/>
-					</ToolbarButton>
-				</div>
-				<div className='right'>
-					<LoadingIndicator handleIconClick={() => this.setShowUserInfoSplitter(true)}/>
-				</div>
-			</Toolbar>
-		)
-	}
+	setShowUserInfoSplitter = (isOpen,isUserSplitter) => {
+		if(isUserSplitter==='userSplitter'){
+			this.props.setSplitter(isOpen);
+		}else{
+			this.props.setLeftSplitter(isOpen)
+		}
+  }
+
+
+	// renderToolbar() {
+	// 	return (
+	// 		<Toolbar>
+	// 			<div className="left">
+	// 				<ToolbarButton onClick={() => this.setShowSplitter(true)}>
+	// 					<Icon icon='md-menu'/>
+	// 				</ToolbarButton>
+	// 			</div>
+	// 			<div className='right'>
+	// 				<LoadingIndicator handleIconClick={() => this.setShowUserInfoSplitter(true)}/>
+	// 			</div>
+	// 		</Toolbar>
+	// 	)
+	// }
 
 	hideWelcomeMessage = () => {
 		setTimeout(() => {
@@ -108,26 +112,24 @@ class App extends React.Component {
 					side='left'
 					width={200}
 					collapse={true}
-					swipeable={true}
-					isOpen={this.state.isOpenLeftSplitter}
-					onClose={() => this.setShowSplitter(false)}
-					onOpen={() => this.setShowSplitter(true)}
+					isOpen={this.props.isOpenLeftSplitter}
+					onClose={() => this.setShowUserInfoSplitter(false,'leftSplitter')}
+					animation={'reveal'}
 				>
-					<LeftSplitter isOpenLeftSplitter={this.setShowSplitter} navigator={this.navigator}/>
+					<LeftSplitter navigator={this.navigator}/>
 				</SplitterSide>
 				<SplitterSide
 					side='right'
 					width={200}
 					collapse={true}
-					swipeable={true}
-					isOpen={this.state.isOpenUserInfoSplitter}
-					onClose={() => this.setShowUserInfoSplitter(false)}
-					onOpen={() => this.setShowUserInfoSplitter(true)}
+					isOpen={this.props.isSplitterOpen}
+          onClose={() => this.setShowUserInfoSplitter(false,'userSplitter')}
+					animation={'reveal'}
 				>
-					<UserInfoSplitter isOpenSplitter={this.setShowUserInfoSplitter} navigator={this.navigator}/>
+					<UserInfoSplitter navigator={this.navigator}/>
 				</SplitterSide>
 				<SplitterContent>
-					<Page renderToolbar={this.renderToolbar}>
+					<Page>
 						<Navigator
 							swipeable
 							initialRoute={this.getInitialRoute()}
@@ -170,14 +172,18 @@ class App extends React.Component {
 function mapStateToProps(state) {
 	return {
 		userData: state.home.userData,
-		welcomeMessage: state.home.welcomeMessage
+		welcomeMessage: state.home.welcomeMessage,
+		isSplitterOpen: state.home.isSplitterOpen,
+		isOpenLeftSplitter: state.home.isOpenLeftSplitter
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
 		setWelcomeMessage: isActive => setWelcomeMessage(dispatch, isActive),
-		fetchProjects: () => fetchProjects(dispatch)
+		fetchProjects: () => fetchProjects(dispatch),
+		setSplitter: (isSplitterOpen) => setSplitter(dispatch, isSplitterOpen),
+		setLeftSplitter: isOpenLeftSplitter => setLeftSplitter(dispatch, isOpenLeftSplitter)
 	}
 }
 

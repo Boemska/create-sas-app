@@ -4,7 +4,6 @@ import {
 	List,
 	ListItem
 } from 'react-onsenui'
-import AppTabbar from '../AppTabbar/AppTabbar'
 import MyList from '../MyList/MyList'
 import MyActionSheet from '../../pages/actionSheet/actionSheet'
 import FormInput from '../formInput/formInput'
@@ -14,6 +13,8 @@ import ModalTest from '../modal/modal'
 import MetadataTree from '../metadataTree/metadataTree'
 import ProjectList from '../../pages/projectList/projectList'
 import './leftSplitter.scss'
+import {setLeftSplitter} from "../../pages/home/homeActions";
+import {connect} from "react-redux";
 
 export class LeftSplitter extends React.PureComponent {
 	constructor(props) {
@@ -22,7 +23,7 @@ export class LeftSplitter extends React.PureComponent {
 	}
 
 	closeSplitter = () => {
-		this.props.isOpenLeftSplitter(false)
+		this.props.setLeftSplitter(false);
 	}
 
 	loadPage(page) {
@@ -37,40 +38,42 @@ export class LeftSplitter extends React.PureComponent {
 		const page_name = new_page.name
 		if(!(page_name==='projectList' && currentPage.key===null)) {
 			if (currentPage.key !== page_name) {
-				this.props.navigator.resetPage({component: page, props: {key: page_name}}, {animation: 'fade'});
+				this.props.navigator.resetPage({component: page, props: {key: page_name}}, {animation: 'slide'});
 			}
 		}
 	}
+
+	onPush = (component, key) => {
+    this.props.navigator.pushPage({component: component, props: {key: key}}, {animation: "fade"})
+    this.props.setLeftSplitter(false);
+  }
 
 	render() {
 		return (
 			<Page>
 				<List>
-					<ListItem key={'appTabbar'} onClick={this.loadPage.bind(this, AppTabbar)} tappable>
-						Home
-					</ListItem>
-					<ListItem key={'myList'} onClick={this.loadPage.bind(this, MyList)} tappable>
+					<ListItem key={'myList'} onClick={() => this.onPush(MyList, 'myList')}  tappable>
 						My List
 					</ListItem>
-					<ListItem key={'actionSheet'} onClick={this.loadPage.bind(this, MyActionSheet)} tappable>
+					<ListItem key={'actionSheet'} onClick={() => this.onPush(MyActionSheet, 'actionSheet')} tappable>
 						My Action Sheet
 					</ListItem>
-					<ListItem key={'formInput'} onClick={this.loadPage.bind(this, FormInput)} tappable>
+					<ListItem key={'formInput'} onClick={() => this.onPush(FormInput, 'formInput')} tappable>
 						Form Input
 					</ListItem>
-					<ListItem key={'alertDialogs'} onClick={this.loadPage.bind(this, AlertDialogs)} tappable>
+					<ListItem key={'alertDialogs'} onClick={() => this.onPush(AlertDialogs, 'alertDialogs')} tappable>
 						Alert Dialogs
 					</ListItem>
-					<ListItem key={'rangeSlider'} onClick={this.loadPage.bind(this, RangeSlider)} tappable>
+					<ListItem key={'rangeSlider'} onClick={() => this.onPush(RangeSlider, 'rangeSlider')} tappable>
 						Range Slider
 					</ListItem>
-					<ListItem key={'modalTest'} onClick={this.loadPage.bind(this, ModalTest)} tappable>
+					<ListItem key={'modalTest'} onClick={() => this.onPush(ModalTest, 'modalTest')} tappable>
 						Modal
 					</ListItem>
 					<ListItem key={'metadataTree'} onClick={this.loadPage.bind(this, MetadataTree)} tappable>
 						Metadata tree
 					</ListItem>
-					<ListItem key={'projectList'} onClick={this.loadPage.bind(this,ProjectList)} tappable>
+					<ListItem key={'projectList'} onClick={this.loadPage.bind(this, ProjectList)}  tappable>
 						ProjectList
 					</ListItem>
 				</List>
@@ -79,5 +82,11 @@ export class LeftSplitter extends React.PureComponent {
 	}
 }
 
-export default LeftSplitter;
+function mapDispatchToProps(dispatch) {
+	return {
+		setLeftSplitter: isOpenLeftSplitter => setLeftSplitter(dispatch, isOpenLeftSplitter)
+	}
+}
+
+export default connect(null, mapDispatchToProps)(LeftSplitter);
 
