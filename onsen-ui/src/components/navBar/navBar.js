@@ -11,9 +11,16 @@ import './navBar.scss'
 import {PROJECT_EXTENTION} from '../addProject/addProjectActions'
 import {updateFile,saveChanges} from '../../pages/projectProperties/projectPropertiesActions'
 import ProjectList from '../../pages/projectList/projectList'
+import AppTabbar from '../AppTabbar/AppTabbar'
 
 
 class NavBar extends React.Component {
+
+	constructor(props) {
+    super(props);
+    this.loadPage = this.loadPage.bind(this);
+    this.name = 'navBar'
+  }
 
 	handleDelete = (uri, navigator) => {
 		this.props.openDeleteConformationDialog("Process is irreversible, are you sure you want to delete project?", uri, navigator);
@@ -43,6 +50,22 @@ class NavBar extends React.Component {
 		})
 	}
 
+	loadPage(page) {
+    const currentPage = this.props.navigator.pages.slice(-1)[0];
+    let new_page;
+    if (page.WrappedComponent) { //if component is wrapped (connect(...)(ComponentName))
+      new_page = new page.WrappedComponent();
+    } else {
+      new_page = new page();
+    }
+    const page_name = new_page.name
+    if (!(page_name === 'projectList' && currentPage.key === null)) {
+      if (currentPage.key !== page_name) {
+        this.props.navigator.resetPage({component: page, props: {key: page_name}}, {animation: 'fade'});
+      }
+    }
+  }
+
 	render() {
 
 		const {title, navigator, backButton, hasIcon} = this.props;
@@ -50,13 +73,12 @@ class NavBar extends React.Component {
 			<Toolbar>
 				<div className='left'>
 					{backButton ? <BackButton onClick={() =>{
-						this.props.history.goBack();
 						if(navigator.pages.length>1) {
 							navigator.popPage()
 						}else {
 							navigator.resetPage({component: ProjectList, props: {key: 'projectList'}}, {animation: 'fade'});
 						}
-					}}>Back</BackButton> : null}
+					}}>Back</BackButton> : <i className="zmdi zmdi-arrow-left backArrow" onClick={this.loadPage.bind(this, AppTabbar)}></i>}
 				</div>
 				<div className='center'>
 					{title}

@@ -4,9 +4,11 @@ import {
 	section,
 	Select,
 	Button,
-	Input
+	Input,
+	ListTitle
 } from 'react-onsenui';
 import * as ons from 'onsenui';
+import CustomToolbar from "../customToolbar/customToolbar";
 
 class FormInput extends React.Component {
 	constructor(props) {
@@ -30,12 +32,14 @@ class FormInput extends React.Component {
 
 	render() {
 		return (
-			<Page>
+			<Page renderToolbar={()=><CustomToolbar title={'Form Input'}/>}>
 				<section style={{"textAlign": 'center'}}>
-					<h2 className='title'>Form Input</h2>
-					<a href='https://onsen.io/v2/api/react/Input.html'>input-docs-onsen</a>
-					<br/>
-					<a href='https://onsen.io/v2/api/react/Select.html'>select-docs-onsen</a>
+					<ListTitle>
+						docs: <a href='https://onsen.io/v2/api/react/Input.html'>input-docs-onsen</a>
+					</ListTitle>
+					<ListTitle>
+						docs: <a href='https://onsen.io/v2/api/react/Select.html'>select-docs-onsen</a>
+					</ListTitle>
 					<p>
 						<Input
 							name="username"

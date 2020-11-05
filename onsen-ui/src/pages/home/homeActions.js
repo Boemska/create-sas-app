@@ -69,3 +69,24 @@ export async function dummyCall(dispatch, options) {
 		console.log('dummycall-catch', e)
 	}
 }
+
+export function setSplitter(dispatch, isSplitterOpen){
+	dispatch({
+		type: ActionTypes.SET_SPLITTER,
+		payload: isSplitterOpen
+	})
+}
+
+export function updateTabbarIndex(dispatch, index) {
+	dispatch({
+		type: ActionTypes.UPDATE_TABBAR_INDEX,
+		payload:index
+	})
+}
+
+export function setLeftSplitter(dispatch, isSplitterOpen){
+	dispatch({
+		type: ActionTypes.SET_LEFT_SPLITTER,
+		payload: isSplitterOpen
+	})
+}

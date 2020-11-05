@@ -8,6 +8,7 @@ import {
 	Dialog
 } from 'react-onsenui';
 import './myList.scss'
+import CustomToolbar from "../customToolbar/customToolbar";
 
 class MyList extends React.Component {
 	constructor(props) {
@@ -28,11 +29,9 @@ class MyList extends React.Component {
 
 	render() {
 		return (
-			<Page>
-				<h2 className={'centered-text'}>List</h2>
+			<Page renderToolbar={()=><CustomToolbar title={'My List'}/>}>
 				<ListTitle>
-					docs :
-					<a href='https://onsen.io/v2/api/react/LazyList.html'>list-docs-onsen</a>
+					docs: <a href='https://onsen.io/v2/api/react/LazyList.html'>list-docs-onsen</a>
 				</ListTitle>
 				<List>
 					<ListItem onClick={this.showAlert}>Element One</ListItem>
