@@ -2,7 +2,7 @@ import React from 'react';
 import adapterService from "../../adapterService/adapterService";
 import {connect} from 'react-redux'
 import Badge from "../badge/badge";
-import {getUserData, setUserData} from '../../pages/home/homeActions'
+import {getUserData, setUserData, setSplitter} from '../../pages/home/homeActions'
 import ErrorLogs from '../../pages/errorLogs/errorLogs'
 import {
 	Dialog,
@@ -61,7 +61,7 @@ export class UserInfoSplitter extends React.PureComponent {
 	}
 
 	closeSplitter = () => {
-		this.props.isOpenSplitter(false)
+		this.props.setSplitter(false);
 	}
 
 	handleSwitchChange = () => {
@@ -101,6 +101,11 @@ export class UserInfoSplitter extends React.PureComponent {
 			window.location.reload();
 	}
 
+	onPush = (component, key) => {
+    this.props.navigator.pushPage({component: component, props: {key: key}}, {animation: "fade"})
+    this.props.setSplitter(false);
+  }
+
 	render() {
 		const requestsStatus = getRequestsList(this.props.requests)
 		return (
@@ -121,12 +126,12 @@ export class UserInfoSplitter extends React.PureComponent {
 							<Switch checked={this.state.debugMode}/>
 						</div>
 					</ListItem>
-					<ListItem key={'applicationLogs'} onClick={this.loadPage.bind(this, ApplicationLogs)} tappable>
+					<ListItem key={'applicationLogs'} onClick={() => this.onPush(ApplicationLogs, 'applicationLogs')} tappable>
 						Application Logs
 					</ListItem>
 					{
 						this.state.debugMode ?
-							<ListItem key={'debugLogs'} onClick={this.loadPage.bind(this, DebugLogs)} tappable>
+							<ListItem key={'debugLogs'} onClick={() => this.onPush(DebugLogs, 'debugLogs')}  tappable>
 								Debug Logs
 								<div className="right">
 									<Badge background={'#0079b8'}
@@ -135,7 +140,7 @@ export class UserInfoSplitter extends React.PureComponent {
 								</div>
 							</ListItem>
 							:
-							<ListItem key={'failedRequest'} onClick={this.loadPage.bind(this, FailedRequests)} tappable>
+							<ListItem key={'failedRequest'} onClick={() => this.onPush(FailedRequests, 'failedRequest')} tappable>
 								Failed Requests
 								<div className="right">
 									<Badge background={'#e12200'}
@@ -144,7 +149,7 @@ export class UserInfoSplitter extends React.PureComponent {
 								</div>
 							</ListItem>
 					}
-					<ListItem key={'errorLogs'} onClick={this.loadPage.bind(this, ErrorLogs)} tappable>
+					<ListItem key={'errorLogs'} onClick={() => this.onPush(ErrorLogs, 'errorLogs')}  tappable>
 						Errors
 						<div className="right">
 							<Badge background={'#fdcf08'}
@@ -152,7 +157,7 @@ export class UserInfoSplitter extends React.PureComponent {
 										 color={'#000000'}/>
 						</div>
 					</ListItem>
-					<ListItem key={'logout'} onClick={this.logout} tappable>
+					<ListItem className={'logout'} key={'logout'} onClick={this.logout} tappable>
 						Log Out
 						<div className="right">
 							<Icon
@@ -212,7 +217,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		getUserData: () => getUserData(dispatch),
-		setUserData: data => setUserData(dispatch, data)
+		setUserData: data => setUserData(dispatch, data),
+		setSplitter: (isSplitterOpen) => setSplitter(dispatch, isSplitterOpen)
 	}
 }
 

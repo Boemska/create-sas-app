@@ -4,7 +4,10 @@ const initalState = {
 	test: false,
 	welcomeMessage: false,
 	userData: null,
-	newUpdate:false
+	newUpdate:false,
+	isSplitterOpen: false,
+	isOpenLeftSplitter: false,
+	tabbarIndex: 0, //home
 }
 
 export default function homeReducer(state = initalState, action) {
@@ -24,6 +27,18 @@ export default function homeReducer(state = initalState, action) {
 		case ActionTypes.UPDATE_APP:
 			return Object.assign({}, state, {
 				newUpdate: action.payload
+			})
+		case ActionTypes.SET_SPLITTER:
+			return Object.assign({}, state, {
+				isSplitterOpen: action.payload
+			})
+		case ActionTypes.SET_LEFT_SPLITTER:
+			return Object.assign({}, state, {
+				isOpenLeftSplitter: action.payload
+			})
+		case ActionTypes.UPDATE_TABBAR_INDEX:
+			return Object.assign({}, state, {
+				tabbarIndex: action.payload
 			})
 		default:
 			return state

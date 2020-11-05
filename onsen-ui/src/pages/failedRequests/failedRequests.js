@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import LogHeader from '../../components/logHeader/logHeader'
 import {Page} from 'react-onsenui'
+import CustomToolbar from "../../components/customToolbar/customToolbar";
 
 class FailedRequests extends React.Component {
 
@@ -13,8 +14,7 @@ class FailedRequests extends React.Component {
 	render() {
 		const failedRequests = this.props.logs.failedRequests
 		return (
-			<Page>
-				<h2 className={'text-center'}> Failed Requests</h2>
+			<Page renderToolbar={()=><CustomToolbar title={'Failed requests'}/>}>
 				{failedRequests && failedRequests.length > 0
 					? failedRequests.map((log, index) =>
 						<div className={'item'} key={index}>

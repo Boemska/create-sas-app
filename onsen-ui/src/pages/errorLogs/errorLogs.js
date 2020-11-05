@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import LogHeader from '../../components/logHeader/logHeader'
 import {Page} from 'react-onsenui'
+import CustomToolbar from "../../components/customToolbar/customToolbar";
 
 class ErrorLogs extends React.Component {
 	constructor(props) {
@@ -13,8 +14,7 @@ class ErrorLogs extends React.Component {
 	render() {
 		const sasErrors = this.props.logs.sasErrors
 		return (
-			<Page>
-				<h2 className={'text-center'}> Error Logs</h2>
+			<Page renderToolbar={()=><CustomToolbar title={'Error logs'}/>}>
 				{sasErrors && sasErrors.length > 0
 					? sasErrors.map((log, index) =>
 						<div className={'item'} key={index}>

@@ -3,6 +3,7 @@ import BoCollapsible from '../../components/colapsable/boCollapsible'
 import {connect} from 'react-redux'
 import {Page} from 'react-onsenui'
 import LogHeader from '../../components/logHeader/logHeader'
+import CustomToolbar from "../../components/customToolbar/customToolbar";
 
 class DebugLogs extends React.Component {
 
@@ -14,8 +15,7 @@ class DebugLogs extends React.Component {
 	render() {
 		const debugData = this.props.logs.debugData
 		return (
-			<Page>
-				<h2 className={'text-center'}> Debug Logs</h2>
+			<Page renderToolbar={()=><CustomToolbar title={'Debug Logs'}/>}>
 				{debugData && debugData.length > 0 ?
 					debugData.map((log, index) => <BoCollapsible
 						title={<LogHeader log={log}/>}
