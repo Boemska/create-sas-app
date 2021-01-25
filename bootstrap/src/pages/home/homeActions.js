@@ -1,7 +1,6 @@
 import ActionTypes from './ActionTypes'
 import {adapterConsts as constants} from '../../services/constants'
 import adapterService from '../../adapterService/adapterService'
-import config from '../../adapterService/config'
 
 export function setTestState(dispatch, payload) {
 	dispatch({
@@ -17,31 +16,31 @@ export function setMainSpinner(dispatch, payload) {
 	})
 }
 
-async function getViyaUsetData(dispatch, method, userDataApi) {
-	const response = await adapterService.managedRequest(dispatch, 'get', userDataApi)
-	let payload = response.body
-	const userAvatar = adapterService._adapter.hostUrl + constants.USER_AVATAR;
-	payload.userAvatar = userAvatar;
-	return payload;
-}
-
-async function getV9UserData(dispatch, method, userDataApi) {
-	const res = await adapterService.call(dispatch, userDataApi, null);
-	return res
-}
-
-const sasVersionGetUserDetailsFunctions = {
-	'viya': getViyaUsetData,
-	'v9': getV9UserData
-}
-
 export async function getUserData(dispatch) {
-	const userDataApi = config.sasVersion === 'v9' ? constants.STARTUP_SERVICE : constants.USER_INDENTITIES
+	const userDataApi = constants.USER_INDENTITIES
 
-	const fn = sasVersionGetUserDetailsFunctions[config.sasVersion || 'v9']
+	// *** Using Promise ***
+	// adapterService.managedRequest(dispatch, 'get', userDataApi, {})
+	// 	.then(res => {
+	// 		debugger
+	// 		console.log('getUserData-then', res)
+	// 		//TODO Dispatch data
+	// 	})
+	// 	.catch(e => {
+	// 		console.log('getUserData-catch', e)
+	// 		//TODO return error
+	// 	})
 
-	const payload = await fn(dispatch, 'get', userDataApi)
-	setUserData(dispatch, payload)
+	// *** Using async await ***
+	try {
+		const userData = await adapterService.managedRequest(dispatch, 'get', userDataApi, {})
+		let payload = userData.body
+		const userAvatar = adapterService._adapter.hostUrl + constants.USER_AVATAR;
+		payload.userAvatar = userAvatar;
+		setUserData(dispatch, payload)
+	} catch (e) {
+		console.log('error', e)
+	}
 }
 
 export function setUserData(dispatch, payload) {
@@ -51,63 +50,36 @@ export function setUserData(dispatch, payload) {
 	})
 }
 
-export async function managedRequest(dispatch, options) {
+export async function dummyCall(dispatch, options) {
 	try {
-		let callData = await adapterService.managedRequest(dispatch, null, '/DummyCall/', options)
+		let callData = await adapterService.managedRequest(dispatch, 'post', '/SASJobExecution/', null, options)
 		if (typeof callData === 'string') {
-			callData = JSON.parse(callData)
+			callData = callData.body;
 		}
-		console.log('ManagedRequest', callData)
-		return callData
+		console.log('dummycall-then', callData)
 	} catch (e) {
 		console.log('dummycall-catch', e)
 	}
 }
 
-export async function call(dispatch, program) {
-	let callData = await adapterService.call(dispatch, program, null)
-	if (typeof callData === 'string') {
-		callData = JSON.parse(callData)
-	}
-	return callData
+export function setGlobalData(dispatch, data) {
+	dispatch({
+		type: ActionTypes.SET_GLOBAL_DATA,
+		payload: data
+	})
 }
 
-export async function getFolderDetails(dispatch, fileName, options) {
-	let callData = await adapterService.getFolderDetails(dispatch, fileName, options)
-	return callData
+export function setQuestionData(dispatch, data) {
+	dispatch({
+		type: ActionTypes.SET_QUESTION_DATA,
+		payload: data
+	})
+}
+export function setLanguage(dispatch, data) {
+	dispatch({
+		type: ActionTypes.SET_LANGUAGE,
+		payload: data
+	})
 }
 
-export async function getFileDetails(dispatch, fileUri, options) {
-	let callData = await adapterService.getFileDetails(dispatch, fileUri, options)
-	return callData
-}
 
-export async function getFileContent(dispatch, fileUri, options) {
-	let callData = await adapterService.getFileContent(dispatch, fileUri, options)
-	return callData
-}
-
-export async function getFolderContents(dispatch, fileName, options) {
-	let callData = await adapterService.getFolderContents(dispatch, fileName, options)
-	return callData
-}
-
-export async function createNewFolder(dispatch, fileName, options) {
-	let callData = await adapterService.createNewFolder(dispatch, fileName, options)
-	return callData
-}
-
-export async function createNewFile(dispatch, fileName, file, parentUri, options) {
-	let callData = await adapterService.createNewFile(dispatch, fileName, file, parentUri, options)
-	return callData
-}
-
-export async function deleteItem(dispatch, itemUri) {
-	let callData = await adapterService.deleteItem(dispatch, itemUri)
-	return callData
-}
-
-export async function updateFile(dispatch, itemUri, fileBlob, lastModified) {
-	let callData = await adapterService.updateFile(dispatch, itemUri, fileBlob, lastModified)
-	return callData
-}

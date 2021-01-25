@@ -1,26 +1,77 @@
-@import '../../assets/style/colors';
+$border-color: #005686;
+$text-color: #0b0c0c;
+$secondary-text-colour: #6f777b;
+$gray: #c3c2c1;
+$light-gray: #e3e2e1;
 
-.comment {
-  color: gray;
-  font-style: italic;
-  pre {
-    color: gray;
-    font-style: italic;
+
+.home {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  font-size: 18px;
+  line-height: 18px;
+  height: 100%;
+  padding-top: 30px;
+  @media only screen and (max-width: 750px) {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5px;
   }
-}
-
-.members {
-  i {
-    cursor: pointer;
-    color: gray;
-    &:hover {
-      color: $primary;
+  .dgButton {
+    display: flex;
+    flex: 1 1;
+    min-width: 200px;
+    flex-direction: column;
+    padding: 0 15px;
+    max-width: 400px;
+    margin-bottom: 15px;
+    .header {
+      font-size: 18px;
+      border: solid $border-color;
+      border-width: 2px 2px 0 2px;
+      padding: 5px 10px;
+      font-weight: 600;
+    }
+    .content {
+      font-size: 16px;
+      border: solid $border-color;
+      border-width: 2px 2px 0 2px;
+      padding: 10px;
+      min-height: 130px;
+    }
+    .footer {
+      border: 2px solid $border-color;
+      background: $border-color;
+      color: $light-gray;
+      padding: 5px;
+      button {
+        background: $border-color;
+        //background: $gray;
+        border: 2px solid $gray;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-right: 2px;
+        font-weight: 600;
+        padding: 3px 10px;
+        color: $light-gray;
+        &:hover {
+          border-color: white;
+          color: white;
+        }
+        &:active {
+          outline: unset;
+          border-color: white;
+          color: white;
+        }
+        &:focus {
+          outline: unset;
+        }
+      }
     }
   }
 }
 
-pre.grayedout {
-  color: gray;
-  font-size: 10px;
-  font-style: italic;
+@media only screen and (max-width: 650px) {
+
 }

@@ -1,0 +1,97 @@
+@import "../../assets/style/colors";
+
+.interview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+
+  .display-flex {
+    display: flex;
+  }
+
+  form {
+    width: 400px;
+    padding: 15px 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    .form-group {
+      width: 100%;
+    }
+  }
+
+  .spinner {
+    font-size: 35px;
+    margin-top: 35px;
+    color: $background;
+    img {
+      animation: fa-spin 10s infinite linear;
+      width: 136px;
+    }
+  }
+  .questionContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    .sidebar {
+      display: block;
+      flex: 2 1;
+      background: #D4E4EC;
+      padding: 15px;
+      overflow-y: auto;
+      max-width: 500px;
+      .qMenu {
+        font-size: 18px;
+        .groups {
+          font-size: 14px;
+          .groupName {
+            cursor: pointer;
+            &.active {
+              background: rgba(250, 250, 250, 0.4);
+              font-weight: bold;
+            }
+            &:hover {
+              background: rgba(250, 250, 250, 0.4);
+            }
+          }
+        }
+      }
+    }
+    .forms {
+      display: flex;
+      flex: 4;
+      justify-content: flex-start;
+      padding: 15px;
+      overflow-y: auto;
+      flex-direction: column;
+      .pageTitle {
+        align-self: flex-start;
+        margin-top: -20px;
+      }
+      .tableHelp {
+        font-size: 2.25rem;
+        align-self: flex-start;
+        margin-bottom: 15px;
+        font-weight: 700;
+      }
+      .groupTitle {
+        font-size: 28px;
+        align-self: flex-start;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+      .selectedForm {
+        .form {
+          display: flex;
+          flex-direction: column;
+          align-self: center;
+        }
+      }
+    }
+  }
+
+}

@@ -4,7 +4,9 @@ const initalState = {
 	test: false,
 	mainSpinner: false,
 	userData: null,
-	offline: false
+	globalData: {},
+	questionData: null,
+	language: 'en'
 }
 
 export default function homeReducer(state = initalState, action) {
@@ -17,9 +19,17 @@ export default function homeReducer(state = initalState, action) {
 			return Object.assign({}, state, {
 				userData: action.payload
 			})
-		case ActionTypes.SET_OFFLINE:
+		case ActionTypes.SET_GLOBAL_DATA:
 			return Object.assign({}, state, {
-				offline: action.state
+				globalData: action.payload
+			})
+		case ActionTypes.SET_QUESTION_DATA:
+			return Object.assign({}, state, {
+				questionData: action.payload
+			})
+		case ActionTypes.SET_LANGUAGE:
+			return Object.assign({}, state, {
+				language: action.payload
 			})
 		default:
 			return state

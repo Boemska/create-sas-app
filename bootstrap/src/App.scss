@@ -1,18 +1,39 @@
-// To override bootstap set variables from node_modules/bootstrap/scss/_variables.scss
-// before importing bootstrap
-@import './assets/style/colors.scss';
-@import '~bootstrap/scss/bootstrap.scss';
+@import './assets/style/bootstrap.min.css';
 @import './assets/style/fontawesome.css';
 @import './assets/style/style.scss';
-@import "~toastr";
-
+@import './assets/style/colors.scss';
+//@import './assets/style/flatly.bootstrap.min.css';
+@font-face {
+  font-family: 'Metropolis';
+  src: url('./assets/fonts/Metropolis-Regular.eot');
+  src: url('./assets/fonts/Metropolis-Regular.otf') format('opentype');
+  src: url('./assets/fonts/Metropolis-Regular.woff2') format('woff2');
+  src: url('./assets/fonts/Metropolis-Regular.woff') format('woff');
+  src: url('./assets/fonts/Metropolis-Regular.ttf') format('truetype');
+}
 
 .App {
-  font-family: Avenir,"Helvetica Neue",Arial,sans-serif;
+  font-family: 'Metropolis', Avenir, "Helvetica Neue", Arial, sans-serif;
   height: 100%;
+  color: $textColor;
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
   .main {
     display: flex;
-    max-height: calc(100vh - 30px);
+    height: calc(100vh - 30px);
     max-width: 100%;
     padding-top: 60px;
     position: relative;
@@ -20,19 +41,98 @@
       flex: 1 1 auto;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 2rem 2rem 30px 2rem;
+      //padding: 2rem 2rem 30px 2rem;
       position: relative;
     }
   }
-  .modal-open.modal {
-    height: calc(100vh - 200px);
+
+  //form styles
+  label {
+    font-weight: normal;
+    font-size: 16px;
+  }
+  .form-control {
+    color: $textColor;
+    border: 2px solid $textColor;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    &:focus, &:active {
+      border: 3px solid $borderColor;
+      box-shadow: inset 0 0 0 2px;
+      outline-offset: 0;
+    }
+  }
+  .rw-widget {
+    border: 2px solid $textColor;
+    &.rw-state-focus {
+      border: none;
+    }
+  }
+  .rw-state-focus > .rw-widget-container, .rw-state-focus > .rw-widget-container:hover {
+    background-color: #fff;
+    border: 3px solid $borderColor;
+    box-shadow: inset 0 0 0 2px;
+  }
+  .rw-widget-container {
+    border: unset;
+    border-radius: 0;
+  }
+
+  .btn-primary {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.1875;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    width: auto;
+    margin-top: 0;
+    margin-bottom: 22px;
+    padding: 8px 10px 7px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    color: #fff;
+    background-color: $buttonBackground;
+    -webkit-box-shadow: 0 2px 0 $boxShadow;
+    box-shadow: 0 2px 0 $boxShadow;
+    &:focus, &:active, &:active:focus {
+      border-color: $borderColor;
+      outline: 3px solid transparent;
+      -webkit-box-shadow: inset 0 0 0 1px $borderColor;
+      box-shadow: inset 0 0 0 1px $borderColor;
+    }
+    &:hover {
+      background-color: $buttonBackground;
+    }
+  }
+  .btn-primary:focus:not(:active):not(:hover) {
+    border-color: $borderColor;
+    color: $textColor;
+    background-color: $borderColor;
+    -webkit-box-shadow: 0 2px 0 $boxShadow;
+    box-shadow: 0 2px 0 $boxShadow;
   }
 }
 
+.App-logo {
+  height: 40vmin;
+}
 
-/* Set toastr z-index higher than header */
-#toast-container {
-  position: fixed;
-  z-index: 9999999999999;
-  /*overrides*/
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
 }

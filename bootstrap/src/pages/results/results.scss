@@ -1,0 +1,30 @@
+@import "../../assets/style/colors";
+
+.results {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  .pageTitle {
+  }
+
+  form {
+    width: 400px;
+    margin-top: 40px;
+    border: 1px solid #ccc;
+    padding: 15px 10px;
+    border-radius: 5px;
+    .form-group {
+      width: 100%;
+    }
+    button {
+      align-self: flex-end;
+    }
+  }
+
+  .spinner {
+    font-size: 35px;
+    margin-top: 35px;
+    color: $background;
+  }
+}

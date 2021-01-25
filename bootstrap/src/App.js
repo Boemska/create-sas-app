@@ -13,9 +13,13 @@ import ApplicationLogs from './pages/applicationLogs/applicationLogs'
 import FailedRequests from './pages/failedRequests/failedRequests'
 import ErrorLogs from './pages/errorLogs/errorLogs'
 import DebugLogs from './pages/debugLogs/debugLogs'
+import Results from './pages/results/results'
+import Interview from './pages/interview/interview'
+import Figures from './pages/figures/figures'
 // import Sidebar from './components/sidebar/sidebar' // comented out
 import toastr from 'toastr'
 import {connect} from 'react-redux'
+
 
 class App extends React.Component {
 	componentWillReceiveProps(nextProps) {
@@ -33,6 +37,10 @@ class App extends React.Component {
 					<div className={'mainContainer'}>
 						<Switch>
 							<Route exact path='/' component={Home}/>
+
+							<Route exact path='/results' component={Results}/>
+							<Route exact path='/interview' component={Interview}/>
+							<Route exact path='/figures' component={Figures}/>
 							<Route path='/error' component={Page500}/>
 							<Route exact path='/applicationLogs' component={ApplicationLogs}/>
 							<Route exact path='/errorLogs' component={ErrorLogs}/>
