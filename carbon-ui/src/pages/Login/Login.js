@@ -15,8 +15,8 @@ class Login extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: 'jimdemo',
-			password: 'Bigballs1',
+			username: '',
+			password: '',
 			error: '',
 			loading: false
 		}
@@ -90,27 +90,27 @@ class Login extends Component {
 					<FormGroup legendText="">
 						<div className={'spt05 flex flex-row align-items-center '}>
 							<User32 />
-							<TextInput  
+							<TextInput
 								id="username"
 								labelText=""
-								placeholder="Username" 
-								name="username" 
-								value={this.state.username} 
+								placeholder="Username"
+								name="username"
+								value={this.state.username}
 								onChange={this.onInputChange}/>
-						</div>	
+						</div>
 						<div className={'spt05 flex flex-row align-items-center'}>
 							<Locked32 />
-							<TextInput.PasswordInput  
+							<TextInput.PasswordInput
 								id="password"
 								labelText= ""
-								placeholder="Password" 
-								name="password"  
-								value={this.state.password} 
+								placeholder="Password"
+								name="password"
+								value={this.state.password}
 								onChange={this.onInputChange} />
 						</div>
 					</FormGroup>
 					{
-						!this.state.loading? 
+						!this.state.loading?
 							<Button className={'loginBtn'} onClick={this.login}>Login</Button> :
 							<InlineLoading status='active' description="Loading..." />
 
