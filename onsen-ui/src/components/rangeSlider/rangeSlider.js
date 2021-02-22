@@ -2,9 +2,11 @@ import React from 'react'
 import {
 	Page,
 	section,
-	Range
+	Range,
+	ListTitle
 } from 'react-onsenui';
 import './rangeSlider.scss'
+import CustomToolbar from "../customToolbar/customToolbar";
 
 class RangeSlider extends React.Component {
 	constructor(props) {
@@ -22,13 +24,10 @@ class RangeSlider extends React.Component {
 
 	render() {
 		return (
-			<Page>
-				<div className="title">
-					<h1>Rangle Slider</h1>
-					<a href="https://onsen.io/v2/api/react/Range.html">
-						rangeSlider-docs-onsen
-					</a>
-				</div>
+			<Page renderToolbar={()=><CustomToolbar title={'Rangle Slider'}/>}>
+				<ListTitle>
+					docs: <a href="https://onsen.io/v2/api/react/Range.html"> rangeSlider-docs-onsen</a>
+				</ListTitle>
 				<section style={{textAlign: 'center'}}>
 					<p>
 						<span>-50</span>

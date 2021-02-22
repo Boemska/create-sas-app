@@ -1,6 +1,7 @@
 import React from 'react'
-import {Page, section, Modal, Button} from 'react-onsenui';
+import {Page, section, Modal, Button, ListTitle} from 'react-onsenui';
 import './modal.scss';
+import CustomToolbar from "../customToolbar/customToolbar";
 
 class ModalTest extends React.Component {
 	constructor(props) {
@@ -13,7 +14,9 @@ class ModalTest extends React.Component {
 
 	render() {
 		return (
-			<Page renderModal={() => (
+			<Page
+				renderToolbar={()=><CustomToolbar title={'Modal'}/>}
+				renderModal={() => (
 				<Modal
 					isOpen={this.state.isOpen}
 				>
@@ -30,12 +33,9 @@ class ModalTest extends React.Component {
 				</Modal>
 			)}
 			>
-				<div className={'centered-text'}>
-					<h1>Modal Example</h1>
-					<a href="https://onsen.io/v2/api/react/Modal.html">
-						modal-docs-onsen
-					</a>
-				</div>
+				<ListTitle>
+					docs: <a href="https://onsen.io/v2/api/react/Modal.html">modal-docs-onsen</a>
+				</ListTitle>
 				<section className={'section-margin'}>
 					<p className={'centered-text'}>
 						<Button ref='button' onClick={() => this.setState({isOpen: true})}>Tap here!</Button>
