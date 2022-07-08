@@ -16,7 +16,7 @@
     "h54s": "^2.0.0",
     "http-proxy-middleware": "^1.0.4",
     "inquirer": "^7.1.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-sass": "^4.13.0",
     "ora": "^4.0.4",
     "react": "^16.12.0",
